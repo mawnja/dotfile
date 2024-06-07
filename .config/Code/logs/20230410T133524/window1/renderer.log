@@ -1,0 +1,8 @@
+2023-04-10 13:35:45.555 [warning] Via 'product.json#extensionEnabledApiProposals' extension 'github.vscode-pull-request-github' wants API proposal 'commentsResolvedState' but that proposal DOES NOT EXIST. Likely, the proposal has been finalized (check 'vscode.d.ts') or was abandoned.
+2023-04-10 13:35:45.914 [error] Extension 'btwiuse.vscode-remote-server CANNOT USE these API proposals 'resolvers, contribViewsRemote'. You MUST start in extension development mode or use the --enable-proposed-api command line flag
+2023-04-10 13:35:45.927 [warning] [twxs.cmake]: Cannot register 'cmake.cmakePath'. This property is already registered.
+2023-04-10 13:35:46.031 [info] Creating lazy extension host: contains 1 extension(s): btwiuse.vscode-remote-server.
+2023-04-10 13:35:48.722 [info] [perf] Render performance baseline is 41ms
+2023-04-10 13:35:49.881 [error] [Extension Host] (node:1577) [DEP0005] DeprecationWarning: Buffer() is deprecated due to security and usability issues. Please use the Buffer.alloc(), Buffer.allocUnsafe(), or Buffer.from() methods instead.
+(Use `exe --trace-deprecation ...` to show where the warning was created)
+2023-04-10 13:37:03.461 [error] RequestService#request (browser) - error https://marketplace.visualstudio.com/_apis/public/gallery/extensionquery {"name":"Canceled"}

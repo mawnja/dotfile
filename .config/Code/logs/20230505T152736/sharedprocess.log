@@ -1,0 +1,301 @@
+2023-05-05 15:27:42.242 [info] Starting worker process with pid 25185 (type: fileWatcher, window: 1).
+2023-05-05 15:27:45.916 [info] Getting Manifest... github.remotehub
+2023-05-05 15:27:45.917 [info] Getting Manifest... kelvin.vscode-sshfs
+2023-05-05 15:27:45.917 [info] Getting Manifest... ms-azuretools.vscode-docker
+2023-05-05 15:27:45.918 [info] Getting Manifest... ms-python.vscode-pylance
+2023-05-05 15:27:45.920 [info] Getting Manifest... ms-vscode-remote.remote-containers
+2023-05-05 15:27:45.920 [info] Getting Manifest... ms-vscode.azure-repos
+2023-05-05 15:27:45.921 [info] Getting Manifest... ms-vscode.cmake-tools
+2023-05-05 15:27:45.922 [info] Getting Manifest... ms-vscode.cpptools
+2023-05-05 15:27:45.923 [info] Getting Manifest... ms-vscode.remote-server
+2023-05-05 15:27:46.216 [info] Installing extension: ms-vscode.cpptools
+2023-05-05 15:27:46.239 [info] Installing extension: ms-vscode.azure-repos
+2023-05-05 15:27:46.549 [warning] No ptyHost heartbeat after 6 seconds
+2023-05-05 15:27:46.700 [info] Installing extension: ms-python.vscode-pylance
+2023-05-05 15:27:46.783 [info] Getting Manifest... ms-vscode.remote-repositories
+2023-05-05 15:27:46.800 [info] Installing extension: ms-vscode.remote-server
+2023-05-05 15:27:46.810 [info] Installing extension: ms-vscode.cmake-tools
+2023-05-05 15:27:46.925 [info] Installing extension: ms-azuretools.vscode-docker
+2023-05-05 15:27:47.786 [info] Getting Manifest... ms-python.python
+2023-05-05 15:27:47.804 [info] Installing extension: github.remotehub
+2023-05-05 15:27:48.605 [info] Installing extension: kelvin.vscode-sshfs
+2023-05-05 15:27:48.973 [info] Getting Manifest... ms-vscode.remote-repositories
+2023-05-05 15:27:49.106 [info] Installing extension: ms-vscode-remote.remote-containers
+2023-05-05 15:28:06.394 [info] Extension signature verification: kelvin.vscode-sshfs. Verification status: Verified.
+2023-05-05 15:28:06.450 [info] Extracted extension to /home/wenjian.ma/.vscode/extensions/.5e705048-5e04-4472-92f9-75ffdc2c06fe: kelvin.vscode-sshfs
+2023-05-05 15:28:06.461 [info] Renamed to /home/wenjian.ma/.vscode/extensions/kelvin.vscode-sshfs-1.26.1
+2023-05-05 15:28:06.462 [info] Extracting completed. kelvin.vscode-sshfs
+2023-05-05 15:28:06.475 [info] Extension installed successfully: kelvin.vscode-sshfs
+2023-05-05 15:28:06.547 [info] Marked extension as uninstalled kelvin.vscode-sshfs-1.26.0
+2023-05-05 15:28:07.458 [info] Extension signature verification: ms-vscode.remote-server. Verification status: Verified.
+2023-05-05 15:28:07.536 [info] Extracted extension to /home/wenjian.ma/.vscode/extensions/.142d9c9d-22f2-4a8d-adba-223117a3a345: ms-vscode.remote-server
+2023-05-05 15:28:07.543 [info] Renamed to /home/wenjian.ma/.vscode/extensions/ms-vscode.remote-server-1.1.0
+2023-05-05 15:28:07.544 [info] Extracting completed. ms-vscode.remote-server
+2023-05-05 15:28:07.554 [info] Extension installed successfully: ms-vscode.remote-server
+2023-05-05 15:28:07.599 [info] Marked extension as uninstalled ms-vscode.remote-server-1.0.0
+2023-05-05 15:28:07.783 [info] Extension signature verification: ms-vscode-remote.remote-containers. Verification status: Verified.
+2023-05-05 15:28:07.856 [info] Extension signature verification: github.remotehub. Verification status: Verified.
+2023-05-05 15:28:07.929 [info] Extracted extension to /home/wenjian.ma/.vscode/extensions/.14d4e3b3-4a73-4065-af2b-967bb689d5b9: github.remotehub
+2023-05-05 15:28:07.935 [info] Renamed to /home/wenjian.ma/.vscode/extensions/github.remotehub-0.56.0
+2023-05-05 15:28:07.937 [info] Extracting completed. github.remotehub
+2023-05-05 15:28:07.947 [info] Extension installed successfully: github.remotehub
+2023-05-05 15:28:08.000 [info] Marked extension as uninstalled github.remotehub-0.54.0
+2023-05-05 15:28:08.010 [info] Extracted extension to /home/wenjian.ma/.vscode/extensions/.c4247d00-40c6-4f73-84ba-c95aefca90a7: ms-vscode-remote.remote-containers
+2023-05-05 15:28:08.016 [info] Renamed to /home/wenjian.ma/.vscode/extensions/ms-vscode-remote.remote-containers-0.292.0
+2023-05-05 15:28:08.019 [info] Extracting completed. ms-vscode-remote.remote-containers
+2023-05-05 15:28:08.030 [info] Extension installed successfully: ms-vscode-remote.remote-containers
+2023-05-05 15:28:08.081 [info] Marked extension as uninstalled ms-vscode-remote.remote-containers-0.288.1
+2023-05-05 15:28:08.464 [info] Extension signature verification: ms-python.vscode-pylance. Verification status: Verified.
+2023-05-05 15:28:09.803 [info] Extension signature verification: ms-vscode.cmake-tools. Verification status: Verified.
+2023-05-05 15:28:09.957 [info] Extracted extension to /home/wenjian.ma/.vscode/extensions/.e12c18c3-b736-45d0-abe5-50fbc4991963: ms-vscode.cmake-tools
+2023-05-05 15:28:09.968 [info] Renamed to /home/wenjian.ma/.vscode/extensions/ms-vscode.cmake-tools-1.14.31
+2023-05-05 15:28:09.976 [info] Extracting completed. ms-vscode.cmake-tools
+2023-05-05 15:28:09.988 [info] Extension installed successfully: ms-vscode.cmake-tools
+2023-05-05 15:28:10.056 [info] Marked extension as uninstalled ms-vscode.cmake-tools-1.13.45
+2023-05-05 15:28:10.214 [info] Extension signature verification: ms-azuretools.vscode-docker. Verification status: Verified.
+2023-05-05 15:28:10.341 [info] Extracted extension to /home/wenjian.ma/.vscode/extensions/.79ecfea2-1421-49c4-9bde-4e9fad7ef19d: ms-azuretools.vscode-docker
+2023-05-05 15:28:10.352 [info] Renamed to /home/wenjian.ma/.vscode/extensions/ms-azuretools.vscode-docker-1.25.0
+2023-05-05 15:28:10.356 [info] Extracting completed. ms-azuretools.vscode-docker
+2023-05-05 15:28:10.369 [info] Extension installed successfully: ms-azuretools.vscode-docker
+2023-05-05 15:28:10.410 [info] Marked extension as uninstalled ms-azuretools.vscode-docker-1.24.0
+2023-05-05 15:28:11.583 [info] Extracted extension to /home/wenjian.ma/.vscode/extensions/.593cd1ac-20b9-4614-a285-cede3853e6ea: ms-python.vscode-pylance
+2023-05-05 15:28:11.592 [info] Renamed to /home/wenjian.ma/.vscode/extensions/ms-python.vscode-pylance-2023.5.10
+2023-05-05 15:28:11.594 [info] Extracting completed. ms-python.vscode-pylance
+2023-05-05 15:28:11.603 [info] Extension installed successfully: ms-python.vscode-pylance
+2023-05-05 15:28:11.636 [info] Marked extension as uninstalled ms-python.vscode-pylance-2023.4.20
+2023-05-05 15:28:13.414 [info] Extension signature verification: ms-vscode.azure-repos. Verification status: Verified.
+2023-05-05 15:28:13.624 [info] Extracted extension to /home/wenjian.ma/.vscode/extensions/.99fafa5e-8a03-460f-9361-adc5a0d22772: ms-vscode.azure-repos
+2023-05-05 15:28:13.625 [info] Renamed to /home/wenjian.ma/.vscode/extensions/ms-vscode.azure-repos-0.32.0
+2023-05-05 15:28:13.626 [info] Extracting completed. ms-vscode.azure-repos
+2023-05-05 15:28:13.654 [info] Extension installed successfully: ms-vscode.azure-repos
+2023-05-05 15:28:13.708 [info] Extension signature verification: ms-vscode.cpptools. Verification status: Verified.
+2023-05-05 15:28:13.709 [info] Marked extension as uninstalled ms-vscode.azure-repos-0.30.0
+2023-05-05 15:28:15.788 [info] Extracted extension to /home/wenjian.ma/.vscode/extensions/.c365dcd0-2d5c-455f-aa9b-0d4f21dc888a: ms-vscode.cpptools
+2023-05-05 15:28:15.821 [info] Renamed to /home/wenjian.ma/.vscode/extensions/ms-vscode.cpptools-1.15.4-linux-x64
+2023-05-05 15:28:15.832 [info] Extracting completed. ms-vscode.cpptools
+2023-05-05 15:28:15.846 [info] Extension installed successfully: ms-vscode.cpptools
+2023-05-05 15:28:15.929 [info] Marked extension as uninstalled ms-vscode.cpptools-1.14.5-linux-x64
+2023-05-05 15:30:17.752 [info] Getting Manifest... vqlaicom.chatgpt4chinese
+2023-05-05 15:30:17.762 [info] Installing extension: vqlaicom.chatgpt4chinese
+2023-05-05 15:30:22.242 [info] Extension signature verification: vqlaicom.chatgpt4chinese. Verification status: Verified.
+2023-05-05 15:30:22.346 [info] Extracted extension to /home/wenjian.ma/.vscode/extensions/.250fb1f3-f855-4807-88dd-ef7b4d9a58fd: vqlaicom.chatgpt4chinese
+2023-05-05 15:30:22.380 [info] Renamed to /home/wenjian.ma/.vscode/extensions/vqlaicom.chatgpt4chinese-2.3.0
+2023-05-05 15:30:22.385 [info] Extracting completed. vqlaicom.chatgpt4chinese
+2023-05-05 15:30:22.412 [info] Extension installed successfully: vqlaicom.chatgpt4chinese
+2023-05-05 15:35:16.793 [info] Uninstalling extension from the profile: vqlaicom.chatgpt4chinese@2.3.0 vscode-userdata:/home/wenjian.ma/.vscode/extensions/extensions.json
+2023-05-05 15:35:16.924 [info] Marked extension as uninstalled vqlaicom.chatgpt4chinese-2.3.0
+2023-05-05 15:35:17.343 [info] Successfully uninstalled extension from the profile vqlaicom.chatgpt4chinese@2.3.0 vscode-userdata:/home/wenjian.ma/.vscode/extensions/extensions.json
+2023-05-10 15:28:13.126 [info] Getting Manifest... ms-vscode-remote.remote-ssh
+2023-05-10 15:28:13.129 [info] Getting Manifest... ms-vscode-remote.remote-ssh-edit
+2023-05-10 15:28:14.074 [info] Installing extension: ms-vscode-remote.remote-ssh-edit
+2023-05-10 15:28:14.152 [info] Installing extension: ms-vscode-remote.remote-ssh
+2023-05-10 15:28:17.140 [info] Extension signature verification: ms-vscode-remote.remote-ssh-edit. Verification status: Verified.
+2023-05-10 15:28:17.179 [info] Extracted extension to /home/wenjian.ma/.vscode/extensions/.06abb0b6-8e3b-44dd-adbf-5708bc2d99ee: ms-vscode-remote.remote-ssh-edit
+2023-05-10 15:28:17.185 [info] Renamed to /home/wenjian.ma/.vscode/extensions/ms-vscode-remote.remote-ssh-edit-0.86.0
+2023-05-10 15:28:17.187 [info] Extracting completed. ms-vscode-remote.remote-ssh-edit
+2023-05-10 15:28:17.198 [info] Extension installed successfully: ms-vscode-remote.remote-ssh-edit
+2023-05-10 15:28:17.254 [info] Marked extension as uninstalled ms-vscode-remote.remote-ssh-edit-0.84.0
+2023-05-10 15:28:17.961 [info] Extension signature verification: ms-vscode-remote.remote-ssh. Verification status: Verified.
+2023-05-10 15:28:18.144 [info] Extracted extension to /home/wenjian.ma/.vscode/extensions/.24c7d906-7dda-40f9-836e-8a2c6c1f61cc: ms-vscode-remote.remote-ssh
+2023-05-10 15:28:18.150 [info] Renamed to /home/wenjian.ma/.vscode/extensions/ms-vscode-remote.remote-ssh-0.102.0
+2023-05-10 15:28:18.153 [info] Extracting completed. ms-vscode-remote.remote-ssh
+2023-05-10 15:28:18.162 [info] Extension installed successfully: ms-vscode-remote.remote-ssh
+2023-05-10 15:28:18.211 [info] Marked extension as uninstalled ms-vscode-remote.remote-ssh-0.100.0
+2023-05-11 15:28:16.172 [info] Getting Manifest... ms-python.vscode-pylance
+2023-05-11 15:28:17.191 [info] Installing extension: ms-python.vscode-pylance
+2023-05-11 15:28:18.104 [info] Getting Manifest... ms-python.python
+2023-05-11 15:28:22.887 [info] Extension signature verification: ms-python.vscode-pylance. Verification status: Verified.
+2023-05-11 15:28:25.434 [info] Extracted extension to /home/wenjian.ma/.vscode/extensions/.4c61ad4e-d72a-4170-b29b-db7e24eaf958: ms-python.vscode-pylance
+2023-05-11 15:28:25.471 [info] Renamed to /home/wenjian.ma/.vscode/extensions/ms-python.vscode-pylance-2023.5.20
+2023-05-11 15:28:25.473 [info] Extracting completed. ms-python.vscode-pylance
+2023-05-11 15:28:25.483 [info] Extension installed successfully: ms-python.vscode-pylance
+2023-05-11 15:28:25.538 [info] Marked extension as uninstalled ms-python.vscode-pylance-2023.5.10
+2023-05-17 03:28:38.651 [info] Getting Manifest... github.remotehub
+2023-05-17 03:28:38.651 [info] Getting Manifest... ms-azuretools.vscode-docker
+2023-05-17 03:28:39.469 [info] Installing extension: github.remotehub
+2023-05-17 03:28:39.554 [info] Installing extension: ms-azuretools.vscode-docker
+2023-05-17 03:28:40.652 [info] Getting Manifest... ms-vscode.remote-repositories
+2023-05-17 03:28:43.849 [info] Extension signature verification: ms-azuretools.vscode-docker. Verification status: Verified.
+2023-05-17 03:28:43.916 [info] Extracted extension to /home/wenjian.ma/.vscode/extensions/.7dcdf35c-3352-4140-b1d5-17ba8d4f3339: ms-azuretools.vscode-docker
+2023-05-17 03:28:43.923 [info] Renamed to /home/wenjian.ma/.vscode/extensions/ms-azuretools.vscode-docker-1.25.1
+2023-05-17 03:28:43.928 [info] Extracting completed. ms-azuretools.vscode-docker
+2023-05-17 03:28:43.939 [info] Extension installed successfully: ms-azuretools.vscode-docker
+2023-05-17 03:28:43.997 [info] Marked extension as uninstalled ms-azuretools.vscode-docker-1.25.0
+2023-05-17 03:28:44.781 [info] Extension signature verification: github.remotehub. Verification status: Verified.
+2023-05-17 03:28:44.813 [info] Extracted extension to /home/wenjian.ma/.vscode/extensions/.03d2989d-19a4-4977-b7f3-b8f53d901307: github.remotehub
+2023-05-17 03:28:44.818 [info] Renamed to /home/wenjian.ma/.vscode/extensions/github.remotehub-0.56.1
+2023-05-17 03:28:44.820 [info] Extracting completed. github.remotehub
+2023-05-17 03:28:44.830 [info] Extension installed successfully: github.remotehub
+2023-05-17 03:28:44.875 [info] Marked extension as uninstalled github.remotehub-0.56.0
+2023-05-18 15:28:43.809 [info] Getting Manifest... ms-python.vscode-pylance
+2023-05-18 15:28:44.714 [info] Installing extension: ms-python.vscode-pylance
+2023-05-18 15:28:45.583 [info] Getting Manifest... ms-python.python
+2023-05-18 15:28:50.445 [info] Extension signature verification: ms-python.vscode-pylance. Verification status: Verified.
+2023-05-18 15:28:52.907 [info] Extracted extension to /home/wenjian.ma/.vscode/extensions/.79d89fc7-3259-4e87-b4b9-e2b95c088055: ms-python.vscode-pylance
+2023-05-18 15:28:52.916 [info] Renamed to /home/wenjian.ma/.vscode/extensions/ms-python.vscode-pylance-2023.5.30
+2023-05-18 15:28:52.918 [info] Extracting completed. ms-python.vscode-pylance
+2023-05-18 15:28:52.936 [info] Extension installed successfully: ms-python.vscode-pylance
+2023-05-18 15:28:53.035 [info] Marked extension as uninstalled ms-python.vscode-pylance-2023.5.20
+2023-05-27 20:03:03.873 [error] RequestService#request (browser) - error https://az764295.vo.msecnd.net/extensions/marketplace.json {}
+2023-06-05 09:11:14.224 [error] RequestService#request (browser) - error https://az764295.vo.msecnd.net/extensions/marketplace.json {}
+2023-06-05 22:13:43.891 [error] RequestService#request (browser) - error https://az764295.vo.msecnd.net/extensions/marketplace.json {}
+2023-06-06 03:32:45.738 [info] Getting Manifest... ms-vscode.cmake-tools
+2023-06-06 03:32:46.879 [info] Installing extension: ms-vscode.cmake-tools
+2023-06-06 03:32:50.943 [info] Extension signature verification: ms-vscode.cmake-tools. Verification status: Verified.
+2023-06-06 03:32:51.066 [info] Extracted extension to /home/wenjian.ma/.vscode/extensions/.db177250-eb89-485b-8b1b-de6bf2adc378: ms-vscode.cmake-tools
+2023-06-06 03:32:51.098 [info] Renamed to /home/wenjian.ma/.vscode/extensions/ms-vscode.cmake-tools-1.14.32
+2023-06-06 03:32:51.102 [info] Extracting completed. ms-vscode.cmake-tools
+2023-06-06 03:32:51.122 [info] Extension installed successfully: ms-vscode.cmake-tools
+2023-06-06 03:32:51.204 [info] Marked extension as uninstalled ms-vscode.cmake-tools-1.14.31
+2023-06-06 15:32:48.841 [info] Getting Manifest... ms-vscode.cmake-tools
+2023-06-06 15:32:50.179 [info] Installing extension: ms-vscode.cmake-tools
+2023-06-06 15:32:53.918 [info] Extension signature verification: ms-vscode.cmake-tools. Verification status: Verified.
+2023-06-06 15:32:54.026 [info] Extracted extension to /home/wenjian.ma/.vscode/extensions/.2233d506-db51-4181-9ea5-43e31bc5195a: ms-vscode.cmake-tools
+2023-06-06 15:32:54.034 [info] Renamed to /home/wenjian.ma/.vscode/extensions/ms-vscode.cmake-tools-1.14.33
+2023-06-06 15:32:54.039 [info] Extracting completed. ms-vscode.cmake-tools
+2023-06-06 15:32:54.050 [info] Extension installed successfully: ms-vscode.cmake-tools
+2023-06-06 15:32:54.124 [info] Marked extension as uninstalled ms-vscode.cmake-tools-1.14.32
+2023-06-07 23:18:43.249 [error] RequestService#request (browser) - error https://az764295.vo.msecnd.net/extensions/marketplace.json {}
+2023-06-08 03:32:57.186 [info] Getting Manifest... ms-vscode.remote-server
+2023-06-08 03:32:58.227 [info] Installing extension: ms-vscode.remote-server
+2023-06-08 03:33:01.856 [info] Extension signature verification: ms-vscode.remote-server. Verification status: Verified.
+2023-06-08 03:33:01.894 [info] Extracted extension to /home/wenjian.ma/.vscode/extensions/.e29a6225-b167-4396-86df-d6e242c4af3f: ms-vscode.remote-server
+2023-06-08 03:33:01.900 [info] Renamed to /home/wenjian.ma/.vscode/extensions/ms-vscode.remote-server-1.2.0
+2023-06-08 03:33:01.901 [info] Extracting completed. ms-vscode.remote-server
+2023-06-08 03:33:01.911 [info] Extension installed successfully: ms-vscode.remote-server
+2023-06-08 03:33:01.985 [info] Marked extension as uninstalled ms-vscode.remote-server-1.1.0
+2023-06-09 03:33:51.066 [info] Getting Manifest... github.remotehub
+2023-06-09 03:33:51.066 [info] Getting Manifest... ms-vscode.azure-repos
+2023-06-09 03:33:51.923 [info] Installing extension: github.remotehub
+2023-06-09 03:33:52.117 [info] Installing extension: ms-vscode.azure-repos
+2023-06-09 03:33:52.672 [info] Getting Manifest... ms-vscode.remote-repositories
+2023-06-09 03:33:53.061 [info] Getting Manifest... ms-vscode.remote-repositories
+2023-06-09 03:33:57.521 [info] Extension signature verification: github.remotehub. Verification status: Verified.
+2023-06-09 03:33:57.569 [info] Extracted extension to /home/wenjian.ma/.vscode/extensions/.ec24c75c-f043-4ff7-88ab-136179006c1a: github.remotehub
+2023-06-09 03:33:57.575 [info] Renamed to /home/wenjian.ma/.vscode/extensions/github.remotehub-0.58.0
+2023-06-09 03:33:57.576 [info] Extracting completed. github.remotehub
+2023-06-09 03:33:57.586 [info] Extension installed successfully: github.remotehub
+2023-06-09 03:33:57.652 [info] Marked extension as uninstalled github.remotehub-0.56.1
+2023-06-09 03:33:57.716 [info] Extension signature verification: ms-vscode.azure-repos. Verification status: Verified.
+2023-06-09 03:33:57.744 [info] Extracted extension to /home/wenjian.ma/.vscode/extensions/.5e2fd08f-2bf6-4a7c-8c6a-cae43ae299be: ms-vscode.azure-repos
+2023-06-09 03:33:57.750 [info] Renamed to /home/wenjian.ma/.vscode/extensions/ms-vscode.azure-repos-0.34.0
+2023-06-09 03:33:57.751 [info] Extracting completed. ms-vscode.azure-repos
+2023-06-09 03:33:57.760 [info] Extension installed successfully: ms-vscode.azure-repos
+2023-06-09 03:33:57.799 [info] Marked extension as uninstalled ms-vscode.azure-repos-0.32.0
+2023-06-10 03:33:54.817 [info] Getting Manifest... ms-vscode-remote.remote-containers
+2023-06-10 03:33:55.599 [info] Installing extension: ms-vscode-remote.remote-containers
+2023-06-10 03:33:59.130 [info] Extension signature verification: ms-vscode-remote.remote-containers. Verification status: Verified.
+2023-06-10 03:33:59.240 [info] Extracted extension to /home/wenjian.ma/.vscode/extensions/.071701d4-e1ee-48ed-9ca2-40bfaea40d26: ms-vscode-remote.remote-containers
+2023-06-10 03:33:59.246 [info] Renamed to /home/wenjian.ma/.vscode/extensions/ms-vscode-remote.remote-containers-0.295.0
+2023-06-10 03:33:59.250 [info] Extracting completed. ms-vscode-remote.remote-containers
+2023-06-10 03:33:59.261 [info] Extension installed successfully: ms-vscode-remote.remote-containers
+2023-06-10 03:33:59.338 [info] Marked extension as uninstalled ms-vscode-remote.remote-containers-0.292.0
+2023-06-14 01:22:29.619 [error] RequestService#request (browser) - error https://az764295.vo.msecnd.net/extensions/marketplace.json {}
+2023-06-14 11:24:40.510 [error] RequestService#request (browser) - error https://az764295.vo.msecnd.net/extensions/marketplace.json {}
+2023-06-18 20:33:12.958 [error] RequestService#request (browser) - error https://az764295.vo.msecnd.net/extensions/marketplace.json {}
+2023-06-18 20:38:43.600 [error] RequestService#request (browser) - error https://az764295.vo.msecnd.net/extensions/marketplace.json {}
+2023-06-19 21:30:27.858 [error] RequestService#request (browser) - error https://az764295.vo.msecnd.net/extensions/marketplace.json {}
+2023-06-23 15:36:17.253 [info] Getting Manifest... ms-vscode.cpptools
+2023-06-23 15:36:18.586 [info] Installing extension: ms-vscode.cpptools
+2023-06-23 15:36:31.719 [info] Extension signature verification: ms-vscode.cpptools. Verification status: Verified.
+2023-06-23 15:36:33.574 [info] Extracted extension to /home/wenjian.ma/.vscode/extensions/.a51896cd-12f5-4d55-807d-51ee41c82487: ms-vscode.cpptools
+2023-06-23 15:36:33.607 [info] Renamed to /home/wenjian.ma/.vscode/extensions/ms-vscode.cpptools-1.16.2-linux-x64
+2023-06-23 15:36:33.619 [info] Extracting completed. ms-vscode.cpptools
+2023-06-23 15:36:33.632 [info] Extension installed successfully: ms-vscode.cpptools
+2023-06-23 15:36:33.687 [info] Marked extension as uninstalled ms-vscode.cpptools-1.15.4-linux-x64
+2023-06-24 15:36:26.251 [info] Getting Manifest... ms-vscode.cpptools
+2023-06-24 15:36:27.131 [info] Installing extension: ms-vscode.cpptools
+2023-06-24 15:36:37.488 [info] Extension signature verification: ms-vscode.cpptools. Verification status: Verified.
+2023-06-24 15:36:39.350 [info] Extracted extension to /home/wenjian.ma/.vscode/extensions/.b2dd6a74-cc66-4643-a4fd-524327ed9404: ms-vscode.cpptools
+2023-06-24 15:36:39.384 [info] Renamed to /home/wenjian.ma/.vscode/extensions/ms-vscode.cpptools-1.16.3-linux-x64
+2023-06-24 15:36:39.395 [info] Extracting completed. ms-vscode.cpptools
+2023-06-24 15:36:39.425 [info] Extension installed successfully: ms-vscode.cpptools
+2023-06-24 15:36:39.509 [info] Marked extension as uninstalled ms-vscode.cpptools-1.16.2-linux-x64
+2023-06-29 15:36:50.249 [info] Getting Manifest... ms-vscode.cmake-tools
+2023-06-29 15:36:51.345 [info] Installing extension: ms-vscode.cmake-tools
+2023-06-29 15:36:55.246 [info] Extension signature verification: ms-vscode.cmake-tools. Verification status: Verified.
+2023-06-29 15:36:55.362 [info] Extracted extension to /home/wenjian.ma/.vscode/extensions/.feacaf8e-3181-440e-81eb-a27616993c0d: ms-vscode.cmake-tools
+2023-06-29 15:36:55.394 [info] Renamed to /home/wenjian.ma/.vscode/extensions/ms-vscode.cmake-tools-1.14.34
+2023-06-29 15:36:55.400 [info] Extracting completed. ms-vscode.cmake-tools
+2023-06-29 15:36:55.411 [info] Extension installed successfully: ms-vscode.cmake-tools
+2023-06-29 15:36:55.487 [info] Marked extension as uninstalled ms-vscode.cmake-tools-1.14.33
+2023-06-30 03:36:57.229 [info] Getting Manifest... ms-azuretools.vscode-docker
+2023-06-30 03:36:58.312 [info] Installing extension: ms-azuretools.vscode-docker
+2023-06-30 03:37:03.718 [info] Extension signature verification: ms-azuretools.vscode-docker. Verification status: Verified.
+2023-06-30 03:37:03.787 [info] Extracted extension to /home/wenjian.ma/.vscode/extensions/.98645854-08f3-45c7-b7a3-ff887b323e1d: ms-azuretools.vscode-docker
+2023-06-30 03:37:03.801 [info] Renamed to /home/wenjian.ma/.vscode/extensions/ms-azuretools.vscode-docker-1.25.2
+2023-06-30 03:37:03.806 [info] Extracting completed. ms-azuretools.vscode-docker
+2023-06-30 03:37:03.818 [info] Extension installed successfully: ms-azuretools.vscode-docker
+2023-06-30 03:37:03.893 [info] Marked extension as uninstalled ms-azuretools.vscode-docker-1.25.1
+2023-06-30 22:44:39.168 [error] RequestService#request (browser) - error https://az764295.vo.msecnd.net/extensions/marketplace.json {}
+2023-07-01 20:45:31.696 [error] RequestService#request (browser) - error https://az764295.vo.msecnd.net/extensions/marketplace.json {}
+2023-07-07 15:38:52.252 [info] Getting Manifest... ms-python.isort
+2023-07-07 15:38:52.254 [info] Getting Manifest... ms-vscode-remote.remote-containers
+2023-07-07 15:38:53.279 [info] Installing extension: ms-python.isort
+2023-07-07 15:38:53.391 [info] Installing extension: ms-vscode-remote.remote-containers
+2023-07-07 15:38:54.349 [info] Getting Manifest... ms-python.python
+2023-07-07 15:38:59.483 [info] Extension signature verification: ms-vscode-remote.remote-containers. Verification status: Verified.
+2023-07-07 15:38:59.592 [info] Extracted extension to /home/wenjian.ma/.vscode/extensions/.f0f29569-8027-4e85-957d-f0e275e2878e: ms-vscode-remote.remote-containers
+2023-07-07 15:38:59.600 [info] Renamed to /home/wenjian.ma/.vscode/extensions/ms-vscode-remote.remote-containers-0.299.0
+2023-07-07 15:38:59.603 [info] Extracting completed. ms-vscode-remote.remote-containers
+2023-07-07 15:38:59.623 [info] Extension installed successfully: ms-vscode-remote.remote-containers
+2023-07-07 15:38:59.723 [info] Marked extension as uninstalled ms-vscode-remote.remote-containers-0.295.0
+2023-07-07 15:39:18.381 [info] Extension signature verification: ms-python.isort. Verification status: Verified.
+2023-07-07 15:39:18.529 [info] Extracted extension to /home/wenjian.ma/.vscode/extensions/.8163810c-eb6c-40ae-96ac-9a20205e831a: ms-python.isort
+2023-07-07 15:39:18.559 [info] Renamed to /home/wenjian.ma/.vscode/extensions/ms-python.isort-2023.10.0
+2023-07-07 15:39:18.561 [info] Extracting completed. ms-python.isort
+2023-07-07 15:39:18.578 [info] Extension installed successfully: ms-python.isort
+2023-07-07 15:39:18.689 [info] Marked extension as uninstalled ms-python.isort-2022.8.0
+2023-07-07 15:56:00.694 [error] RequestService#request (browser) - error https://az764295.vo.msecnd.net/extensions/marketplace.json {}
+2023-07-07 22:53:34.880 [error] RequestService#request (browser) - error https://az764295.vo.msecnd.net/extensions/marketplace.json {}
+2023-07-13 06:01:41.607 [error] RequestService#request (browser) - error https://az764295.vo.msecnd.net/extensions/marketplace.json {}
+2023-07-13 15:41:55.607 [info] Getting Manifest... ms-python.isort
+2023-07-13 15:41:57.962 [info] Installing extension: ms-python.isort
+2023-07-13 15:42:08.750 [info] Getting Manifest... ms-python.python
+2023-07-13 15:42:15.880 [info] Extension signature verification: ms-python.isort. Verification status: Verified.
+2023-07-13 15:42:16.016 [info] Extracted extension to /home/wenjian.ma/.vscode/extensions/.cf0c6911-cc42-4239-ac6c-f44eb0f5fa0a: ms-python.isort
+2023-07-13 15:42:16.023 [info] Renamed to /home/wenjian.ma/.vscode/extensions/ms-python.isort-2023.10.1
+2023-07-13 15:42:16.025 [info] Extracting completed. ms-python.isort
+2023-07-13 15:42:16.037 [info] Extension installed successfully: ms-python.isort
+2023-07-13 15:42:16.123 [info] Marked extension as uninstalled ms-python.isort-2023.10.0
+2023-07-18 03:42:17.633 [info] Getting Manifest... ms-azuretools.vscode-docker
+2023-07-18 03:42:18.766 [info] Installing extension: ms-azuretools.vscode-docker
+2023-07-18 03:42:24.086 [info] Extension signature verification: ms-azuretools.vscode-docker. Verification status: Verified.
+2023-07-18 03:42:24.164 [info] Extracted extension to /home/wenjian.ma/.vscode/extensions/.a76eb865-3a27-4b03-a670-c067e0ca07a3: ms-azuretools.vscode-docker
+2023-07-18 03:42:24.171 [info] Renamed to /home/wenjian.ma/.vscode/extensions/ms-azuretools.vscode-docker-1.26.0
+2023-07-18 03:42:24.177 [info] Extracting completed. ms-azuretools.vscode-docker
+2023-07-18 03:42:24.189 [info] Extension installed successfully: ms-azuretools.vscode-docker
+2023-07-18 03:42:24.258 [info] Marked extension as uninstalled ms-azuretools.vscode-docker-1.25.2
+2023-08-01 13:22:04.827 [error] RequestService#request (browser) - error https://az764295.vo.msecnd.net/extensions/marketplace.json {}
+2023-08-01 19:23:28.379 [error] RequestService#request (browser) - error https://az764295.vo.msecnd.net/extensions/marketplace.json {}
+2023-08-02 14:25:28.518 [error] RequestService#request (browser) - error https://az764295.vo.msecnd.net/extensions/marketplace.json {}
+2023-08-03 18:28:48.275 [error] RequestService#request (browser) - error https://az764295.vo.msecnd.net/extensions/marketplace.json {}
+2023-08-03 20:24:48.605 [error] RequestService#request (browser) - error https://az764295.vo.msecnd.net/extensions/marketplace.json {}
+2023-08-04 13:27:48.290 [error] RequestService#request (browser) - error https://az764295.vo.msecnd.net/extensions/marketplace.json {}
+2023-08-06 22:33:33.501 [error] RequestService#request (browser) - error https://az764295.vo.msecnd.net/extensions/marketplace.json {}
+2023-08-06 22:42:26.235 [error] RequestService#request (browser) - error https://az764295.vo.msecnd.net/extensions/marketplace.json {}
+2023-08-08 22:37:13.073 [error] RequestService#request (browser) - error https://az764295.vo.msecnd.net/extensions/marketplace.json {}
+2023-08-09 09:38:55.672 [error] RequestService#request (browser) - error https://az764295.vo.msecnd.net/extensions/marketplace.json {}
+2023-08-09 22:35:39.754 [error] RequestService#request (browser) - error https://az764295.vo.msecnd.net/extensions/marketplace.json {}
+2023-08-11 21:40:16.818 [error] RequestService#request (browser) - error https://az764295.vo.msecnd.net/extensions/marketplace.json {}
+2023-08-12 17:43:15.499 [error] RequestService#request (browser) - error https://az764295.vo.msecnd.net/extensions/marketplace.json {}
+2023-08-17 11:47:13.835 [error] RequestService#request (browser) - error https://az764295.vo.msecnd.net/extensions/marketplace.json {}
+2023-08-17 13:48:18.115 [error] RequestService#request (browser) - error https://az764295.vo.msecnd.net/extensions/marketplace.json {}
+2023-08-19 18:55:26.032 [error] RequestService#request (browser) - error https://az764295.vo.msecnd.net/extensions/marketplace.json {}
+2023-08-19 20:51:13.182 [error] RequestService#request (browser) - error https://az764295.vo.msecnd.net/extensions/marketplace.json {}
+2023-08-20 21:55:05.662 [error] RequestService#request (browser) - error https://az764295.vo.msecnd.net/extensions/marketplace.json {}
+2023-08-22 15:54:01.499 [error] RequestService#request (browser) - error https://az764295.vo.msecnd.net/extensions/marketplace.json {}
+2023-08-25 20:01:22.771 [error] RequestService#request (browser) - error https://az764295.vo.msecnd.net/extensions/marketplace.json {}
+2023-08-25 21:57:03.953 [error] RequestService#request (browser) - error https://az764295.vo.msecnd.net/extensions/marketplace.json {}
+2023-08-30 09:05:24.023 [error] RequestService#request (browser) - error https://az764295.vo.msecnd.net/extensions/marketplace.json {}
+2023-08-31 08:03:15.623 [error] RequestService#request (browser) - error https://az764295.vo.msecnd.net/extensions/marketplace.json {}
+2023-09-01 12:06:04.862 [error] RequestService#request (browser) - error https://az764295.vo.msecnd.net/extensions/marketplace.json {}
+2023-09-02 16:10:23.226 [error] RequestService#request (browser) - error https://az764295.vo.msecnd.net/extensions/marketplace.json {}
+2023-09-02 20:11:27.792 [error] RequestService#request (browser) - error https://az764295.vo.msecnd.net/extensions/marketplace.json {}
+2023-09-05 17:12:27.228 [error] RequestService#request (browser) - error https://az764295.vo.msecnd.net/extensions/marketplace.json {}
+2023-09-05 22:13:29.442 [error] RequestService#request (browser) - error https://az764295.vo.msecnd.net/extensions/marketplace.json {}
+2023-09-05 23:14:07.406 [error] RequestService#request (browser) - error https://az764295.vo.msecnd.net/extensions/marketplace.json {}
+2023-09-06 15:17:07.020 [error] RequestService#request (browser) - error https://az764295.vo.msecnd.net/extensions/marketplace.json {}
+2023-09-06 21:13:25.238 [error] RequestService#request (browser) - error https://az764295.vo.msecnd.net/extensions/marketplace.json {}
+2023-09-08 17:17:34.690 [error] RequestService#request (browser) - error https://az764295.vo.msecnd.net/extensions/marketplace.json {}
+2023-09-08 21:18:56.306 [error] RequestService#request (browser) - error https://az764295.vo.msecnd.net/extensions/marketplace.json {}

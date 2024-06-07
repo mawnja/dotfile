@@ -1,0 +1,88 @@
+2023-03-22 10:12:27.511 [info] Starting worker process with pid 17059 (type: fileWatcher, window: 1).
+2023-03-22 10:12:36.367 [info] Getting Manifest... ms-python.python
+2023-03-22 10:12:36.368 [info] Getting Manifest... ms-python.vscode-pylance
+2023-03-22 10:12:36.368 [info] Getting Manifest... ms-toolsai.jupyter-keymap
+2023-03-22 10:12:36.369 [info] Getting Manifest... ms-toolsai.vscode-jupyter-cell-tags
+2023-03-22 10:12:36.370 [info] Getting Manifest... ms-vscode-remote.remote-ssh
+2023-03-22 10:12:36.370 [info] Getting Manifest... ms-vscode.cpptools
+2023-03-22 10:12:36.745 [info] Installing extension: ms-python.vscode-pylance
+2023-03-22 10:12:36.792 [info] Installing extension: ms-toolsai.jupyter-keymap
+2023-03-22 10:12:37.214 [info] Installing extension: ms-python.python
+2023-03-22 10:12:37.283 [info] Getting Manifest... ms-python.python
+2023-03-22 10:12:37.309 [info] Installing extension: ms-vscode.cpptools
+2023-03-22 10:12:37.338 [info] Installing extension: ms-vscode-remote.remote-ssh
+2023-03-22 10:12:37.574 [info] Waiting for already requested installing extension ms-python.python ms-python.vscode-pylance
+2023-03-22 10:12:38.277 [info] Installing extension: ms-toolsai.vscode-jupyter-cell-tags
+2023-03-22 10:12:42.140 [info] Extension signature verification: ms-toolsai.jupyter-keymap. Verification status: Verified.
+2023-03-22 10:12:42.183 [info] Extracted extension to /home/wenjian.ma/.vscode/extensions/.b1108043-1c21-4644-9224-cc7d186965a3: ms-toolsai.jupyter-keymap
+2023-03-22 10:12:42.189 [info] Renamed to /home/wenjian.ma/.vscode/extensions/ms-toolsai.jupyter-keymap-1.1.0
+2023-03-22 10:12:42.191 [info] Extracting completed. ms-toolsai.jupyter-keymap
+2023-03-22 10:12:42.203 [info] Extension installed successfully: ms-toolsai.jupyter-keymap
+2023-03-22 10:12:42.246 [info] Marked extension as uninstalled ms-toolsai.jupyter-keymap-1.0.0
+2023-03-22 10:12:43.070 [info] Extension signature verification: ms-vscode-remote.remote-ssh. Verification status: Verified.
+2023-03-22 10:12:43.300 [info] Extracted extension to /home/wenjian.ma/.vscode/extensions/.0c05fc94-9636-4566-9181-5f51a49b1137: ms-vscode-remote.remote-ssh
+2023-03-22 10:12:43.307 [info] Renamed to /home/wenjian.ma/.vscode/extensions/ms-vscode-remote.remote-ssh-0.98.0
+2023-03-22 10:12:43.310 [info] Extracting completed. ms-vscode-remote.remote-ssh
+2023-03-22 10:12:43.320 [info] Extension installed successfully: ms-vscode-remote.remote-ssh
+2023-03-22 10:12:43.348 [info] Marked extension as uninstalled ms-vscode-remote.remote-ssh-0.96.0
+2023-03-22 10:12:43.811 [info] Extension signature verification: ms-toolsai.vscode-jupyter-cell-tags. Verification status: Verified.
+2023-03-22 10:12:43.844 [info] Extracted extension to /home/wenjian.ma/.vscode/extensions/.4a4d875d-6039-404a-b9c3-5ebd4b42247e: ms-toolsai.vscode-jupyter-cell-tags
+2023-03-22 10:12:43.850 [info] Renamed to /home/wenjian.ma/.vscode/extensions/ms-toolsai.vscode-jupyter-cell-tags-0.1.8
+2023-03-22 10:12:43.852 [info] Extracting completed. ms-toolsai.vscode-jupyter-cell-tags
+2023-03-22 10:12:43.861 [info] Extension installed successfully: ms-toolsai.vscode-jupyter-cell-tags
+2023-03-22 10:12:43.895 [info] Marked extension as uninstalled ms-toolsai.vscode-jupyter-cell-tags-0.1.6
+2023-03-22 10:12:44.426 [info] Extension signature verification: ms-python.python. Verification status: Verified.
+2023-03-22 10:12:46.119 [info] Extracted extension to /home/wenjian.ma/.vscode/extensions/.139c65c4-8992-43b2-981e-dad5ef862c8d: ms-python.python
+2023-03-22 10:12:46.164 [info] Renamed to /home/wenjian.ma/.vscode/extensions/ms-python.python-2023.4.1
+2023-03-22 10:12:46.168 [info] Extracting completed. ms-python.python
+2023-03-22 10:12:46.181 [info] Extension installed successfully: ms-python.python
+2023-03-22 10:12:46.181 [info] Finished waiting for already requested installing extension ms-python.python ms-python.vscode-pylance
+2023-03-22 10:12:46.227 [info] Marked extension as uninstalled ms-python.python-2023.2.0
+2023-03-22 10:12:46.857 [info] Extension signature verification: ms-python.vscode-pylance. Verification status: Verified.
+2023-03-22 10:12:49.011 [info] Extracted extension to /home/wenjian.ma/.vscode/extensions/.e2bcb0cf-19a8-4995-8abd-ee42bb16ee92: ms-python.vscode-pylance
+2023-03-22 10:12:49.047 [info] Renamed to /home/wenjian.ma/.vscode/extensions/ms-python.vscode-pylance-2023.3.20
+2023-03-22 10:12:49.049 [info] Extracting completed. ms-python.vscode-pylance
+2023-03-22 10:12:49.060 [info] Extension installed successfully: ms-python.vscode-pylance
+2023-03-22 10:12:49.103 [info] Marked extension as uninstalled ms-python.vscode-pylance-2023.2.30
+2023-03-22 10:12:49.230 [info] Extension signature verification: ms-vscode.cpptools. Verification status: Verified.
+2023-03-22 10:12:51.099 [info] Extracted extension to /home/wenjian.ma/.vscode/extensions/.8c7a86a5-f9d5-4bcf-9a49-f09f39ec1e04: ms-vscode.cpptools
+2023-03-22 10:12:51.133 [info] Renamed to /home/wenjian.ma/.vscode/extensions/ms-vscode.cpptools-1.14.4-linux-x64
+2023-03-22 10:12:51.145 [info] Extracting completed. ms-vscode.cpptools
+2023-03-22 10:12:51.161 [info] Extension installed successfully: ms-vscode.cpptools
+2023-03-22 10:12:51.213 [info] Marked extension as uninstalled ms-vscode.cpptools-1.14.3-linux-x64
+2023-03-22 10:12:53.750 [info] Getting Manifest... ms-vscode-remote.remote-containers
+2023-03-22 10:12:53.763 [info] Installing extension: ms-vscode-remote.remote-containers
+2023-03-22 10:12:53.972 [info] Getting Manifest... ms-azuretools.vscode-docker
+2023-03-22 10:12:53.977 [info] Installing extension: ms-azuretools.vscode-docker
+2023-03-22 10:12:57.233 [info] Extension signature verification: ms-vscode-remote.remote-containers. Verification status: Verified.
+2023-03-22 10:12:57.506 [info] Extracted extension to /home/wenjian.ma/.vscode/extensions/.8944f5fa-3e9f-48d5-b54d-40f1902e66a9: ms-vscode-remote.remote-containers
+2023-03-22 10:12:57.515 [info] Renamed to /home/wenjian.ma/.vscode/extensions/ms-vscode-remote.remote-containers-0.282.0
+2023-03-22 10:12:57.517 [info] Extracting completed. ms-vscode-remote.remote-containers
+2023-03-22 10:12:57.528 [info] Extension installed successfully: ms-vscode-remote.remote-containers
+2023-03-22 10:12:57.664 [info] Extension signature verification: ms-azuretools.vscode-docker. Verification status: Verified.
+2023-03-22 10:12:57.720 [info] Extracted extension to /home/wenjian.ma/.vscode/extensions/.e71d12b3-3008-464d-bade-36b2af116954: ms-azuretools.vscode-docker
+2023-03-22 10:12:57.739 [info] Renamed to /home/wenjian.ma/.vscode/extensions/ms-azuretools.vscode-docker-1.24.0
+2023-03-22 10:12:57.746 [info] Extracting completed. ms-azuretools.vscode-docker
+2023-03-22 10:12:57.758 [info] Extension installed successfully: ms-azuretools.vscode-docker
+2023-03-23 10:12:45.243 [info] Getting Manifest... ms-python.vscode-pylance
+2023-03-23 10:12:45.243 [info] Getting Manifest... ms-vscode.cpptools
+2023-03-23 10:12:45.826 [info] Installing extension: ms-python.vscode-pylance
+2023-03-23 10:12:46.496 [info] Installing extension: ms-vscode.cpptools
+2023-03-23 10:12:46.545 [info] Getting Manifest... ms-python.python
+2023-03-23 10:12:51.343 [info] Extension signature verification: ms-python.vscode-pylance. Verification status: Verified.
+2023-03-23 10:12:53.706 [info] Extracted extension to /home/wenjian.ma/.vscode/extensions/.1b88d26a-b8b9-4353-b9c5-078c32a6aa84: ms-python.vscode-pylance
+2023-03-23 10:12:53.743 [info] Renamed to /home/wenjian.ma/.vscode/extensions/ms-python.vscode-pylance-2023.3.30
+2023-03-23 10:12:53.746 [info] Extracting completed. ms-python.vscode-pylance
+2023-03-23 10:12:53.765 [info] Extension installed successfully: ms-python.vscode-pylance
+2023-03-23 10:12:53.842 [info] Marked extension as uninstalled ms-python.vscode-pylance-2023.3.20
+2023-03-23 10:12:57.437 [info] Extension signature verification: ms-vscode.cpptools. Verification status: Verified.
+2023-03-23 10:12:59.298 [info] Extracted extension to /home/wenjian.ma/.vscode/extensions/.025b275e-be39-45be-8ec4-123dcde20783: ms-vscode.cpptools
+2023-03-23 10:12:59.342 [info] Renamed to /home/wenjian.ma/.vscode/extensions/ms-vscode.cpptools-1.14.5-linux-x64
+2023-03-23 10:12:59.354 [info] Extracting completed. ms-vscode.cpptools
+2023-03-23 10:12:59.368 [info] Extension installed successfully: ms-vscode.cpptools
+2023-03-23 10:12:59.411 [info] Marked extension as uninstalled ms-vscode.cpptools-1.14.4-linux-x64
+2023-03-24 20:31:51.601 [error] RequestService#request (browser) - error https://az764295.vo.msecnd.net/extensions/marketplace.json {}
+2023-03-25 17:32:56.647 [error] RequestService#request (browser) - error https://az764295.vo.msecnd.net/extensions/marketplace.json {}
+2023-03-25 17:38:32.662 [error] RequestService#request (browser) - error https://az764295.vo.msecnd.net/extensions/marketplace.json {}
+2023-03-26 13:34:12.618 [error] RequestService#request (browser) - error https://az764295.vo.msecnd.net/extensions/marketplace.json {}
+2023-03-27 20:39:09.444 [error] RequestService#request (browser) - error https://az764295.vo.msecnd.net/extensions/marketplace.json {}

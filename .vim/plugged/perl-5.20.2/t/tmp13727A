@@ -1,0 +1,5 @@
+$DB::single = 2;
+$DB::trace = 4;
+$DB::signal = 8;
+$^P = 1;
+print "$DB::single $DB::trace $DB::signal";

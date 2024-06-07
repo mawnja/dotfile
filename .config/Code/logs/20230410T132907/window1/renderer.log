@@ -1,0 +1,28 @@
+2023-04-10 13:29:29.236 [warning] Via 'product.json#extensionEnabledApiProposals' extension 'github.vscode-pull-request-github' wants API proposal 'commentsResolvedState' but that proposal DOES NOT EXIST. Likely, the proposal has been finalized (check 'vscode.d.ts') or was abandoned.
+2023-04-10 13:29:30.877 [error] Extension 'btwiuse.vscode-remote-server CANNOT USE these API proposals 'resolvers, contribViewsRemote'. You MUST start in extension development mode or use the --enable-proposed-api command line flag
+2023-04-10 13:29:30.896 [warning] [twxs.cmake]: Cannot register 'cmake.cmakePath'. This property is already registered.
+2023-04-10 13:29:32.045 [info] Creating lazy extension host: contains 1 extension(s): btwiuse.vscode-remote-server.
+2023-04-10 13:29:34.225 [info] [perf] Render performance baseline is 34ms
+2023-04-10 13:29:37.341 [error] [Extension Host] (node:23517) [DEP0005] DeprecationWarning: Buffer() is deprecated due to security and usability issues. Please use the Buffer.alloc(), Buffer.allocUnsafe(), or Buffer.from() methods instead.
+(Use `exe --trace-deprecation ...` to show where the warning was created)
+2023-04-10 13:32:21.990 [error] Error: The editor could not be opened because the file was not found.
+    at f.bc (vscode-file://vscode-app/LocalRun/wenjian.ma/vscode/VSCode-linux-x64/resources/app/out/vs/workbench/workbench.desktop.main.js:2302:89224)
+    at async f.setInput (vscode-file://vscode-app/LocalRun/wenjian.ma/vscode/VSCode-linux-x64/resources/app/out/vs/workbench/workbench.desktop.main.js:2302:88256)
+    at async r.M (vscode-file://vscode-app/LocalRun/wenjian.ma/vscode/VSCode-linux-x64/resources/app/out/vs/workbench/workbench.desktop.main.js:2300:23027)
+    at async r.D (vscode-file://vscode-app/LocalRun/wenjian.ma/vscode/VSCode-linux-x64/resources/app/out/vs/workbench/workbench.desktop.main.js:2300:21622)
+    at async r.openEditor (vscode-file://vscode-app/LocalRun/wenjian.ma/vscode/VSCode-linux-x64/resources/app/out/vs/workbench/workbench.desktop.main.js:2300:20488)
+    at async vscode-file://vscode-app/LocalRun/wenjian.ma/vscode/VSCode-linux-x64/resources/app/out/vs/workbench/workbench.desktop.main.js:2487:13441
+2023-04-10 13:32:26.476 [error] Error: The editor could not be opened because the file was not found.
+    at f.bc (vscode-file://vscode-app/LocalRun/wenjian.ma/vscode/VSCode-linux-x64/resources/app/out/vs/workbench/workbench.desktop.main.js:2302:89224)
+    at async f.setInput (vscode-file://vscode-app/LocalRun/wenjian.ma/vscode/VSCode-linux-x64/resources/app/out/vs/workbench/workbench.desktop.main.js:2302:88256)
+    at async r.M (vscode-file://vscode-app/LocalRun/wenjian.ma/vscode/VSCode-linux-x64/resources/app/out/vs/workbench/workbench.desktop.main.js:2300:23027)
+    at async r.D (vscode-file://vscode-app/LocalRun/wenjian.ma/vscode/VSCode-linux-x64/resources/app/out/vs/workbench/workbench.desktop.main.js:2300:21622)
+    at async r.openEditor (vscode-file://vscode-app/LocalRun/wenjian.ma/vscode/VSCode-linux-x64/resources/app/out/vs/workbench/workbench.desktop.main.js:2300:20488)
+    at async vscode-file://vscode-app/LocalRun/wenjian.ma/vscode/VSCode-linux-x64/resources/app/out/vs/workbench/workbench.desktop.main.js:2487:13441
+2023-04-10 13:32:59.384 [warning] Via 'product.json#extensionEnabledApiProposals' extension 'github.vscode-pull-request-github' wants API proposal 'commentsResolvedState' but that proposal DOES NOT EXIST. Likely, the proposal has been finalized (check 'vscode.d.ts') or was abandoned.
+2023-04-10 13:33:00.121 [error] Extension 'btwiuse.vscode-remote-server CANNOT USE these API proposals 'resolvers, contribViewsRemote'. You MUST start in extension development mode or use the --enable-proposed-api command line flag
+2023-04-10 13:33:00.138 [warning] [twxs.cmake]: Cannot register 'cmake.cmakePath'. This property is already registered.
+2023-04-10 13:33:00.278 [info] Creating lazy extension host: contains 1 extension(s): btwiuse.vscode-remote-server.
+2023-04-10 13:33:03.520 [info] [perf] Render performance baseline is 46ms
+2023-04-10 13:33:04.337 [error] [Extension Host] (node:15037) [DEP0005] DeprecationWarning: Buffer() is deprecated due to security and usability issues. Please use the Buffer.alloc(), Buffer.allocUnsafe(), or Buffer.from() methods instead.
+(Use `exe --trace-deprecation ...` to show where the warning was created)

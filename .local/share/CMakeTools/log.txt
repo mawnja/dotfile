@@ -1,0 +1,142 @@
+2024-02-04T03:32:04.667Z [info] [proc] Executing command: cmake --version
+2024-02-04T03:32:05.137Z [info] [proc] Executing command: cmake -E capabilities
+2024-02-04T03:32:05.366Z [debug] [main] Safe constructing new CMakeProject instance
+2024-02-04T03:32:05.367Z [debug] [variant] Constructing VariantManager
+2024-02-04T03:32:05.368Z [debug] [main] Constructing new CMakeProject instance
+2024-02-04T03:32:05.369Z [debug] [main] Starting CMake Tools second-phase init
+2024-02-04T03:32:05.526Z [info] [variant] Loaded new set of variants
+2024-02-04T03:32:05.576Z [debug] [kit] Reading kits file /home/wenjian.ma/.local/share/CMakeTools/cmake-tools-kits.json
+2024-02-04T03:32:05.675Z [info] [kit] Successfully loaded 6 kits from /home/wenjian.ma/.local/share/CMakeTools/cmake-tools-kits.json
+2024-02-04T03:32:05.694Z [debug] [kit] Not reading non-existent kits file: /LocalRun/wenjian.ma/tvm/.vscode/cmake-kits.json
+2024-02-04T03:32:05.701Z [debug] [main] CMakeProject instance initialization complete.
+2024-02-04T03:32:10.263Z [debug] [extension] Attempting to use cache to configure workspace file:///LocalRun/wenjian.ma/tvm
+2024-02-04T03:32:10.265Z [debug] [main] Not starting CMake driver: no kit selected
+2024-02-04T03:32:10.265Z [debug] [main] Unable to configure with existing cache
+2024-02-14T13:15:12.541Z [debug] [extension] Deactivate CMakeTools
+T04:43:58.371Z [debug] [main] Not starting CMake driver: no kit selected
+2023-12-21T04:45:10.283Z [debug] [main] Not starting CMake driver: no kit selected
+2023-12-21T04:45:34.712Z [debug] [main] Not starting CMake driver: no kit selected
+2023-12-21T04:46:06.912Z [debug] [main] Not starting CMake driver: no kit selected
+2023-12-21T04:46:20.910Z [debug] [main] Not starting CMake driver: no kit selected
+2023-12-21T04:46:26.600Z [debug] [main] Not starting CMake driver: no kit selected
+2023-12-21T04:46:31.538Z [debug] [main] Not starting CMake driver: no kit selected
+2023-12-21T04:47:03.814Z [debug] [main] Not starting CMake driver: no kit selected
+2023-12-21T04:48:00.889Z [debug] [main] Not starting CMake driver: no kit selected
+2023-12-21T04:48:05.158Z [debug] [main] Not starting CMake driver: no kit selected
+2023-12-21T09:33:18.239Z [debug] [main] Not starting CMake driver: no kit selected
+2023-12-21T09:34:22.584Z [debug] [main] Not starting CMake driver: no kit selected
+2023-12-21T09:35:17.095Z [debug] [main] Not starting CMake driver: no kit selected
+2023-12-21T09:36:10.388Z [debug] [main] Not starting CMake driver: no kit selected
+2023-12-21T09:38:35.959Z [debug] [main] Not starting CMake driver: no kit selected
+2023-12-22T08:15:43.254Z [debug] [main] Not starting CMake driver: no kit selected
+2023-12-22T08:15:47.417Z [debug] [main] Not starting CMake driver: no kit selected
+2023-12-22T08:17:32.876Z [debug] [main] Not starting CMake driver: no kit selected
+2023-12-22T08:18:09.668Z [debug] [main] Not starting CMake driver: no kit selected
+2023-12-22T08:18:12.746Z [debug] [main] Not starting CMake driver: no kit selected
+2023-12-22T08:18:14.844Z [debug] [main] Not starting CMake driver: no kit selected
+2023-12-29T06:01:52.385Z [debug] [extension] Deactivate CMakeTools
+bin for compilers
+2023-04-11T16:39:55.710Z [debug] [kit] Scanning directory /usr/bin for compilers
+2023-04-11T16:39:55.710Z [debug] [kit] Scanning directory /sbin for compilers
+2023-04-11T16:39:55.711Z [debug] [kit] Scanning directory /bin for compilers
+2023-04-11T16:39:55.711Z [debug] [kit] Scanning directory /usr/games for compilers
+2023-04-11T16:39:55.711Z [debug] [kit] Scanning directory /usr/local/games for compilers
+2023-04-11T16:39:55.712Z [debug] [kit] Scanning directory /snap/bin for compilers
+2023-04-11T16:39:55.712Z [debug] [kit] Skipping scan of not existing path undefined\LLVM\bin
+2023-04-11T16:39:55.712Z [debug] [kit] Found 0 kits in directory undefined\LLVM\bin
+2023-04-11T16:39:55.713Z [debug] [kit] Found 0 kits in directory /home/wenjian.ma/.vscode-server/bin/b7886d7461186a5eac768481578c1d7ca80e2d21/bin/remote-cli
+2023-04-11T16:39:55.714Z [debug] [kit] Found 0 kits in directory /LocalRun/wenjian.ma/tmp/cmake-3.25.0-linux-x86_64/bin
+2023-04-11T16:39:55.714Z [debug] [kit] Found 0 kits in directory /home/wenjian.ma/.cargo/bin
+2023-04-11T16:39:55.715Z [debug] [kit] Found 0 kits in directory /home/wenjian.ma/.local/bin
+2023-04-11T16:39:55.716Z [debug] [kit] Found 0 kits in directory /usr/local/cuda/bin
+2023-04-11T16:39:55.716Z [debug] [kit] Found 0 kits in directory /LocalRun/wenjian.ma/vscode/VSCode-linux-x64/bin
+2023-04-11T16:39:55.716Z [debug] [kit] Found 0 kits in directory /home/wenjian.ma/.vim/plugged/node-v16.13.0-linux-x64/bin
+2023-04-11T16:39:55.717Z [debug] [kit] Found 0 kits in directory /home/wenjian.ma/.vim/plugged/fd/target/release
+2023-04-11T16:39:55.717Z [debug] [kit] Found 0 kits in directory /home/wenjian.ma/.vim/plugged/ripgrep/target/release
+2023-04-11T16:39:55.717Z [debug] [kit] Found 0 kits in directory /home/wenjian.ma/.vim/plugged/nvim-linux64/bin
+2023-04-11T16:39:55.718Z [debug] [kit] Found 0 kits in directory /home/wenjian.ma/.vim/plugged/coc.nvim/bin
+2023-04-11T16:39:55.719Z [debug] [kit] Found 0 kits in directory /home/wenjian.ma/.vim/plugged/perl-5.20.2/bin
+2023-04-11T16:39:55.719Z [debug] [kit] Found 0 kits in directory /home/wenjian.ma/.vim/plugged/coc_extensions_install/clangd_11.0.0/bin
+2023-04-11T16:39:55.719Z [debug] [kit] Found 0 kits in directory /usr/local/sbin
+2023-04-11T16:39:55.722Z [debug] [kit] Found 0 kits in directory /usr/local/bin
+2023-04-11T16:39:55.729Z [debug] [kit] Found 0 kits in directory /bin
+2023-04-11T16:39:55.730Z [debug] [kit] Found 0 kits in directory /usr/games
+2023-04-11T16:39:55.730Z [debug] [kit] Found 0 kits in directory /usr/local/games
+2023-04-11T16:39:55.731Z [debug] [kit] Found 0 kits in directory /snap/bin
+2023-04-11T16:39:55.741Z [debug] [kit] Found 0 kits in directory /usr/sbin
+2023-04-11T16:39:55.751Z [debug] [kit] Found 0 kits in directory /sbin
+2023-04-11T16:39:55.761Z [debug] [kit] Testing GCC binary: /usr/bin/c89-gcc
+2023-04-11T16:39:55.762Z [info] [proc] Executing command: /usr/bin/c89-gcc -v
+2023-04-11T16:39:55.772Z [debug] [kit] Testing GCC binary: /usr/bin/c99-gcc
+2023-04-11T16:39:55.772Z [info] [proc] Executing command: /usr/bin/c99-gcc -v
+2023-04-11T16:39:55.785Z [debug] [kit] Testing Clang binary: /usr/bin/clang
+2023-04-11T16:39:55.786Z [info] [proc] Executing command: /usr/bin/clang -v
+2023-04-11T16:39:55.794Z [debug] [kit] Testing Clang binary: /usr/bin/clang-3.8
+2023-04-11T16:39:55.795Z [info] [proc] Executing command: /usr/bin/clang-3.8 -v
+2023-04-11T16:39:55.804Z [debug] [kit] Testing Clang binary: /usr/bin/clang-6.0
+2023-04-11T16:39:55.805Z [info] [proc] Executing command: /usr/bin/clang-6.0 -v
+2023-04-11T16:39:55.814Z [debug] [kit] Testing Clang binary: /usr/bin/clang-cl-3.8
+2023-04-11T16:39:55.815Z [info] [proc] Executing command: /usr/bin/clang-cl-3.8 -v
+2023-04-11T16:39:55.842Z [debug] [kit] Testing GCC binary: /usr/bin/gcc
+2023-04-11T16:39:55.843Z [info] [proc] Executing command: /usr/bin/gcc -v
+2023-04-11T16:39:55.852Z [debug] [kit] Testing GCC binary: /usr/bin/gcc-4.9
+2023-04-11T16:39:55.853Z [info] [proc] Executing command: /usr/bin/gcc-4.9 -v
+2023-04-11T16:39:55.864Z [debug] [kit] Testing GCC binary: /usr/bin/gcc-5
+2023-04-11T16:39:55.865Z [info] [proc] Executing command: /usr/bin/gcc-5 -v
+2023-04-11T16:39:55.875Z [debug] [kit] Testing GCC binary: /usr/bin/gcc-9
+2023-04-11T16:39:55.876Z [info] [proc] Executing command: /usr/bin/gcc-9 -v
+2023-04-11T16:39:55.952Z [debug] [kit] Testing GCC binary: /usr/bin/x86_64-linux-gnu-gcc
+2023-04-11T16:39:55.952Z [info] [proc] Executing command: /usr/bin/x86_64-linux-gnu-gcc -v
+2023-04-11T16:39:55.961Z [debug] [kit] Testing GCC binary: /usr/bin/x86_64-linux-gnu-gcc-4.9
+2023-04-11T16:39:55.962Z [info] [proc] Executing command: /usr/bin/x86_64-linux-gnu-gcc-4.9 -v
+2023-04-11T16:39:55.970Z [debug] [kit] Testing GCC binary: /usr/bin/x86_64-linux-gnu-gcc-5
+2023-04-11T16:39:55.971Z [info] [proc] Executing command: /usr/bin/x86_64-linux-gnu-gcc-5 -v
+2023-04-11T16:39:55.980Z [debug] [kit] Testing GCC binary: /usr/bin/x86_64-linux-gnu-gcc-9
+2023-04-11T16:39:55.980Z [info] [proc] Executing command: /usr/bin/x86_64-linux-gnu-gcc-9 -v
+2023-04-11T16:39:56.011Z [debug] [kit] Detected GCC compiler: /usr/bin/x86_64-linux-gnu-gcc-9
+2023-04-11T16:39:56.013Z [debug] [kit] Detected GCC compiler: /usr/bin/x86_64-linux-gnu-gcc-5
+2023-04-11T16:39:56.015Z [debug] [kit] Detected GCC compiler: /usr/bin/x86_64-linux-gnu-gcc-4.9
+2023-04-11T16:39:56.017Z [debug] [kit] Detected GCC compiler: /usr/bin/x86_64-linux-gnu-gcc
+2023-04-11T16:39:56.019Z [debug] [kit] Detected GCC compiler: /usr/bin/gcc-9
+2023-04-11T16:39:56.021Z [debug] [kit] Detected GCC compiler: /usr/bin/gcc-5
+2023-04-11T16:39:56.023Z [debug] [kit] Detected GCC compiler: /usr/bin/gcc-4.9
+2023-04-11T16:39:56.025Z [debug] [kit] Detected GCC compiler: /usr/bin/gcc
+2023-04-11T16:39:56.025Z [debug] [kit] Detected Clang compiler: /usr/bin/clang-cl-3.8
+2023-04-11T16:39:56.025Z [debug] [kit] Detected Clang compiler: /usr/bin/clang-cl-3.8
+2023-04-11T16:39:56.026Z [debug] [kit] Detected Clang compiler: /usr/bin/clang-6.0
+2023-04-11T16:39:56.026Z [debug] [kit] Detected Clang compiler: /usr/bin/clang-6.0
+2023-04-11T16:39:56.026Z [debug] [kit] Detected Clang compiler: /usr/bin/clang-3.8
+2023-04-11T16:39:56.026Z [debug] [kit] Detected Clang compiler: /usr/bin/clang-3.8
+2023-04-11T16:39:56.027Z [debug] [kit] Detected Clang compiler: /usr/bin/clang
+2023-04-11T16:39:56.027Z [debug] [kit] Detected Clang compiler: /usr/bin/clang
+2023-04-11T16:39:56.028Z [debug] [kit] Detected GCC compiler: /usr/bin/c99-gcc
+2023-04-11T16:39:56.030Z [debug] [kit] Detected GCC compiler: /usr/bin/c89-gcc
+2023-04-11T16:39:56.033Z [debug] [kit] Testing GCC binary: /usr/bin/c99-gcc
+2023-04-11T16:39:56.034Z [info] [proc] Executing command: /usr/bin/c99-gcc -v
+2023-04-11T16:39:56.042Z [debug] [kit] Testing GCC binary: /usr/bin/c89-gcc
+2023-04-11T16:39:56.043Z [info] [proc] Executing command: /usr/bin/c89-gcc -v
+2023-04-11T16:39:56.054Z [debug] [kit] Detected GCC compiler: /usr/bin/c99-gcc
+2023-04-11T16:39:56.064Z [debug] [kit] Detected GCC compiler: /usr/bin/c89-gcc
+2023-04-11T16:39:56.065Z [debug] [kit] Found 14 kits in directory /usr/bin
+2023-04-11T16:39:56.065Z [info] [kit] Found Kit: GCC 9.4.0 x86_64-linux-gnu
+2023-04-11T16:39:56.065Z [info] [kit] Found Kit: GCC 9.4.0 x86_64-linux-gnu
+2023-04-11T16:39:56.065Z [info] [kit] Found Kit: Clang 3.8.0 x86_64-pc-linux-gnu
+2023-04-11T16:39:56.065Z [info] [kit] Found Kit: Clang 3.8.0 x86_64-pc-linux-gnu
+2023-04-11T16:39:56.065Z [info] [kit] Found Kit: Clang 6.0.0 x86_64-pc-linux-gnu
+2023-04-11T16:39:56.065Z [info] [kit] Found Kit: Clang-cl 3.8.0 x86_64-pc-windows-msvc
+2023-04-11T16:39:56.066Z [info] [kit] Found Kit: GCC 9.4.0 x86_64-linux-gnu
+2023-04-11T16:39:56.066Z [info] [kit] Found Kit: GCC 4.9.3 x86_64-linux-gnu
+2023-04-11T16:39:56.066Z [info] [kit] Found Kit: GCC 5.4.0 x86_64-linux-gnu
+2023-04-11T16:39:56.066Z [info] [kit] Found Kit: GCC 9.4.0 x86_64-linux-gnu
+2023-04-11T16:39:56.066Z [info] [kit] Found Kit: GCC 5.4.0 x86_64-linux-gnu
+2023-04-11T16:39:56.066Z [info] [kit] Found Kit: GCC 4.9.3 x86_64-linux-gnu
+2023-04-11T16:39:56.066Z [info] [kit] Found Kit: GCC 5.4.0 x86_64-linux-gnu
+2023-04-11T16:39:56.066Z [info] [kit] Found Kit: GCC 9.4.0 x86_64-linux-gnu
+2023-04-11T16:39:56.067Z [debug] [kitsController] Saving kits to /home/wenjian.ma/.local/share/CMakeTools/cmake-tools-kits.json
+2023-04-11T16:39:56.067Z [debug] [kitsController] Saving new kits to /home/wenjian.ma/.local/share/CMakeTools/cmake-tools-kits.json
+2023-04-11T16:39:56.072Z [debug] [kit] Reading kits file /home/wenjian.ma/.local/share/CMakeTools/cmake-tools-kits.json
+2023-04-11T16:39:56.093Z [info] [kit] Successfully loaded 6 kits from /home/wenjian.ma/.local/share/CMakeTools/cmake-tools-kits.json
+2023-04-11T16:40:39.522Z [debug] [extension] Attempting to use cache to configure workspace file:///LocalRun/wenjian.ma/tvm
+2023-04-11T16:40:39.525Z [debug] [main] Not starting CMake driver: no kit selected
+2023-04-11T16:40:39.526Z [debug] [main] Unable to configure with existing cache
+2023-04-11T16:43:21.661Z [debug] [extension] Deactivate CMakeTools

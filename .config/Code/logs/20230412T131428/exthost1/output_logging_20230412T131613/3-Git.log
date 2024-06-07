@@ -1,0 +1,110 @@
+Looking for git in: git
+Using git 2.22.0 from git
+> git rev-parse --show-toplevel
+> git rev-parse --git-dir
+Open repository: /LocalRun/wenjian.ma/tvm
+> git status -z -u
+> git symbolic-ref --short HEAD
+> git rev-parse fix_vm_scalar_args_testcase
+> git rev-parse --symbolic-full-name fix_vm_scalar_args_testcase@{u}
+> git rev-list --left-right fix_vm_scalar_args_testcase...refs/remotes/origin/fix_vm_scalar_args_testcase
+> git for-each-ref --format %(refname) %(objectname) --sort -committerdate
+> git remote --verbose
+> git show :tests/python/relay/test_any.py
+> git ls-files --stage -- /LocalRun/wenjian.ma/tvm/tests/python/relay/test_any.py
+> git cat-file -s 279507f7db1a70f6cc6149de1485f095e7c67000
+> git config --get commit.template
+> git check-ignore -v -z --stdin
+> git rev-parse --show-toplevel
+> git rev-parse --git-dir
+Open repository: /LocalRun/wenjian.ma/tvm/3rdparty/dmlc-core
+> git status -z -u
+> git symbolic-ref --short HEAD
+fatal: ref HEAD is not a symbolic ref
+> git rev-parse HEAD
+> git for-each-ref --format %(refname) %(objectname) --sort -committerdate
+> git remote --verbose
+> git config --get commit.template
+> git rev-parse --show-toplevel
+> git rev-parse --git-dir
+Open repository: /LocalRun/wenjian.ma/tvm/3rdparty/dlpack
+> git status -z -u
+> git symbolic-ref --short HEAD
+fatal: ref HEAD is not a symbolic ref
+> git rev-parse HEAD
+> git for-each-ref --format %(refname) %(objectname) --sort -committerdate
+> git remote --verbose
+> git config --get commit.template
+> git rev-parse --show-toplevel
+> git rev-parse --git-dir
+Open repository: /LocalRun/wenjian.ma/tvm/3rdparty/rang
+> git status -z -u
+> git symbolic-ref --short HEAD
+fatal: ref HEAD is not a symbolic ref
+> git rev-parse HEAD
+> git for-each-ref --format %(refname) %(objectname) --sort -committerdate
+> git remote --verbose
+> git config --get commit.template
+> git rev-parse --show-toplevel
+> git rev-parse --git-dir
+Open repository: /LocalRun/wenjian.ma/tvm/3rdparty/vta-hw
+> git status -z -u
+> git symbolic-ref --short HEAD
+fatal: ref HEAD is not a symbolic ref
+> git rev-parse HEAD
+> git for-each-ref --format %(refname) %(objectname) --sort -committerdate
+> git remote --verbose
+> git config --get commit.template
+> git rev-parse --show-toplevel
+> git rev-parse --git-dir
+Open repository: /LocalRun/wenjian.ma/tvm/3rdparty/libbacktrace
+> git status -z -u
+> git symbolic-ref --short HEAD
+fatal: ref HEAD is not a symbolic ref
+> git rev-parse HEAD
+> git for-each-ref --format %(refname) %(objectname) --sort -committerdate
+> git remote --verbose
+> git config --get commit.template
+> git rev-parse --show-toplevel
+> git rev-parse --git-dir
+Open repository: /LocalRun/wenjian.ma/tvm/3rdparty/cutlass
+> git status -z -u
+> git symbolic-ref --short HEAD
+fatal: ref HEAD is not a symbolic ref
+> git rev-parse HEAD
+> git for-each-ref --format %(refname) %(objectname) --sort -committerdate
+> git remote --verbose
+> git config --get commit.template
+> git check-ignore -v -z --stdin
+> git pull --tags origin fix_vm_scalar_args_testcase
+> git ls-files --stage -- /LocalRun/wenjian.ma/tvm/tests/python/relay/test_any.py
+> git cat-file -s 279507f7db1a70f6cc6149de1485f095e7c67000
+> git show :tests/python/relay/test_any.py
+> git check-ignore -v -z --stdin
+> git check-ignore -v -z --stdin
+> git check-ignore -v -z --stdin
+From https://github.com/mawnja/tvm
+ * branch                fix_vm_scalar_args_testcase -> FETCH_HEAD
+> git status -z -u
+> git symbolic-ref --short HEAD
+> git rev-parse fix_vm_scalar_args_testcase
+> git rev-parse --symbolic-full-name fix_vm_scalar_args_testcase@{u}
+> git rev-list --left-right fix_vm_scalar_args_testcase...refs/remotes/origin/fix_vm_scalar_args_testcase
+> git for-each-ref --format %(refname) %(objectname) --sort -committerdate
+> git remote --verbose
+> git config --get commit.template
+> git ls-files --stage -- /LocalRun/wenjian.ma/tvm/tests/python/relay/test_any.py
+> git cat-file -s 279507f7db1a70f6cc6149de1485f095e7c67000
+> git show :tests/python/relay/test_any.py
+> git status -z -u
+> git symbolic-ref --short HEAD
+> git rev-parse fix_vm_scalar_args_testcase
+> git rev-parse --symbolic-full-name fix_vm_scalar_args_testcase@{u}
+> git rev-list --left-right fix_vm_scalar_args_testcase...refs/remotes/origin/fix_vm_scalar_args_testcase
+> git for-each-ref --format %(refname) %(objectname) --sort -committerdate
+> git remote --verbose
+> git config --get commit.template
+> git check-ignore -v -z --stdin
+> git check-ignore -v -z --stdin
+> git log --format=%H%n%aN%n%aE%n%at%n%ct%n%P%n%B -z -n21 -- /LocalRun/wenjian.ma/tvm/tests/python/relay/test_any.py
+> git check-ignore -v -z --stdin

@@ -1,0 +1,20 @@
+Visual Studio Code (1.75.1, undefined, desktop)
+Jupyter Extension Version: 2023.1.2010391206.
+Python Extension Version: 2023.4.1.
+Workspace folder /LocalRun/wenjian.ma/tvm
+User belongs to experiment group 'jupyterEnhancedDataViewer'
+User belongs to experiment group 'jupyterTest'
+info 21:40:57.351: LSP Notebooks experiment is enabled
+info 21:40:57.756: Process Execution: > /usr/bin/python3.7 -m pip list
+> /usr/bin/python3.7 -m pip list
+info 21:40:57.859: Process Execution: > /usr/bin/python3.7 -c "import pip;print('6af208d0-cb9c-427f-b937-ff563e17efdf')"
+> /usr/bin/python3.7 -c "import pip;print('6af208d0-cb9c-427f-b937-ff563e17efdf')"
+error 21:40:57.880: interpreterPackages getPackageInformation, Class name = xl, completed in 377ms, has a falsy return value, Arg 1: {"interpreter":{"id":"/usr/bin/python3.7","sysPrefix":"/usr","displayPath":{"$mid":1,"path":"/usr/bin/python3.7","scheme":"file"},"envName":"","uri":{"$mid":1,"fsPath":"/usr/bin/python3.7","external":"file:///usr/bin/python3.7","path":"/usr/bin/python3.7","scheme":"file"},"displayName":"","envType":"Unknown","version":{"major":3,"minor":7,"patch":10,"raw":"3.7.10 (default, Feb 20 2021, 21:21:24) \n[GCC 5.4.0 20160609]"}}} [Qa [Error]: Module 'pip' not installed.
+	at Xa.execModule (/home/wenjian.ma/.vscode/extensions/ms-toolsai.jupyter-2023.1.2010391206/out/extension.node.js:2:1806741)
+	at async xl.getPackageInformation (/home/wenjian.ma/.vscode/extensions/ms-toolsai.jupyter-2023.1.2010391206/out/extension.node.js:17:38262)] {
+  category: 'notinstalled',
+  moduleName: 'pip'
+}
+info 13:36:03.489: Shutting down notebooks for cb33aecd-076f-4092-a95a-4ee68b58bdfc
+info 13:36:03.489: Disposing HostJupyterExecution 489cc289-416c-4770-8201-b00cabb21e6f
+info 13:36:03.489: Disposing HostJupyterExecution 489cc289-416c-4770-8201-b00cabb21e6f

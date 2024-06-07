@@ -1,0 +1,103 @@
+Experiment 'pythonPromptNewFormatterExtcf' is active
+Experiment 'pythonPromptNewToolsExt' is active
+LSP Notebooks experiment is enabled
+LSP Notebooks interactive window support is enabled
+> conda info --json
+Python interpreter path: /usr/bin/python3.7
+> /usr/bin/python -I ~/.vscode/extensions/ms-python.python-2023.4.1/pythonFiles/get_output_via_markers.py ~/.vscode/extensions/ms-python.python-2023.4.1/pythonFiles/interpreterInfo.py
+> /usr/bin/python2 -I ~/.vscode/extensions/ms-python.python-2023.4.1/pythonFiles/get_output_via_markers.py ~/.vscode/extensions/ms-python.python-2023.4.1/pythonFiles/interpreterInfo.py
+[ERROR 2023-3-14 21:42:29.864]: Support for Python 2.7 has been dropped by the Python extension so certain features may not work, upgrade to using Python 3.
+> /usr/bin/python2 ~/.vscode/extensions/ms-python.python-2023.4.1/pythonFiles/get_output_via_markers.py ~/.vscode/extensions/ms-python.python-2023.4.1/pythonFiles/interpreterInfo.py
+> /usr/bin/python3.5 -I ~/.vscode/extensions/ms-python.python-2023.4.1/pythonFiles/get_output_via_markers.py ~/.vscode/extensions/ms-python.python-2023.4.1/pythonFiles/interpreterInfo.py
+> /usr/bin/python3.7 -I ~/.vscode/extensions/ms-python.python-2023.4.1/pythonFiles/get_output_via_markers.py ~/.vscode/extensions/ms-python.python-2023.4.1/pythonFiles/interpreterInfo.py
+> /usr/include/python3.5 -I ~/.vscode/extensions/ms-python.python-2023.4.1/pythonFiles/get_output_via_markers.py ~/.vscode/extensions/ms-python.python-2023.4.1/pythonFiles/interpreterInfo.py
+[ERROR 2023-3-14 21:42:29.987]: [Error: Command failed: /usr/include/python3.5 -I /home/wenjian.ma/.vscode/extensions/ms-python.python-2023.4.1/pythonFiles/get_output_via_markers.py /home/wenjian.ma/.vscode/extensions/ms-python.python-2023.4.1/pythonFiles/interpreterInfo.py
+/bin/sh: 1: /usr/include/python3.5: Permission denied
+
+	at ChildProcess.exithandler (node:child_process:408:12)
+	at ChildProcess.emit (node:events:526:28)
+	at maybeClose (node:internal/child_process:1092:16)
+	at Socket.<anonymous> (node:internal/child_process:451:11)
+	at Socket.emit (node:events:526:28)
+	at Pipe.<anonymous> (node:net:687:12)] {
+  killed: false,
+  code: 126,
+  signal: null,
+  cmd: '/usr/include/python3.5 -I /home/wenjian.ma/.vscode/extensions/ms-python.python-2023.4.1/pythonFiles/get_output_via_markers.py /home/wenjian.ma/.vscode/extensions/ms-python.python-2023.4.1/pythonFiles/interpreterInfo.py'
+}
+> /usr/include/python3.6 -I ~/.vscode/extensions/ms-python.python-2023.4.1/pythonFiles/get_output_via_markers.py ~/.vscode/extensions/ms-python.python-2023.4.1/pythonFiles/interpreterInfo.py
+[ERROR 2023-3-14 21:42:30.22]: [Error: Command failed: /usr/include/python3.6 -I /home/wenjian.ma/.vscode/extensions/ms-python.python-2023.4.1/pythonFiles/get_output_via_markers.py /home/wenjian.ma/.vscode/extensions/ms-python.python-2023.4.1/pythonFiles/interpreterInfo.py
+/bin/sh: 1: /usr/include/python3.6: Permission denied
+
+	at ChildProcess.exithandler (node:child_process:408:12)
+	at ChildProcess.emit (node:events:526:28)
+	at maybeClose (node:internal/child_process:1092:16)
+	at Socket.<anonymous> (node:internal/child_process:451:11)
+	at Socket.emit (node:events:526:28)
+	at Pipe.<anonymous> (node:net:687:12)] {
+  killed: false,
+  code: 126,
+  signal: null,
+  cmd: '/usr/include/python3.6 -I /home/wenjian.ma/.vscode/extensions/ms-python.python-2023.4.1/pythonFiles/get_output_via_markers.py /home/wenjian.ma/.vscode/extensions/ms-python.python-2023.4.1/pythonFiles/interpreterInfo.py'
+}
+> /usr/include/python3.5 -I ~/.vscode/extensions/ms-python.python-2023.4.1/pythonFiles/get_output_via_markers.py ~/.vscode/extensions/ms-python.python-2023.4.1/pythonFiles/interpreterInfo.py
+[ERROR 2023-3-14 21:42:32.7]: [Error: Command failed: /usr/include/python3.5 -I /home/wenjian.ma/.vscode/extensions/ms-python.python-2023.4.1/pythonFiles/get_output_via_markers.py /home/wenjian.ma/.vscode/extensions/ms-python.python-2023.4.1/pythonFiles/interpreterInfo.py
+/bin/sh: 1: /usr/include/python3.5: Permission denied
+
+	at ChildProcess.exithandler (node:child_process:408:12)
+	at ChildProcess.emit (node:events:526:28)
+	at maybeClose (node:internal/child_process:1092:16)
+	at Socket.<anonymous> (node:internal/child_process:451:11)
+	at Socket.emit (node:events:526:28)
+	at Pipe.<anonymous> (node:net:687:12)] {
+  killed: false,
+  code: 126,
+  signal: null,
+  cmd: '/usr/include/python3.5 -I /home/wenjian.ma/.vscode/extensions/ms-python.python-2023.4.1/pythonFiles/get_output_via_markers.py /home/wenjian.ma/.vscode/extensions/ms-python.python-2023.4.1/pythonFiles/interpreterInfo.py'
+}
+> -I ~/.vscode/extensions/ms-python.python-2023.4.1/pythonFiles/get_output_via_markers.py ~/.vscode/extensions/ms-python.python-2023.4.1/pythonFiles/interpreterInfo.py
+> /usr/include/python3.6 -I ~/.vscode/extensions/ms-python.python-2023.4.1/pythonFiles/get_output_via_markers.py ~/.vscode/extensions/ms-python.python-2023.4.1/pythonFiles/interpreterInfo.py
+[ERROR 2023-3-14 21:42:32.32]: [Error: Command failed: -I /home/wenjian.ma/.vscode/extensions/ms-python.python-2023.4.1/pythonFiles/get_output_via_markers.py /home/wenjian.ma/.vscode/extensions/ms-python.python-2023.4.1/pythonFiles/interpreterInfo.py
+/bin/sh: 0: Illegal option - 
+
+	at ChildProcess.exithandler (node:child_process:408:12)
+	at ChildProcess.emit (node:events:526:28)
+	at maybeClose (node:internal/child_process:1092:16)
+	at Socket.<anonymous> (node:internal/child_process:451:11)
+	at Socket.emit (node:events:526:28)
+	at Pipe.<anonymous> (node:net:687:12)] {
+  killed: false,
+  code: 2,
+  signal: null,
+  cmd: '-I /home/wenjian.ma/.vscode/extensions/ms-python.python-2023.4.1/pythonFiles/get_output_via_markers.py /home/wenjian.ma/.vscode/extensions/ms-python.python-2023.4.1/pythonFiles/interpreterInfo.py'
+}
+[ERROR 2023-3-14 21:42:32.32]: [Error: Command failed: /usr/include/python3.6 -I /home/wenjian.ma/.vscode/extensions/ms-python.python-2023.4.1/pythonFiles/get_output_via_markers.py /home/wenjian.ma/.vscode/extensions/ms-python.python-2023.4.1/pythonFiles/interpreterInfo.py
+/bin/sh: 1: /usr/include/python3.6: Permission denied
+
+	at ChildProcess.exithandler (node:child_process:408:12)
+	at ChildProcess.emit (node:events:526:28)
+	at maybeClose (node:internal/child_process:1092:16)
+	at Socket.<anonymous> (node:internal/child_process:451:11)
+	at Socket.emit (node:events:526:28)
+	at Pipe.<anonymous> (node:net:687:12)] {
+  killed: false,
+  code: 126,
+  signal: null,
+  cmd: '/usr/include/python3.6 -I /home/wenjian.ma/.vscode/extensions/ms-python.python-2023.4.1/pythonFiles/get_output_via_markers.py /home/wenjian.ma/.vscode/extensions/ms-python.python-2023.4.1/pythonFiles/interpreterInfo.py'
+}
+Starting Pylance language server.
+> -I ~/.vscode/extensions/ms-python.python-2023.4.1/pythonFiles/get_output_via_markers.py ~/.vscode/extensions/ms-python.python-2023.4.1/pythonFiles/interpreterInfo.py
+[ERROR 2023-3-14 21:42:34.47]: [Error: Command failed: -I /home/wenjian.ma/.vscode/extensions/ms-python.python-2023.4.1/pythonFiles/get_output_via_markers.py /home/wenjian.ma/.vscode/extensions/ms-python.python-2023.4.1/pythonFiles/interpreterInfo.py
+/bin/sh: 0: Illegal option - 
+
+	at ChildProcess.exithandler (node:child_process:408:12)
+	at ChildProcess.emit (node:events:526:28)
+	at maybeClose (node:internal/child_process:1092:16)
+	at Socket.<anonymous> (node:internal/child_process:451:11)
+	at Socket.emit (node:events:526:28)
+	at Pipe.<anonymous> (node:net:687:12)] {
+  killed: false,
+  code: 2,
+  signal: null,
+  cmd: '-I /home/wenjian.ma/.vscode/extensions/ms-python.python-2023.4.1/pythonFiles/get_output_via_markers.py /home/wenjian.ma/.vscode/extensions/ms-python.python-2023.4.1/pythonFiles/interpreterInfo.py'
+}

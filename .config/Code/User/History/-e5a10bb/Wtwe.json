@@ -1,0 +1,6 @@
+{
+    "cmake.configureOnOpen": true,
+    "[python]": {
+        "editor.formatOnType": true
+    }
+}

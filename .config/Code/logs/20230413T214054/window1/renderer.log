@@ -1,0 +1,14 @@
+2023-04-13 21:40:55.631 [warning] Via 'product.json#extensionEnabledApiProposals' extension 'github.vscode-pull-request-github' wants API proposal 'commentsResolvedState' but that proposal DOES NOT EXIST. Likely, the proposal has been finalized (check 'vscode.d.ts') or was abandoned.
+2023-04-13 21:40:56.082 [error] Extension 'btwiuse.vscode-remote-server CANNOT USE these API proposals 'resolvers, contribViewsRemote'. You MUST start in extension development mode or use the --enable-proposed-api command line flag
+2023-04-13 21:40:56.096 [warning] [twxs.cmake]: Cannot register 'cmake.cmakePath'. This property is already registered.
+2023-04-13 21:40:56.241 [info] Creating lazy extension host: contains 1 extension(s): btwiuse.vscode-remote-server.
+2023-04-13 21:40:58.800 [info] [perf] Render performance baseline is 47ms
+2023-04-13 21:40:59.956 [error] [Extension Host] (node:16997) [DEP0005] DeprecationWarning: Buffer() is deprecated due to security and usability issues. Please use the Buffer.alloc(), Buffer.allocUnsafe(), or Buffer.from() methods instead.
+(Use `exe --trace-deprecation ...` to show where the warning was created)
+2023-04-14 13:36:03.967 [warning] Via 'product.json#extensionEnabledApiProposals' extension 'github.vscode-pull-request-github' wants API proposal 'commentsResolvedState' but that proposal DOES NOT EXIST. Likely, the proposal has been finalized (check 'vscode.d.ts') or was abandoned.
+2023-04-14 13:36:04.599 [error] Extension 'btwiuse.vscode-remote-server CANNOT USE these API proposals 'resolvers, contribViewsRemote'. You MUST start in extension development mode or use the --enable-proposed-api command line flag
+2023-04-14 13:36:04.619 [warning] [twxs.cmake]: Cannot register 'cmake.cmakePath'. This property is already registered.
+2023-04-14 13:36:04.736 [info] Creating lazy extension host: contains 1 extension(s): btwiuse.vscode-remote-server.
+2023-04-14 13:36:07.124 [info] [perf] Render performance baseline is 43ms
+2023-04-14 13:36:08.649 [error] [Extension Host] (node:21551) [DEP0005] DeprecationWarning: Buffer() is deprecated due to security and usability issues. Please use the Buffer.alloc(), Buffer.allocUnsafe(), or Buffer.from() methods instead.
+(Use `exe --trace-deprecation ...` to show where the warning was created)

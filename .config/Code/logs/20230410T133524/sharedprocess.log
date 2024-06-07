@@ -1,0 +1,47 @@
+2023-04-10 13:35:46.767 [info] Starting worker process with pid 1748 (type: fileWatcher, window: 1).
+2023-04-10 13:35:47.024 [info] Deleted from disk ms-vscode.remote-explorer /home/wenjian.ma/.vscode/extensions/ms-vscode.remote-explorer-0.2.0
+2023-04-10 13:35:47.430 [info] Deleted from disk ms-python.vscode-pylance /home/wenjian.ma/.vscode/extensions/ms-python.vscode-pylance-2023.3.30
+2023-04-10 13:35:47.431 [info] Deleted from disk ms-vscode-remote.remote-containers /home/wenjian.ma/.vscode/extensions/ms-vscode-remote.remote-containers-0.282.0
+2023-04-10 13:37:34.259 [info] Getting Manifest... ms-vscode-remote.remote-wsl
+2023-04-10 13:37:34.588 [info] Installing extension: ms-vscode-remote.remote-wsl
+2023-04-10 13:37:38.262 [info] Extension signature verification: ms-vscode-remote.remote-wsl. Verification status: Verified.
+2023-04-10 13:37:38.426 [info] Extracted extension to /home/wenjian.ma/.vscode/extensions/.b887e4b2-3092-4b46-a1f5-198c63d994d7: ms-vscode-remote.remote-wsl
+2023-04-10 13:37:38.457 [info] Renamed to /home/wenjian.ma/.vscode/extensions/ms-vscode-remote.remote-wsl-0.75.3
+2023-04-10 13:37:38.459 [info] Extracting completed. ms-vscode-remote.remote-wsl
+2023-04-10 13:37:38.474 [info] Extension installed successfully: ms-vscode-remote.remote-wsl
+2023-04-10 13:38:08.078 [info] Getting Manifest... ms-vscode.remote-repositories
+2023-04-10 13:38:08.089 [info] Installing extension: ms-vscode.remote-repositories
+2023-04-10 13:38:08.808 [info] Getting Manifest... github.remotehub
+2023-04-10 13:38:09.350 [info] Getting Manifest... ms-vscode.azure-repos
+2023-04-10 13:38:10.561 [info] Installing extension: github.remotehub ms-vscode.remote-repositories
+2023-04-10 13:38:10.562 [info] Installing extension: ms-vscode.azure-repos ms-vscode.remote-repositories
+2023-04-10 13:38:13.300 [info] Extension signature verification: ms-vscode.remote-repositories. Verification status: Verified.
+2023-04-10 13:38:13.360 [info] Extracted extension to /home/wenjian.ma/.vscode/extensions/.a6ed7697-6e0f-4fdd-9207-c088f59246df: ms-vscode.remote-repositories
+2023-04-10 13:38:13.391 [info] Renamed to /home/wenjian.ma/.vscode/extensions/ms-vscode.remote-repositories-0.32.0
+2023-04-10 13:38:13.395 [info] Extracting completed. ms-vscode.remote-repositories
+2023-04-10 13:38:16.827 [info] Extension signature verification: github.remotehub. Verification status: Verified.
+2023-04-10 13:38:16.876 [info] Extracted extension to /home/wenjian.ma/.vscode/extensions/.2dfe9573-4296-400c-8539-f27b61ce70e2: github.remotehub
+2023-04-10 13:38:16.882 [info] Renamed to /home/wenjian.ma/.vscode/extensions/github.remotehub-0.54.0
+2023-04-10 13:38:16.884 [info] Extracting completed. github.remotehub
+2023-04-10 13:38:27.275 [info] Extension signature verification: ms-vscode.azure-repos. Verification status: Verified.
+2023-04-10 13:38:27.310 [info] Extracted extension to /home/wenjian.ma/.vscode/extensions/.44907a0e-3f7c-4cd7-8487-e07bb2d716b5: ms-vscode.azure-repos
+2023-04-10 13:38:27.342 [info] Renamed to /home/wenjian.ma/.vscode/extensions/ms-vscode.azure-repos-0.30.0
+2023-04-10 13:38:27.346 [info] Extracting completed. ms-vscode.azure-repos
+2023-04-10 13:38:27.376 [info] Extension installed successfully: ms-vscode.remote-repositories
+2023-04-10 13:38:27.376 [info] Extension installed successfully: github.remotehub
+2023-04-10 13:38:27.376 [info] Extension installed successfully: ms-vscode.azure-repos
+2023-04-10 13:41:02.392 [info] Getting Manifest... kelvin.vscode-sshfs
+2023-04-10 13:41:02.398 [info] Installing extension: kelvin.vscode-sshfs
+2023-04-10 13:41:06.590 [info] Extension signature verification: kelvin.vscode-sshfs. Verification status: Verified.
+2023-04-10 13:41:06.618 [info] Extracted extension to /home/wenjian.ma/.vscode/extensions/.983db6c6-c11a-4316-8231-4d443f49a90c: kelvin.vscode-sshfs
+2023-04-10 13:41:06.649 [info] Renamed to /home/wenjian.ma/.vscode/extensions/kelvin.vscode-sshfs-1.26.0
+2023-04-10 13:41:06.651 [info] Extracting completed. kelvin.vscode-sshfs
+2023-04-10 13:41:06.661 [info] Extension installed successfully: kelvin.vscode-sshfs
+2023-04-11 01:35:53.022 [info] Getting Manifest... ms-vscode-remote.remote-ssh
+2023-04-11 01:35:53.987 [info] Installing extension: ms-vscode-remote.remote-ssh
+2023-04-11 01:35:57.920 [info] Extension signature verification: ms-vscode-remote.remote-ssh. Verification status: Verified.
+2023-04-11 01:35:58.105 [info] Extracted extension to /home/wenjian.ma/.vscode/extensions/.956b3a3d-439a-42b5-8006-978c419f4512: ms-vscode-remote.remote-ssh
+2023-04-11 01:35:58.138 [info] Renamed to /home/wenjian.ma/.vscode/extensions/ms-vscode-remote.remote-ssh-0.100.0
+2023-04-11 01:35:58.147 [info] Extracting completed. ms-vscode-remote.remote-ssh
+2023-04-11 01:35:58.171 [info] Extension installed successfully: ms-vscode-remote.remote-ssh
+2023-04-11 01:35:58.207 [info] Marked extension as uninstalled ms-vscode-remote.remote-ssh-0.98.0

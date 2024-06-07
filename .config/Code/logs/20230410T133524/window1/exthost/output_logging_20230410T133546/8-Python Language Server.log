@@ -1,0 +1,19 @@
+[Info  - 1:35:53 PM] (2699) Pylance language server 2023.4.10 (pyright d7616109) starting
+[Info  - 1:35:53 PM] (2699) Server root directory: /home/wenjian.ma/.vscode/extensions/ms-python.vscode-pylance-2023.4.10/dist
+[Info  - 1:35:53 PM] (2699) Starting service instance "tvm"
+[Info  - 1:35:53 PM] (2699) Auto-indent enabled
+[Info  - 1:35:53 PM] (2699) Setting pythonPath for service "tvm": "/usr/bin/python3.7"
+[Info  - 1:35:53 PM] (2699) Loading pyproject.toml file at /LocalRun/wenjian.ma/tvm/pyproject.toml
+[Error - 1:35:53 PM] (2699) Pyproject file "/LocalRun/wenjian.ma/tvm/pyproject.toml" is missing "[tool.pyright]" section.
+[Warn  - 1:35:53 PM] (2699) stubPath /LocalRun/wenjian.ma/tvm/typings is not a valid directory.
+[Info  - 1:35:53 PM] (2699) Assuming Python version 3.7
+[Info  - 1:35:54 PM] (2699) Found 2007 source files
+[Info  - 1:35:54 PM] (2699) Background analysis(1) root directory: /home/wenjian.ma/.vscode/extensions/ms-python.vscode-pylance-2023.4.10/dist
+[Info  - 1:35:54 PM] (2699) Background analysis(1) started
+[Info  - 1:35:54 PM] (2699) Indexer background runner(2) root directory: /home/wenjian.ma/.vscode/extensions/ms-python.vscode-pylance-2023.4.10/dist (index)
+[Info  - 1:35:54 PM] (2699) Indexing(2) started
+[Info  - 1:35:55 PM] (2699) scanned(2) 98 files over 1 exec env
+[Info  - 1:35:56 PM] (2699) indexed(2) 45 files over 1 exec env
+[Info  - 1:35:56 PM] (2699) Indexing finished(2).
+[Info  - 1:35:56 PM] (2699) [BG(1)] Long operation: getSemanticTokens full at /LocalRun/wenjian.ma/tvm/tests/python/relay/test_any.py (2411ms)
+[Warn  - 1:36:04 PM] (2699) Workspace indexing has hit its upper limit: 2000 files
