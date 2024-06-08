@@ -1,2 +1,0 @@
-10.0	/LocalRun/wenjian.ma/dotfile/.vim/plugged/coc_extensions_install/clangd_11.0.0/bin
-10.0	/LocalRun/wenjian.ma/dotfile
