@@ -239,6 +239,12 @@ fi
 
 source ~/.bashrc
 
+function ccgrep()
+{
+	#find . -name "*.py" | xargs grep -rin --color "$@"
+	grep -rin --color "$@" --include "*.c" --include "*.cc" --include "*.cpp" --include "*.hpp" --include "*.h"
+}
+
 function pygrep()
 {
 	#find . -name "*.py" | xargs grep -rin --color "$@"
