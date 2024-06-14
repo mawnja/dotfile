@@ -8,7 +8,7 @@ alias l='cd /LocalRun/wenjian.ma'
 alias tvm='cd /LocalRun/wenjian.ma/tvm'
 
 export PATH=~/.vim/plugged/coc_extensions_install/clangd_11.0.0/bin:$PATH
-export PATH=~/.vim/plugged/nvim-linux64/bin:$PATH
+export PATH=~/.vim/plugged/nvim-linux64_v0.9.5/bin:$PATH
 export PATH=~/.vim/plugged/coc.nvim/bin:$PATH
 export PATH=~/.vim/plugged/ripgrep/target/release:$PATH
 export PATH=~/.vim/plugged/fd/target/release:$PATH
