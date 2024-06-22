@@ -1,12 +1,16 @@
 use crate::dir_entry;
 use crate::filesystem;
 
+use faccess::PathExt;
+
 /// Whether or not to show
 #[derive(Default)]
 pub struct FileTypes {
     pub files: bool,
     pub directories: bool,
     pub symlinks: bool,
+    pub block_devices: bool,
+    pub char_devices: bool,
     pub sockets: bool,
     pub pipes: bool,
     pub executables_only: bool,
@@ -19,17 +23,17 @@ impl FileTypes {
             (!self.files && entry_type.is_file())
                 || (!self.directories && entry_type.is_dir())
                 || (!self.symlinks && entry_type.is_symlink())
+                || (!self.block_devices && filesystem::is_block_device(*entry_type))
+                || (!self.char_devices && filesystem::is_char_device(*entry_type))
                 || (!self.sockets && filesystem::is_socket(*entry_type))
                 || (!self.pipes && filesystem::is_pipe(*entry_type))
-                || (self.executables_only
-                    && !entry
-                        .metadata()
-                        .map(|md| filesystem::is_executable(entry.path(), md))
-                        .unwrap_or(false))
+                || (self.executables_only && !entry.path().executable())
                 || (self.empty_only && !filesystem::is_empty(entry))
                 || !(entry_type.is_file()
                     || entry_type.is_dir()
                     || entry_type.is_symlink()
+                    || filesystem::is_block_device(*entry_type)
+                    || filesystem::is_char_device(*entry_type)
                     || filesystem::is_socket(*entry_type)
                     || filesystem::is_pipe(*entry_type))
         } else {

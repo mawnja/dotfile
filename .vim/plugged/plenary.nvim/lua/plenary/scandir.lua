@@ -1,6 +1,7 @@
 local Path = require "plenary.path"
 local os_sep = Path.path.sep
 local F = require "plenary.functional"
+local compat = require "plenary.compat"
 
 local uv = vim.loop
 
@@ -141,9 +142,9 @@ end
 --   opts.hidden (bool):              if true hidden files will be added
 --   opts.add_dirs (bool):            if true dirs will also be added to the results
 --   opts.only_dirs (bool):           if true only dirs will be added to the results
---   opts.respect_gitignore (bool):   if true will only add files that are not ignored by the git (uses each gitignore found in path table)
+--   opts.respect_gitignore (bool):   if true will only add files that are not ignored by the git
 --   opts.depth (int):                depth on how deep the search should go
---   opts.search_pattern (regex):     regex for which files will be added, string, table of strings, or callback (should return bool)
+--   opts.search_pattern (regex):     regex for which files will be added, string, table of strings, or fn(e) -> bool
 --   opts.on_insert(entry):           Will be called for each element
 --   opts.silent (bool):              if true will not echo messages that are not accessible
 -- @return array with files
@@ -151,13 +152,13 @@ m.scan_dir = function(path, opts)
   opts = opts or {}
 
   local data = {}
-  local base_paths = vim.tbl_flatten { path }
-  local next_dir = vim.tbl_flatten { path }
+  local base_paths = compat.flatten { path }
+  local next_dir = compat.flatten { path }
 
   local gitignore = opts.respect_gitignore and make_gitignore(base_paths) or nil
   local match_search_pat = opts.search_pattern and gen_search_pat(opts.search_pattern) or nil
 
-  for i = table.getn(base_paths), 1, -1 do
+  for i = #base_paths, 1, -1 do
     if uv.fs_access(base_paths[i], "X") == false then
       if not F.if_nil(opts.silent, false, opts.silent) then
         print(string.format("%s is not accessible by the current user!", base_paths[i]))
@@ -165,7 +166,7 @@ m.scan_dir = function(path, opts)
       table.remove(base_paths, i)
     end
   end
-  if table.getn(base_paths) == 0 then
+  if #base_paths == 0 then
     return {}
   end
 
@@ -181,7 +182,7 @@ m.scan_dir = function(path, opts)
         process_item(opts, name, typ, current_dir, next_dir, base_paths, data, gitignore, match_search_pat)
       end
     end
-  until table.getn(next_dir) == 0
+  until #next_dir == 0
   return data
 end
 
@@ -196,7 +197,7 @@ end
 --   opts.only_dirs (bool):           if true only dirs will be added to the results
 --   opts.respect_gitignore (bool):   if true will only add files that are not ignored by git
 --   opts.depth (int):                depth on how deep the search should go
---   opts.search_pattern (regex):     regex for which files will be added, string, table of strings, or callback (should return bool)
+--   opts.search_pattern (regex):     regex for which files will be added, string, table of strings, or fn(e) -> bool
 --   opts.on_insert function(entry):  will be called for each element
 --   opts.on_exit function(results):  will be called at the end
 --   opts.silent (bool):              if true will not echo messages that are not accessible
@@ -204,8 +205,8 @@ m.scan_dir_async = function(path, opts)
   opts = opts or {}
 
   local data = {}
-  local base_paths = vim.tbl_flatten { path }
-  local next_dir = vim.tbl_flatten { path }
+  local base_paths = compat.flatten { path }
+  local next_dir = compat.flatten { path }
   local current_dir = table.remove(next_dir, 1)
 
   -- TODO(conni2461): get gitignore is not async
@@ -214,7 +215,7 @@ m.scan_dir_async = function(path, opts)
 
   -- TODO(conni2461): is not async. Shouldn't be that big of a problem but still
   -- Maybe obers async pr can take me out of callback hell
-  for i = table.getn(base_paths), 1, -1 do
+  for i = #base_paths, 1, -1 do
     if uv.fs_access(base_paths[i], "X") == false then
       if not F.if_nil(opts.silent, false, opts.silent) then
         print(string.format("%s is not accessible by the current user!", base_paths[i]))
@@ -222,7 +223,7 @@ m.scan_dir_async = function(path, opts)
       table.remove(base_paths, i)
     end
   end
-  if table.getn(base_paths) == 0 then
+  if #base_paths == 0 then
     return {}
   end
 
@@ -236,7 +237,7 @@ m.scan_dir_async = function(path, opts)
         end
         process_item(opts, name, typ, current_dir, next_dir, base_paths, data, gitignore, match_search_pat)
       end
-      if table.getn(next_dir) == 0 then
+      if #next_dir == 0 then
         if opts.on_exit then
           opts.on_exit(data)
         end
@@ -319,6 +320,17 @@ local gen_date = (function()
 end)()
 
 local get_username = (function()
+  local fallback = function(tbl, id)
+    if not tbl then
+      return id
+    end
+    if tbl[id] then
+      return tbl[id]
+    end
+    tbl[id] = tostring(id)
+    return id
+  end
+
   if jit and os_sep ~= "\\" then
     local ffi = require "ffi"
     ffi.cdef [[
@@ -340,7 +352,7 @@ local get_username = (function()
       passwd *getpwuid(uid_t uid);
     ]]
 
-    return function(tbl, id)
+    local ffi_func = function(tbl, id)
       if tbl[id] then
         return tbl[id]
       end
@@ -354,21 +366,30 @@ local get_username = (function()
       tbl[id] = name
       return name
     end
-  else
-    return function(tbl, id)
-      if not tbl then
-        return id
-      end
-      if tbl[id] then
-        return tbl[id]
-      end
-      tbl[id] = tostring(id)
-      return id
+
+    local ok = pcall(ffi_func, {}, 1000)
+    if ok then
+      return ffi_func
+    else
+      return fallback
     end
+  else
+    return fallback
   end
 end)()
 
 local get_groupname = (function()
+  local fallback = function(tbl, id)
+    if not tbl then
+      return id
+    end
+    if tbl[id] then
+      return tbl[id]
+    end
+    tbl[id] = tostring(id)
+    return id
+  end
+
   if jit and os_sep ~= "\\" then
     local ffi = require "ffi"
     ffi.cdef [[
@@ -384,7 +405,7 @@ local get_groupname = (function()
       group *getgrgid(gid_t gid);
     ]]
 
-    return function(tbl, id)
+    local ffi_func = function(tbl, id)
       if tbl[id] then
         return tbl[id]
       end
@@ -398,17 +419,14 @@ local get_groupname = (function()
       tbl[id] = name
       return name
     end
-  else
-    return function(tbl, id)
-      if not tbl then
-        return id
-      end
-      if tbl[id] then
-        return tbl[id]
-      end
-      tbl[id] = tostring(id)
-      return id
+    local ok = pcall(ffi_func, {}, 1000)
+    if ok then
+      return ffi_func
+    else
+      return fallback
     end
+  else
+    return fallback
   end
 end)()
 
@@ -426,7 +444,7 @@ local get_max_len = function(tbl)
 end
 
 local gen_ls = function(data, path, opts)
-  if not data or table.getn(data) == 0 then
+  if not data or #data == 0 then
     return {}, {}
   end
 

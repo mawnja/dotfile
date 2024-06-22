@@ -1,16 +1,16 @@
 name: Linting and style checking
 
-on: 
-  push:
+on:
   pull_request:
-    types: [opened, synchronize, reopened, ready_for_review]
+    branches:
+      - "master"
 
 jobs:
   luacheck:
     name: Luacheck
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
       - name: Prepare
         run: |
@@ -25,9 +25,27 @@ jobs:
     name: StyLua
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - name: Lint with stylua
-      uses: JohnnyMorganz/stylua-action@1.0.0
-      with:
-        token: ${{ secrets.GITHUB_TOKEN }}
-        args: --check .
+      - uses: actions/checkout@v4
+      - name: Lint with stylua
+        uses: JohnnyMorganz/stylua-action@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          version: latest
+          args: --check .
+
+  format-queries:
+    name: Lint queries
+    runs-on: ubuntu-latest
+    env:
+      NVIM_TAG: stable
+    steps:
+      - uses: actions/checkout@v4
+      - name: Prepare
+        run: |
+          bash ./scripts/ci-install.sh
+
+      - name: Lint
+        run: |
+          nvim --headless -c "TSInstallSync query" -c "q"
+          nvim -l scripts/format-queries.lua
+          git diff --exit-code

@@ -1,3 +1,10 @@
+---@tag telescope.utils
+---@config { ["module"] = "telescope.utils" }
+
+---@brief [[
+--- Utilities for writing telescope pickers
+---@brief ]]
+
 local Path = require "plenary.path"
 local Job = require "plenary.job"
 
@@ -10,18 +17,6 @@ local utils = {}
 
 utils.get_separator = function()
   return Path.path.sep
-end
-
-utils.if_nil = function(x, was_nil, was_not_nil)
-  if x == nil then
-    return was_nil
-  else
-    return was_not_nil
-  end
-end
-
-utils.get_default = function(x, default)
-  return utils.if_nil(x, default, x)
 end
 
 utils.cycle = function(i, n)
@@ -179,25 +174,51 @@ end)()
 
 utils.path_tail = (function()
   local os_sep = utils.get_separator()
-  local match_string = "[^" .. os_sep .. "]*$"
 
   return function(path)
-    return string.match(path, match_string)
+    for i = #path, 1, -1 do
+      if path:sub(i, i) == os_sep then
+        return path:sub(i + 1, -1)
+      end
+    end
+    return path
   end
 end)()
 
 utils.is_path_hidden = function(opts, path_display)
-  path_display = path_display or utils.get_default(opts.path_display, require("telescope.config").values.path_display)
+  path_display = path_display or vim.F.if_nil(opts.path_display, require("telescope.config").values.path_display)
 
   return path_display == nil
     or path_display == "hidden"
-    or type(path_display) ~= "table"
-    or vim.tbl_contains(path_display, "hidden")
-    or path_display.hidden
+    or type(path_display) == "table" and (vim.tbl_contains(path_display, "hidden") or path_display.hidden)
 end
 
-local is_uri = function(filename)
-  return string.match(filename, "^%w+://") ~= nil
+utils.is_uri = function(filename)
+  local char = string.byte(filename, 1) or 0
+
+  -- is alpha?
+  if char < 65 or (char > 90 and char < 97) or char > 122 then
+    return false
+  end
+
+  for i = 2, #filename do
+    char = string.byte(filename, i)
+    if char == 58 then -- `:`
+      return i < #filename and string.byte(filename, i + 1) ~= 92 -- `\`
+    elseif
+      not (
+        (char >= 48 and char <= 57) -- 0-9
+        or (char >= 65 and char <= 90) -- A-Z
+        or (char >= 97 and char <= 122) -- a-z
+        or char == 43 -- `+`
+        or char == 46 -- `.`
+        or char == 45 -- `-`
+      )
+    then
+      return false
+    end
+  end
+  return false
 end
 
 local calc_result_length = function(truncate_len)
@@ -206,15 +227,25 @@ local calc_result_length = function(truncate_len)
   return type(truncate_len) == "number" and len - truncate_len or len
 end
 
+--- Transform path is a util function that formats a path based on path_display
+--- found in `opts` or the default value from config.
+--- It is meant to be used in make_entry to have a uniform interface for
+--- builtins as well as extensions utilizing the same user configuration
+--- Note: It is only supported inside `make_entry`/`make_display` the use of
+--- this function outside of telescope might yield to undefined behavior and will
+--- not be addressed by us
+---@param opts table: The opts the users passed into the picker. Might contains a path_display key
+---@param path string: The path that should be formatted
+---@return string: The transformed path ready to be displayed
 utils.transform_path = function(opts, path)
   if path == nil then
     return
   end
-  if is_uri(path) then
+  if utils.is_uri(path) then
     return path
   end
 
-  local path_display = utils.get_default(opts.path_display, require("telescope.config").values.path_display)
+  local path_display = vim.F.if_nil(opts.path_display, require("telescope.config").values.path_display)
 
   local transformed_path = path
 
@@ -253,7 +284,10 @@ utils.transform_path = function(opts, path)
         if opts.__length == nil then
           opts.__length = calc_result_length(path_display.truncate)
         end
-        transformed_path = truncate(transformed_path, opts.__length, nil, -1)
+        if opts.__prefix == nil then
+          opts.__prefix = 0
+        end
+        transformed_path = truncate(transformed_path, opts.__length - opts.__prefix, nil, -1)
       end
     end
 
@@ -393,17 +427,22 @@ function utils.get_os_command_output(cmd, cwd)
   end
   local command = table.remove(cmd, 1)
   local stderr = {}
-  local stdout, ret = Job
-    :new({
-      command = command,
-      args = cmd,
-      cwd = cwd,
-      on_stderr = function(_, data)
-        table.insert(stderr, data)
-      end,
-    })
-    :sync()
+  local stdout, ret = Job:new({
+    command = command,
+    args = cmd,
+    cwd = cwd,
+    on_stderr = function(_, data)
+      table.insert(stderr, data)
+    end,
+  }):sync()
   return stdout, ret, stderr
+end
+
+function utils.win_set_buf_noautocmd(win, buf)
+  local save_ei = vim.o.eventignore
+  vim.o.eventignore = "all"
+  vim.api.nvim_win_set_buf(win, buf)
+  vim.o.eventignore = save_ei
 end
 
 local load_once = function(f)
@@ -414,6 +453,16 @@ local load_once = function(f)
     end
 
     return resolved(...)
+  end
+end
+
+utils.file_extension = function(filename)
+  local parts = vim.split(filename, "%.")
+  -- this check enables us to get multi-part extensions, like *.test.js for example
+  if #parts > 2 then
+    return table.concat(vim.list_slice(parts, #parts - 1), ".")
+  else
+    return table.concat(vim.list_slice(parts, #parts), ".")
   end
 end
 
@@ -431,13 +480,18 @@ utils.transform_devicons = load_once(function()
         return display
       end
 
-      local icon, icon_highlight = devicons.get_icon(filename, string.match(filename, "%a+$"), { default = true })
-      local icon_display = (icon or " ") .. " " .. (display or "")
+      local basename = utils.path_tail(filename)
+      local icon, icon_highlight = devicons.get_icon(basename, utils.file_extension(basename), { default = false })
+      if not icon then
+        icon, icon_highlight = devicons.get_icon(basename, nil, { default = true })
+        icon = icon or " "
+      end
+      local icon_display = icon .. " " .. (display or "")
 
       if conf.color_devicons then
-        return icon_display, icon_highlight
+        return icon_display, icon_highlight, icon
       else
-        return icon_display, "TelescopeResultsFileIcon"
+        return icon_display, nil, icon
       end
     end
   else
@@ -461,11 +515,15 @@ utils.get_devicons = load_once(function()
         return ""
       end
 
-      local icon, icon_highlight = devicons.get_icon(filename, string.match(filename, "%a+$"), { default = true })
+      local basename = utils.path_tail(filename)
+      local icon, icon_highlight = devicons.get_icon(basename, utils.file_extension(basename), { default = false })
+      if not icon then
+        icon, icon_highlight = devicons.get_icon(basename, nil, { default = true })
+      end
       if conf.color_devicons then
         return icon, icon_highlight
       else
-        return icon, "TelescopeResultsFileIcon"
+        return icon, nil
       end
     end
   else
@@ -477,14 +535,15 @@ end)
 
 --- Telescope Wrapper around vim.notify
 ---@param funname string: name of the function that will be
----@param opts table: opts.level string, opts.msg string
+---@param opts table: opts.level string, opts.msg string, opts.once bool
 utils.notify = function(funname, opts)
+  opts.once = vim.F.if_nil(opts.once, false)
   local level = vim.log.levels[opts.level]
   if not level then
     error("Invalid error level", 2)
   end
-
-  vim.notify(string.format("[telescope.%s]: %s", funname, opts.msg), level, {
+  local notify_fn = opts.once and vim.notify_once or vim.notify
+  notify_fn(string.format("[telescope.%s]: %s", funname, opts.msg), level, {
     title = "telescope.nvim",
   })
 end
@@ -494,6 +553,32 @@ utils.__warn_no_selection = function(name)
     msg = "Nothing currently selected",
     level = "WARN",
   })
+end
+
+--- Generate git command optionally with git env variables
+---@param args string[]
+---@param opts? table
+---@return string[]
+utils.__git_command = function(args, opts)
+  opts = opts or {}
+
+  local _args = { "git" }
+  if opts.gitdir then
+    vim.list_extend(_args, { "--git-dir", opts.gitdir })
+  end
+  if opts.toplevel then
+    vim.list_extend(_args, { "--work-tree", opts.toplevel })
+  end
+
+  return vim.list_extend(_args, args)
+end
+
+utils.list_find = function(func, list)
+  for i, v in ipairs(list) do
+    if func(v, i, list) then
+      return i, v
+    end
+  end
 end
 
 return utils

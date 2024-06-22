@@ -1,13 +1,26 @@
-
 [
-(field_declaration_list_body) 
-(list_definition_body) 
-(struct_field_declaration_list_body)
-] @indent
+  (arguments)
+  (block)
+  (enum_block)
+  (global_block)
+  (imperative_block)
+  (struct_block)
+  (typed_identifier)
+] @indent.begin
 
-"}" @indent_end
+([
+  (block)
+  (enum_block)
+  (global_block)
+  (imperative_block)
+  (struct_block)
+]
+  "}" @indent.end)
 
-(comment) @auto
+([
+  (arguments)
+  (typed_identifier)
+]
+  ")" @indent.end)
 
-(string) @auto
-
+(string_value) @indent.auto

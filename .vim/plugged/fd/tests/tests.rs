@@ -1,5 +1,7 @@
 mod testenv;
 
+#[cfg(unix)]
+use nix::unistd::{Gid, Group, Uid, User};
 use std::fs;
 use std::io::Write;
 use std::path::Path;
@@ -73,6 +75,217 @@ fn test_simple() {
         one/two/C.Foo2
         one/two/three/d.foo
         one/two/three/directory_foo/",
+    );
+}
+
+static AND_EXTRA_FILES: &[&str] = &[
+    "a.foo",
+    "one/b.foo",
+    "one/two/c.foo",
+    "one/two/C.Foo2",
+    "one/two/three/baz-quux",
+    "one/two/three/Baz-Quux2",
+    "one/two/three/d.foo",
+    "fdignored.foo",
+    "gitignored.foo",
+    ".hidden.foo",
+    "A-B.jpg",
+    "A-C.png",
+    "B-A.png",
+    "B-C.png",
+    "C-A.jpg",
+    "C-B.png",
+    "e1 e2",
+];
+
+/// AND test
+#[test]
+fn test_and_basic() {
+    let te = TestEnv::new(DEFAULT_DIRS, AND_EXTRA_FILES);
+
+    te.assert_output(
+        &["foo", "--and", "c"],
+        "one/two/C.Foo2
+        one/two/c.foo
+        one/two/three/directory_foo/",
+    );
+
+    te.assert_output(
+        &["f", "--and", "[ad]", "--and", "[_]"],
+        "one/two/three/directory_foo/",
+    );
+
+    te.assert_output(
+        &["f", "--and", "[ad]", "--and", "[.]"],
+        "a.foo
+        one/two/three/d.foo",
+    );
+
+    te.assert_output(&["Foo", "--and", "C"], "one/two/C.Foo2");
+
+    te.assert_output(&["foo", "--and", "asdasdasdsadasd"], "");
+}
+
+#[test]
+fn test_and_empty_pattern() {
+    let te = TestEnv::new(DEFAULT_DIRS, AND_EXTRA_FILES);
+    te.assert_output(&["Foo", "--and", "2", "--and", ""], "one/two/C.Foo2");
+}
+
+#[test]
+fn test_and_bad_pattern() {
+    let te = TestEnv::new(DEFAULT_DIRS, AND_EXTRA_FILES);
+
+    te.assert_failure(&["Foo", "--and", "2", "--and", "[", "--and", "C"]);
+    te.assert_failure(&["Foo", "--and", "[", "--and", "2", "--and", "C"]);
+    te.assert_failure(&["Foo", "--and", "2", "--and", "C", "--and", "["]);
+    te.assert_failure(&["[", "--and", "2", "--and", "C", "--and", "Foo"]);
+}
+
+#[test]
+fn test_and_pattern_starts_with_dash() {
+    let te = TestEnv::new(DEFAULT_DIRS, AND_EXTRA_FILES);
+
+    te.assert_output(
+        &["baz", "--and", "quux"],
+        "one/two/three/Baz-Quux2
+        one/two/three/baz-quux",
+    );
+    te.assert_output(
+        &["baz", "--and", "-"],
+        "one/two/three/Baz-Quux2
+        one/two/three/baz-quux",
+    );
+    te.assert_output(
+        &["Quu", "--and", "x", "--and", "-"],
+        "one/two/three/Baz-Quux2",
+    );
+}
+
+#[test]
+fn test_and_plus_extension() {
+    let te = TestEnv::new(DEFAULT_DIRS, AND_EXTRA_FILES);
+
+    te.assert_output(
+        &[
+            "A",
+            "--and",
+            "B",
+            "--extension",
+            "jpg",
+            "--extension",
+            "png",
+        ],
+        "A-B.jpg
+        B-A.png",
+    );
+
+    te.assert_output(
+        &[
+            "A",
+            "--extension",
+            "jpg",
+            "--and",
+            "B",
+            "--extension",
+            "png",
+        ],
+        "A-B.jpg
+        B-A.png",
+    );
+}
+
+#[test]
+fn test_and_plus_type() {
+    let te = TestEnv::new(DEFAULT_DIRS, AND_EXTRA_FILES);
+
+    te.assert_output(
+        &["c", "--type", "d", "--and", "foo"],
+        "one/two/three/directory_foo/",
+    );
+
+    te.assert_output(
+        &["c", "--type", "f", "--and", "foo"],
+        "one/two/C.Foo2
+        one/two/c.foo",
+    );
+}
+
+#[test]
+fn test_and_plus_glob() {
+    let te = TestEnv::new(DEFAULT_DIRS, AND_EXTRA_FILES);
+
+    te.assert_output(&["*foo", "--glob", "--and", "c*"], "one/two/c.foo");
+}
+
+#[test]
+fn test_and_plus_fixed_strings() {
+    let te = TestEnv::new(DEFAULT_DIRS, AND_EXTRA_FILES);
+
+    te.assert_output(
+        &["foo", "--fixed-strings", "--and", "c", "--and", "."],
+        "one/two/c.foo
+        one/two/C.Foo2",
+    );
+
+    te.assert_output(
+        &["foo", "--fixed-strings", "--and", "[c]", "--and", "."],
+        "",
+    );
+
+    te.assert_output(
+        &["Foo", "--fixed-strings", "--and", "C", "--and", "."],
+        "one/two/C.Foo2",
+    );
+}
+
+#[test]
+fn test_and_plus_ignore_case() {
+    let te = TestEnv::new(DEFAULT_DIRS, AND_EXTRA_FILES);
+
+    te.assert_output(
+        &["Foo", "--ignore-case", "--and", "C", "--and", "[.]"],
+        "one/two/C.Foo2
+        one/two/c.foo",
+    );
+}
+
+#[test]
+fn test_and_plus_case_sensitive() {
+    let te = TestEnv::new(DEFAULT_DIRS, AND_EXTRA_FILES);
+
+    te.assert_output(
+        &["foo", "--case-sensitive", "--and", "c", "--and", "[.]"],
+        "one/two/c.foo",
+    );
+}
+
+#[test]
+fn test_and_plus_full_path() {
+    let te = TestEnv::new(DEFAULT_DIRS, AND_EXTRA_FILES);
+
+    te.assert_output(
+        &[
+            "three",
+            "--full-path",
+            "--and",
+            "_foo",
+            "--and",
+            r"[/\\]dir",
+        ],
+        "one/two/three/directory_foo/",
+    );
+
+    te.assert_output(
+        &[
+            "three",
+            "--full-path",
+            "--and",
+            r"[/\\]two",
+            "--and",
+            r"[/\\]dir",
+        ],
+        "one/two/three/directory_foo/",
     );
 }
 
@@ -597,6 +810,62 @@ fn test_custom_ignore_precedence() {
     te.assert_output(&["--no-ignore", "foo"], "inner/foo");
 }
 
+/// Don't require git to respect gitignore (--no-require-git)
+#[test]
+fn test_respect_ignore_files() {
+    let te = TestEnv::new(DEFAULT_DIRS, DEFAULT_FILES);
+
+    // Not in a git repo anymore
+    fs::remove_dir(te.test_root().join(".git")).unwrap();
+
+    // don't respect gitignore because we're not in a git repo
+    te.assert_output(
+        &["foo"],
+        "a.foo
+        gitignored.foo
+        one/b.foo
+        one/two/c.foo
+        one/two/C.Foo2
+        one/two/three/d.foo
+        one/two/three/directory_foo/",
+    );
+
+    // respect gitignore because we set `--no-require-git`
+    te.assert_output(
+        &["--no-require-git", "foo"],
+        "a.foo
+        one/b.foo
+        one/two/c.foo
+        one/two/C.Foo2
+        one/two/three/d.foo
+        one/two/three/directory_foo/",
+    );
+
+    // make sure overriding works
+    te.assert_output(
+        &["--no-require-git", "--require-git", "foo"],
+        "a.foo
+        gitignored.foo
+        one/b.foo
+        one/two/c.foo
+        one/two/C.Foo2
+        one/two/three/d.foo
+        one/two/three/directory_foo/",
+    );
+
+    te.assert_output(
+        &["--no-require-git", "--no-ignore", "foo"],
+        "a.foo
+        gitignored.foo
+        fdignored.foo
+        one/b.foo
+        one/two/c.foo
+        one/two/C.Foo2
+        one/two/three/d.foo
+        one/two/three/directory_foo/",
+    );
+}
+
 /// VCS ignored files (--no-ignore-vcs)
 #[test]
 fn test_no_ignore_vcs() {
@@ -666,6 +935,47 @@ fn test_no_ignore_aliases() {
         one/two/three/d.foo
         one/two/three/directory_foo/",
     );
+}
+
+#[cfg(not(windows))]
+#[test]
+fn test_global_ignore() {
+    let te = TestEnv::new(DEFAULT_DIRS, DEFAULT_FILES).global_ignore_file("one");
+    te.assert_output(
+        &[],
+        "a.foo
+    e1 e2
+    symlink",
+    );
+}
+
+#[cfg(not(windows))]
+#[test_case("--unrestricted", ".hidden.foo
+a.foo
+fdignored.foo
+gitignored.foo
+one/b.foo
+one/two/c.foo
+one/two/C.Foo2
+one/two/three/d.foo
+one/two/three/directory_foo/"; "unrestricted")]
+#[test_case("--no-ignore", "a.foo
+fdignored.foo
+gitignored.foo
+one/b.foo
+one/two/c.foo
+one/two/C.Foo2
+one/two/three/d.foo
+one/two/three/directory_foo/"; "no-ignore")]
+#[test_case("--no-global-ignore-file", "a.foo
+one/b.foo
+one/two/c.foo
+one/two/C.Foo2
+one/two/three/d.foo
+one/two/three/directory_foo/"; "no-global-ignore-file")]
+fn test_no_global_ignore(flag: &str, expected_output: &str) {
+    let te = TestEnv::new(DEFAULT_DIRS, DEFAULT_FILES).global_ignore_file("one");
+    te.assert_output(&[flag, "foo"], expected_output);
 }
 
 /// Symlinks (--follow)
@@ -991,13 +1301,29 @@ fn test_type() {
 fn test_type_executable() {
     use std::os::unix::fs::OpenOptionsExt;
 
+    // This test assumes the current user isn't root
+    // (otherwise if the executable bit is set for any level, it is executable for the current
+    // user)
+    if Uid::current().is_root() {
+        return;
+    }
+
     let te = TestEnv::new(DEFAULT_DIRS, DEFAULT_FILES);
 
     fs::OpenOptions::new()
-        .create(true)
+        .create_new(true)
+        .truncate(true)
         .write(true)
         .mode(0o777)
         .open(te.test_root().join("executable-file.sh"))
+        .unwrap();
+
+    fs::OpenOptions::new()
+        .create(true)
+        .truncate(true)
+        .write(true)
+        .mode(0o645)
+        .open(te.test_root().join("not-user-executable-file.sh"))
         .unwrap();
 
     te.assert_output(&["--type", "executable"], "executable-file.sh");
@@ -1298,6 +1624,66 @@ fn test_excludes() {
     );
 }
 
+#[test]
+fn format() {
+    let te = TestEnv::new(DEFAULT_DIRS, DEFAULT_FILES);
+
+    te.assert_output(
+        &["--format", "path={}", "--path-separator=/"],
+        "path=a.foo
+        path=e1 e2
+        path=one
+        path=one/b.foo
+        path=one/two
+        path=one/two/C.Foo2
+        path=one/two/c.foo
+        path=one/two/three
+        path=one/two/three/d.foo
+        path=one/two/three/directory_foo
+        path=symlink",
+    );
+
+    te.assert_output(
+        &["foo", "--format", "noExt={.}", "--path-separator=/"],
+        "noExt=a
+        noExt=one/b
+        noExt=one/two/C
+        noExt=one/two/c
+        noExt=one/two/three/d
+        noExt=one/two/three/directory_foo",
+    );
+
+    te.assert_output(
+        &["foo", "--format", "basename={/}", "--path-separator=/"],
+        "basename=a.foo
+        basename=b.foo
+        basename=C.Foo2
+        basename=c.foo
+        basename=d.foo
+        basename=directory_foo",
+    );
+
+    te.assert_output(
+        &["foo", "--format", "name={/.}", "--path-separator=/"],
+        "name=a
+        name=b
+        name=C
+        name=c
+        name=d
+        name=directory_foo",
+    );
+
+    te.assert_output(
+        &["foo", "--format", "parent={//}", "--path-separator=/"],
+        "parent=.
+        parent=one
+        parent=one/two
+        parent=one/two
+        parent=one/two/three
+        parent=one/two/three",
+    );
+}
+
 /// Shell script execution (--exec)
 #[test]
 fn test_exec() {
@@ -1479,23 +1865,43 @@ fn test_exec_batch() {
 
         te.assert_failure_with_error(
             &["foo", "--exec-batch", "echo", "{}", "{}"],
-            "[fd error]: Only one placeholder allowed for batch commands",
+            "error: Only one placeholder allowed for batch commands\n\
+            \n\
+            Usage: fd [OPTIONS] [pattern] [path]...\n\
+            \n\
+            For more information, try '--help'.\n\
+            ",
         );
 
         te.assert_failure_with_error(
             &["foo", "--exec-batch", "echo", "{/}", ";", "-x", "echo"],
-            "error: The argument '--exec-batch <cmd>...' cannot be used with '--exec <cmd>...'",
+            "error: the argument '--exec-batch <cmd>...' cannot be used with '--exec <cmd>...'\n\
+            \n\
+            Usage: fd --exec-batch <cmd>... <pattern> [path]...\n\
+            \n\
+            For more information, try '--help'.\n\
+            ",
         );
 
         te.assert_failure_with_error(
             &["foo", "--exec-batch"],
-            "error: The argument '--exec-batch <cmd>...' requires a value but none was supplied",
+            "error: a value is required for '--exec-batch <cmd>...' but none was supplied\n\
+            \n\
+            For more information, try '--help'.\n\
+            ",
         );
 
         te.assert_failure_with_error(
             &["foo", "--exec-batch", "echo {}"],
-            "[fd error]: First argument of exec-batch is expected to be a fixed executable",
+            "error: First argument of exec-batch is expected to be a fixed executable\n\
+            \n\
+            Usage: fd [OPTIONS] [pattern] [path]...\n\
+            \n\
+            For more information, try '--help'.\n\
+            ",
         );
+
+        te.assert_failure_with_error(&["a.foo", "--exec-batch", "bash", "-c", "exit 1"], "");
     }
 }
 
@@ -1550,6 +1956,20 @@ fn test_exec_batch_multi() {
                 "directory_foo"
             ],
         ]
+    );
+
+    te.assert_failure_with_error(
+        &[
+            "a.foo",
+            "--exec-batch",
+            "echo",
+            ";",
+            "--exec-batch",
+            "bash",
+            "-c",
+            "exit 1",
+        ],
+        "",
     );
 }
 
@@ -1893,6 +2313,50 @@ fn test_modified_absolute() {
     );
 }
 
+#[cfg(unix)]
+#[test]
+fn test_owner_ignore_all() {
+    let te = TestEnv::new(DEFAULT_DIRS, DEFAULT_FILES);
+    te.assert_output(&["--owner", ":", "a.foo"], "a.foo");
+    te.assert_output(&["--owner", "", "a.foo"], "a.foo");
+}
+
+#[cfg(unix)]
+#[test]
+fn test_owner_current_user() {
+    let te = TestEnv::new(DEFAULT_DIRS, DEFAULT_FILES);
+    let uid = Uid::current();
+    te.assert_output(&["--owner", &uid.to_string(), "a.foo"], "a.foo");
+    if let Ok(Some(user)) = User::from_uid(uid) {
+        te.assert_output(&["--owner", &user.name, "a.foo"], "a.foo");
+    }
+}
+
+#[cfg(unix)]
+#[test]
+fn test_owner_current_group() {
+    let te = TestEnv::new(DEFAULT_DIRS, DEFAULT_FILES);
+    let gid = Gid::current();
+    te.assert_output(&["--owner", &format!(":{}", gid), "a.foo"], "a.foo");
+    if let Ok(Some(group)) = Group::from_gid(gid) {
+        te.assert_output(&["--owner", &format!(":{}", group.name), "a.foo"], "a.foo");
+    }
+}
+
+#[cfg(target_os = "linux")]
+#[test]
+fn test_owner_root() {
+    // This test assumes the current user isn't root
+    if Uid::current().is_root() || Gid::current() == Gid::from_raw(0) {
+        return;
+    }
+    let te = TestEnv::new(DEFAULT_DIRS, DEFAULT_FILES);
+    te.assert_output(&["--owner", "root", "a.foo"], "");
+    te.assert_output(&["--owner", "0", "a.foo"], "");
+    te.assert_output(&["--owner", ":root", "a.foo"], "");
+    te.assert_output(&["--owner", ":0", "a.foo"], "");
+}
+
 #[test]
 fn test_custom_path_separator() {
     let te = TestEnv::new(DEFAULT_DIRS, DEFAULT_FILES);
@@ -1984,6 +2448,11 @@ fn test_max_results() {
     };
     assert_just_one_result_with_option("--max-results=1");
     assert_just_one_result_with_option("-1");
+
+    // check that --max-results & -1 conflic with --exec
+    te.assert_failure(&["thing", "--max-results=0", "--exec=cat"]);
+    te.assert_failure(&["thing", "-1", "--exec=cat"]);
+    te.assert_failure(&["thing", "--max-results=1", "-1", "--exec=cat"]);
 }
 
 /// Filenames with non-utf8 paths are passed to the executed program unchanged
@@ -2040,6 +2509,14 @@ fn test_list_details() {
     te.assert_success_and_get_output(".", &["--list-details"]);
 }
 
+#[test]
+fn test_single_and_multithreaded_execution() {
+    let te = TestEnv::new(DEFAULT_DIRS, DEFAULT_FILES);
+
+    te.assert_output(&["--threads=1", "a.foo"], "a.foo");
+    te.assert_output(&["--threads=16", "a.foo"], "a.foo");
+}
+
 /// Make sure that fd fails if numeric arguments can not be parsed
 #[test]
 fn test_number_parsing_errors() {
@@ -2062,6 +2539,7 @@ fn test_number_parsing_errors() {
 #[test_case("--hidden", &["--no-hidden"] ; "hidden")]
 #[test_case("--no-ignore", &["--ignore"] ; "no-ignore")]
 #[test_case("--no-ignore-vcs", &["--ignore-vcs"] ; "no-ignore-vcs")]
+#[test_case("--no-require-git", &["--require-git"] ; "no-require-git")]
 #[test_case("--follow", &["--no-follow"] ; "follow")]
 #[test_case("--absolute-path", &["--relative-path"] ; "absolute-path")]
 #[test_case("-u", &["--ignore", "--no-hidden"] ; "u")]
@@ -2130,7 +2608,7 @@ fn test_invalid_cwd() {
     std::env::set_current_dir(&root).unwrap();
     fs::remove_dir(&root).unwrap();
 
-    let output = std::process::Command::new(&te.test_exe())
+    let output = std::process::Command::new(te.test_exe())
         .arg("query")
         .arg(te.test_root())
         .output()
@@ -2139,4 +2617,58 @@ fn test_invalid_cwd() {
     if !output.status.success() {
         panic!("{:?}", output);
     }
+}
+
+/// Test behavior of .git directory with various flags
+#[test]
+fn test_git_dir() {
+    let te = TestEnv::new(
+        &[".git/one", "other_dir/.git", "nested/dir/.git"],
+        &[
+            ".git/one/foo.a",
+            ".git/.foo",
+            ".git/a.foo",
+            "other_dir/.git/foo1",
+            "nested/dir/.git/foo2",
+        ],
+    );
+
+    te.assert_output(
+        &["--hidden", "foo"],
+        ".git/one/foo.a
+        .git/.foo
+        .git/a.foo
+        other_dir/.git/foo1
+        nested/dir/.git/foo2",
+    );
+    te.assert_output(&["--no-ignore", "foo"], "");
+    te.assert_output(
+        &["--hidden", "--no-ignore", "foo"],
+        ".git/one/foo.a
+         .git/.foo
+         .git/a.foo
+         other_dir/.git/foo1
+         nested/dir/.git/foo2",
+    );
+    te.assert_output(
+        &["--hidden", "--no-ignore-vcs", "foo"],
+        ".git/one/foo.a
+         .git/.foo
+         .git/a.foo
+         other_dir/.git/foo1
+         nested/dir/.git/foo2",
+    );
+}
+
+#[test]
+fn test_gitignore_parent() {
+    let te = TestEnv::new(&["sub"], &[".abc", "sub/.abc"]);
+
+    fs::File::create(te.test_root().join(".gitignore"))
+        .unwrap()
+        .write_all(b".abc\n")
+        .unwrap();
+
+    te.assert_output_subdirectory("sub", &["--hidden"], "");
+    te.assert_output_subdirectory("sub", &["--hidden", "--search-path", "."], "");
 }

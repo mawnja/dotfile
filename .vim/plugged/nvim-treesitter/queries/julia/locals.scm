@@ -1,59 +1,66 @@
+; Variables
+(assignment
+  (identifier) @local.definition.var)
 
-(import_statement
- (identifier) @definition.import)
-(variable_declaration
- (identifier) @definition.var)
-(variable_declaration
- (tuple_expression
-  (identifier) @definition.var))
-(for_binding
- (identifier) @definition.var)
-(for_binding
- (tuple_expression
-  (identifier) @definition.var))
+(assignment
+  (tuple_expression
+    (identifier) @local.definition.var))
 
-(assignment_expression
- (tuple_expression
-  (identifier) @definition.var))
-(assignment_expression
- (bare_tuple_expression
-  (identifier) @definition.var))
-(assignment_expression
- (identifier) @definition.var)
+; let/const bindings
+(let_binding
+  (identifier) @local.definition.var)
+
+(let_binding
+  (tuple_expression
+    (identifier) @local.definition.var))
+
+; For bindings
+(for_binding
+  (identifier) @local.definition.var)
+
+(for_binding
+  (tuple_expression
+    (identifier) @local.definition.var))
+
+; Types
+(struct_definition
+  name: (identifier) @local.definition.type)
+
+(abstract_definition
+  name: (identifier) @local.definition.type)
+
+(abstract_definition
+  name: (identifier) @local.definition.type)
 
 (type_parameter_list
-  (identifier) @definition.type)
-(type_argument_list
-  (identifier) @definition.type)
-(struct_definition
-  name: (identifier) @definition.type)
+  (identifier) @local.definition.type)
 
-(parameter_list
- (identifier) @definition.parameter)
-(typed_parameter
- (identifier) @definition.parameter
- (identifier))
-(function_expression
- . (identifier) @definition.parameter)
-(argument_list
- (typed_expression
-  (identifier) @definition.parameter
-  (identifier)))
-(spread_parameter
- (identifier) @definition.parameter)
+; Module imports
+(import_statement
+  (identifier) @local.definition.import)
 
+; Function/macro definitions
 (function_definition
- name: (identifier) @definition.function) @scope
-(macro_definition 
- name: (identifier) @definition.macro) @scope
+  (signature
+    (call_expression
+      .
+      (identifier) @local.definition.function))) @local.scope
 
-(identifier) @reference
+(macro_definition
+  (signature
+    (call_expression
+      .
+      (identifier) @local.definition.function))) @local.scope
+
+(identifier) @local.reference
 
 [
-  (try_statement)
-  (finally_clause)
-  (quote_statement)
-  (let_statement)
-  (compound_expression)
   (for_statement)
-] @scope
+  (while_statement)
+  (try_statement)
+  (catch_clause)
+  (finally_clause)
+  (let_statement)
+  (quote_statement)
+  (do_clause)
+] @local.scope

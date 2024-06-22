@@ -1,7 +1,0 @@
----
-match:
-  distribution: 'DANJOU/Net-Google-DocumentsList-\d'
-pl: 
-  expect:
-    - "Add Moose"
-    - "y\n"

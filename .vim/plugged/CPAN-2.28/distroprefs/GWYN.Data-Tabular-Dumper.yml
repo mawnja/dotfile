@@ -1,9 +1,0 @@
----
-match:
-  distribution: 'GWYN/Data-Tabular-Dumper-\d'
-pl: 
-  expect:
-    - "Require Spreadsheet::WriteExcel"
-    - "y\n"
-    - "Require Text::CSV_XS"
-    - "y\n"

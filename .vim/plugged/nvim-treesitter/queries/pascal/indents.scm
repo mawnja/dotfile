@@ -1,32 +1,33 @@
 [
-	(statement)
-	(declVars)
-	(declConsts)
-	(declTypes)
-	(declProc)
-	(declArgs)
-	(declUses)
-	(declClass)
-	(exprArgs)
-	(exprSubscript)
-	(exprBrackets)
-	(exprParens)
-	(recInitializer)
-	(arrInitializer)
-	(defaultValue)
-] @indent
+  (statement)
+  (declVars)
+  (declConsts)
+  (declTypes)
+  (declProc)
+  (declArgs)
+  (declUses)
+  (declClass)
+  (exprArgs)
+  (exprSubscript)
+  (exprBrackets)
+  (exprParens)
+  (recInitializer)
+  (arrInitializer)
+  (defaultValue)
+] @indent.begin
 
-(defProc (block) @indent)
+(defProc
+  (block) @indent.begin)
 
 [
-	(kEnd)
-	(kFinally)
-	(kDo)
-	(kUntil)
-	(kExcept)
-	(kElse)
-	(kThen)
-	(declSection)
-	"]"
-	")"
-] @branch
+  (kEnd)
+  (kFinally)
+  (kDo)
+  (kUntil)
+  (kExcept)
+  (kElse)
+  (kThen)
+  (declSection)
+  "]"
+  ")"
+] @indent.branch

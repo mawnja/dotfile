@@ -5,15 +5,20 @@
   (afx_element_self_closing)
   (eel_array)
   (eel_object)
-] @indent
+] @indent.begin
 
+(block
+  end: _ @indent.branch)
 
-(block end: _ @branch)
-(value_dsl end: _ @branch)
-(eel_array end: _ @branch)
-(eel_object end: _ @branch)
-[
-  (afx_closing_element)
-] @branch
+(value_dsl
+  end: _ @indent.branch)
 
-(comment) @ignore
+(eel_array
+  end: _ @indent.branch)
+
+(eel_object
+  end: _ @indent.branch)
+
+(afx_closing_element) @indent.branch
+
+(comment) @indent.ignore

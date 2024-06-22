@@ -1,9 +1,0 @@
---- 
-comment: |
-
-  https://rt.cpan.org/Ticket/Display.html?id=
-
-match:
-  distribution: '/Test-Exception-LessClever-0.005.tar.gz'
-patches:
-  - "ANDK/patches/Test-Exception-LessClever-0.005-ANDK-01.patch.gz"

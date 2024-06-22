@@ -71,3 +71,8 @@ simplify_expr.cc
 pattern_u
 expr_functor.py
 vm.py
+vm.[y]
+vm.py
+vm.c
+vm.cc
+vm.py

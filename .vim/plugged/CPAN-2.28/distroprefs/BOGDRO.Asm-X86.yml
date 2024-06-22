@@ -1,9 +1,0 @@
----
-comment: |
-
-  https://rt.cpan.org/Public/Dist/Display.html?Name=Asm-X86
-
-match:
-  distribution: "^BOGDRO/Asm-X86-0.26.tar.gz"
-pl: 
-  args: ["INSTALLDIRS=site"]

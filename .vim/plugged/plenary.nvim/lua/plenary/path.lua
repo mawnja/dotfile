@@ -21,7 +21,7 @@ path.home = vim.loop.os_homedir()
 path.sep = (function()
   if jit then
     local os = string.lower(jit.os)
-    if os == "linux" or os == "osx" or os == "bsd" then
+    if os ~= "windows" then
       return "/"
     else
       return "\\"
@@ -73,12 +73,12 @@ local _split_by_separator = (function()
 end)()
 
 local is_uri = function(filename)
-  return string.match(filename, "^%w+://") ~= nil
+  return string.match(filename, "^%a[%w+-.]*://") ~= nil
 end
 
 local is_absolute = function(filename, sep)
   if sep == "\\" then
-    return string.match(filename, "^[A-Z]:\\.*$")
+    return string.match(filename, "^[%a]:[\\/].*$") ~= nil
   end
   return string.sub(filename, 1, 1) == sep
 end
@@ -99,8 +99,17 @@ local function _normalize_path(filename, cwd)
   local has = string.find(filename, path.sep .. "..", 1, true) or string.find(filename, ".." .. path.sep, 1, true)
 
   if has then
-    local parts = _split_by_separator(filename)
+    local is_abs = is_absolute(filename, path.sep)
+    local split_without_disk_name = function(filename_local)
+      local parts = _split_by_separator(filename_local)
+      -- Remove disk name part on Windows
+      if path.sep == "\\" and is_abs then
+        table.remove(parts, 1)
+      end
+      return parts
+    end
 
+    local parts = split_without_disk_name(filename)
     local idx = 1
     local initial_up_count = 0
 
@@ -121,7 +130,7 @@ local function _normalize_path(filename, cwd)
     until idx > #parts
 
     local prefix = ""
-    if is_absolute(filename, path.sep) or #_split_by_separator(cwd) == initial_up_count then
+    if is_abs or #split_without_disk_name(cwd) == initial_up_count then
       prefix = path.root(filename)
     end
 
@@ -165,7 +174,24 @@ local check_self = function(self)
   return self
 end
 
-Path.__index = Path
+Path.__index = function(t, k)
+  local raw = rawget(Path, k)
+  if raw then
+    return raw
+  end
+
+  if k == "_cwd" then
+    local cwd = uv.fs_realpath "."
+    t._cwd = cwd
+    return cwd
+  end
+
+  if k == "_absolute" then
+    local absolute = uv.fs_realpath(t.filename)
+    t._absolute = absolute
+    return absolute
+  end
+end
 
 -- TODO: Could use this to not have to call new... not sure
 -- Path.__call = Path:new
@@ -178,7 +204,7 @@ Path.__div = function(self, other)
 end
 
 Path.__tostring = function(self)
-  return self.filename
+  return clean(self.filename)
 end
 
 -- TODO: See where we concat the table, and maybe we could make this work.
@@ -195,7 +221,7 @@ function Path:new(...)
 
   if type(self) == "string" then
     table.insert(args, 1, self)
-    self = Path
+    self = Path -- luacheck: ignore
   end
 
   local path_input
@@ -242,10 +268,6 @@ function Path:new(...)
     filename = path_string,
 
     _sep = sep,
-
-    -- Cached values
-    _absolute = uv.fs_realpath(path_string),
-    _cwd = uv.fs_realpath ".",
   }
 
   setmetatable(obj, Path)
@@ -349,7 +371,11 @@ function Path:normalize(cwd)
   -- Substitute home directory w/ "~"
   -- string.gsub is not useful here because usernames with dashes at the end
   -- will be seen as a regexp pattern rather than a raw string
-  local start, finish = string.find(self.filename, path.home, 1, true)
+  local home = path.home
+  if string.sub(path.home, -1) ~= path.sep then
+    home = home .. path.sep
+  end
+  local start, finish = string.find(self.filename, home, 1, true)
   if start == 1 then
     self.filename = "~" .. path.sep .. string.sub(self.filename, (finish + 1), -1)
   end
@@ -405,13 +431,17 @@ local function shorten_len(filename, len, exclude)
 end
 
 local shorten = (function()
+  local fallback = function(filename)
+    return shorten_len(filename, 1)
+  end
+
   if jit and path.sep ~= "\\" then
     local ffi = require "ffi"
     ffi.cdef [[
     typedef unsigned char char_u;
     void shorten_dir(char_u *str);
     ]]
-    return function(filename)
+    local ffi_func = function(filename)
       if not filename or is_uri(filename) then
         return filename
       end
@@ -421,10 +451,14 @@ local shorten = (function()
       ffi.C.shorten_dir(c_str)
       return ffi.string(c_str)
     end
+    local ok = pcall(ffi_func, "/tmp/path/file.lua")
+    if ok then
+      return ffi_func
+    else
+      return fallback
+    end
   end
-  return function(filename)
-    return shorten_len(filename, 1)
-  end
+  return fallback
 end)()
 
 function Path:shorten(len, exclude)
@@ -550,7 +584,7 @@ function Path:copy(opts)
         { "Yes", "No" },
         { prompt = string.format("Overwrite existing %s?", dest:absolute()) },
         function(_, idx)
-          success[dest] = uv.fs_copyfile(self:absolute(), dest:absolute(), { excl = not (idx == 1) }) or false
+          success[dest] = uv.fs_copyfile(self:absolute(), dest:absolute(), { excl = idx ~= 1 }) or false
         end
       )
     else
@@ -662,7 +696,11 @@ end
 local _get_parent = (function()
   local formatted = string.format("^(.+)%s[^%s]+", path.sep, path.sep)
   return function(abs_path)
-    return abs_path:match(formatted)
+    local parent = abs_path:match(formatted)
+    if parent ~= nil and not parent:find(path.sep) then
+      return parent .. path.sep
+    end
+    return parent
   end
 end)()
 
@@ -682,10 +720,7 @@ function Path:parents()
 end
 
 function Path:is_file()
-  local stat = uv.fs_stat(self:expand())
-  if stat then
-    return stat.type == "file" and true or nil
-  end
+  return self:_stat().type == "file" and true or nil
 end
 
 -- TODO:
@@ -699,7 +734,7 @@ function Path:write(txt, flag, mode)
 
   mode = mode or 438
 
-  local fd = assert(uv.fs_open(self:expand(), flag, mode))
+  local fd = assert(uv.fs_open(self:_fs_filename(), flag, mode))
   assert(uv.fs_write(fd, txt, -1))
   assert(uv.fs_close(fd))
 end
@@ -709,7 +744,7 @@ end
 function Path:_read()
   self = check_self(self)
 
-  local fd = assert(uv.fs_open(self:expand(), "r", 438)) -- for some reason test won't pass with absolute
+  local fd = assert(uv.fs_open(self:_fs_filename(), "r", 438)) -- for some reason test won't pass with absolute
   local stat = assert(uv.fs_fstat(fd))
   local data = assert(uv.fs_read(fd, stat.size, 0))
   assert(uv.fs_close(fd))
@@ -751,7 +786,7 @@ function Path:head(lines)
   self = check_self(self)
   local chunk_size = 256
 
-  local fd = uv.fs_open(self:expand(), "r", 438)
+  local fd = uv.fs_open(self:_fs_filename(), "r", 438)
   if not fd then
     return
   end
@@ -794,7 +829,7 @@ function Path:tail(lines)
   self = check_self(self)
   local chunk_size = 256
 
-  local fd = uv.fs_open(self:expand(), "r", 438)
+  local fd = uv.fs_open(self:_fs_filename(), "r", 438)
   if not fd then
     return
   end
@@ -858,7 +893,7 @@ end
 function Path:readbyterange(offset, length)
   self = check_self(self)
 
-  local fd = uv.fs_open(self:expand(), "r", 438)
+  local fd = uv.fs_open(self:_fs_filename(), "r", 438)
   if not fd then
     return
   end
@@ -890,6 +925,20 @@ function Path:readbyterange(offset, length)
   assert(uv.fs_close(fd))
 
   return data
+end
+
+function Path:find_upwards(filename)
+  local folder = Path:new(self)
+  local root = path.root(folder)
+
+  while folder:absolute() ~= root do
+    local p = folder:joinpath(filename)
+    if p:exists() then
+      return p
+    end
+    folder = folder:parent()
+  end
+  return ""
 end
 
 return Path

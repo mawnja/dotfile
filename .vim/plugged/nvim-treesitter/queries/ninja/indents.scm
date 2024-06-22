@@ -2,5 +2,4 @@
   (pool)
   (rule)
   (build)
-] @indent
-
+] @indent.begin

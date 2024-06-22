@@ -1,7 +1,0 @@
-{
-    "cmake.configureOnOpen": true,
-    "[python]": {
-        "editor.formatOnType": true
-    },
-    "workbench.colorTheme": "Solarized Light"
-}

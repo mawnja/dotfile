@@ -1,20 +1,41 @@
-(identifier) @type.builtin
+(identifier) @variable
 
-(attribute (identifier) @property)
-(property (path) @property)
-(constructor (identifier) @constructor)
+(section
+  (identifier) @tag)
+
+(section
+  [
+    "["
+    "]"
+  ] @tag.delimiter)
+
+(attribute
+  (identifier) @tag.attribute)
+
+(property
+  (path) @property)
+
+(constructor
+  (identifier) @constructor)
 
 (string) @string
-(integer) @number
-(float) @float
 
-(true) @constant.builtin
-(false) @constant.builtin
+(integer) @number
+
+(float) @number.float
 
 [
-  "["
-  "]"
-] @tag.delimiter
+  (true)
+  (false)
+] @boolean
+
+(null) @constant.builtin
+
+(array
+  [
+    "["
+    "]"
+  ] @punctuation.bracket)
 
 [
   "("
@@ -25,4 +46,4 @@
 
 "=" @operator
 
-(ERROR) @error
+(comment) @comment @spell

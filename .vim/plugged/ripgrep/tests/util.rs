@@ -9,6 +9,8 @@ use std::sync::atomic::{AtomicUsize, Ordering};
 use std::thread;
 use std::time::Duration;
 
+use bstr::ByteSlice;
+
 static TEST_DIR: &'static str = "ripgrep-tests";
 static NEXT_ID: AtomicUsize = AtomicUsize::new(0);
 
@@ -78,7 +80,7 @@ impl Dir {
             nice_err(&dir, fs::remove_dir_all(&dir));
         }
         nice_err(&dir, repeat(|| fs::create_dir_all(&dir)));
-        Dir { root: root, dir: dir, pcre2: false }
+        Dir { root, dir, pcre2: false }
     }
 
     /// Use PCRE2 for this test.
@@ -167,7 +169,7 @@ impl Dir {
         if self.is_pcre2() {
             cmd.arg("--pcre2");
         }
-        TestCommand { dir: self.clone(), cmd: cmd }
+        TestCommand { dir: self.clone(), cmd }
     }
 
     /// Returns the path to the ripgrep executable.
@@ -325,13 +327,21 @@ impl TestCommand {
 
     /// Gets the output of a command. If the command failed, then this panics.
     pub fn output(&mut self) -> process::Output {
-        let output = self.cmd.output().unwrap();
+        let output = self.raw_output();
         self.expect_success(output)
+    }
+
+    /// Gets the raw output of a command after filtering nonsense like jemalloc
+    /// error messages from stderr.
+    pub fn raw_output(&mut self) -> process::Output {
+        let mut output = self.cmd.output().unwrap();
+        output.stderr = strip_jemalloc_nonsense(&output.stderr);
+        output
     }
 
     /// Runs the command and asserts that it resulted in an error exit code.
     pub fn assert_err(&mut self) {
-        let o = self.cmd.output().unwrap();
+        let o = self.raw_output();
         if o.status.success() {
             panic!(
                 "\n\n===== {:?} =====\n\
@@ -464,19 +474,53 @@ fn dir_list<P: AsRef<Path>>(dir: P) -> Vec<String> {
 /// will have setup qemu to run it. While this is integrated into the Rust
 /// testing by default, we need to handle it ourselves for integration tests.
 ///
-/// Thankfully, cross sets an environment variable that points to the proper
-/// qemu binary that we want to run. So we just search for that env var and
-/// return its value if we could find it.
+/// Now thankfully, cross sets `CROSS_RUNNER` to point to the right qemu
+/// executable. Or so one thinks. But it seems to always be set to `qemu-user`
+/// and I cannot find `qemu-user` anywhere in the Docker image. Awesome.
+///
+/// Thers is `/linux-runner` which seems to work sometimes? But not always.
+///
+/// Instead, it looks like we have to use `qemu-aarch64` in the `aarch64`
+/// case. Perfect, so just get the current target architecture and append it
+/// to `qemu-`. Wrong. Cross (or qemu or whoever) uses `qemu-ppc64` for
+/// `powerpc64`, so we can't just use the target architecture as Rust knows
+/// it verbatim.
+///
+/// So... we just manually handle these cases. So fucking fun.
 fn cross_runner() -> Option<String> {
-    for (k, v) in std::env::vars_os() {
-        let (k, v) = (k.to_string_lossy(), v.to_string_lossy());
-        if !k.starts_with("CARGO_TARGET_") && !k.ends_with("_RUNNER") {
-            continue;
-        }
-        if !v.starts_with("qemu-") {
-            continue;
-        }
-        return Some(v.into_owned());
+    let runner = std::env::var("CROSS_RUNNER").ok()?;
+    if runner.is_empty() || runner == "empty" {
+        return None;
     }
-    None
+    if cfg!(target_arch = "powerpc64") {
+        Some("qemu-ppc64".to_string())
+    } else if cfg!(target_arch = "x86") {
+        Some("i386".to_string())
+    } else {
+        // Make a guess... Sigh.
+        Some(format!("qemu-{}", std::env::consts::ARCH))
+    }
+}
+
+/// Returns true if the test setup believes Cross is running and `qemu` is
+/// needed to run ripgrep.
+///
+/// This is useful because it has been difficult to get some tests to pass
+/// under Cross.
+pub fn is_cross() -> bool {
+    std::env::var("CROSS_RUNNER").ok().map_or(false, |v| !v.is_empty())
+}
+
+/// Strips absolutely fucked `<jemalloc>:` lines from the output.
+///
+/// In theory this only happens under qemu, which is where our tests run under
+/// `cross`. But is messes with our tests, because... they don't expect the
+/// allocator to fucking write to stderr. I mean, what the fuck? Who prints a
+/// warning message with absolutely no instruction for what to do with it or
+/// how to disable it. Absolutely fucking bonkers.
+fn strip_jemalloc_nonsense(data: &[u8]) -> Vec<u8> {
+    let lines = data
+        .lines_with_terminator()
+        .filter(|line| !line.starts_with_str("<jemalloc>:"));
+    bstr::concat(lines)
 }

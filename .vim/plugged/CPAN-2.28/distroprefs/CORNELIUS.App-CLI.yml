@@ -1,9 +1,0 @@
----
-comment: |
-
-  https://rt.cpan.org/Ticket/Display.html?id=62241
-
-match:
-  distribution: '^CORNELIUS/App-CLI-\d'
-cpanconfig:
-  check_sigs: 0

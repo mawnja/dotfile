@@ -1,6 +1,0 @@
-2023-04-13 19:15:14.591 [info] Starting worker process with pid 9456 (type: fileWatcher, window: 1).
-2023-04-13 19:16:02.148 [info] Starting worker process with pid 15767 (type: fileWatcher, window: 3).
-2023-04-13 19:16:08.960 [error] RequestService#request (browser) - error https://az764295.vo.msecnd.net/extensions/marketplace.json {}
-2023-04-13 19:17:52.466 [info] Worker process with pid 15767 terminated normally (type: fileWatcher, window: 3).
-2023-04-13 19:17:53.088 [info] Starting worker process with pid 28279 (type: fileWatcher, window: 3).
-2023-04-13 19:20:13.363 [info] Worker process with pid 28279 terminated normally (type: fileWatcher, window: 3).

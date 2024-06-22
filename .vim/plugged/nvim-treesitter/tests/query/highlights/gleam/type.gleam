@@ -1,83 +1,84 @@
 pub type Cat {
-// <- keyword
-//  ^ keyword.function
-//       ^ type
-//           ^ punctuation.bracket
+// <- @keyword.modifier
+//  ^^^^ @keyword
+//       ^^^ @type
+//           ^ @punctuation.bracket
   Cat(name: String, cuteness: Int)
-  // <- type
-  // ^ punctuation.bracket
-  //  ^ property
-  //      ^ property
-  //        ^ type
-  //              ^ punctuation.delimiter
-  //                ^ property
-  //                        ^ property
-  //                          ^ type
-  //                             ^ punctuation.bracket
+  // <- @constructor
+  // ^ @punctuation.bracket
+  //  ^^^^ @variable.member
+  //      ^ @punctuation.delimiter
+  //        ^^^^^^ @type
+  //              ^ @punctuation.delimiter
+  //                ^^^^^^^^ @variable.member
+  //                        ^ @punctuation.delimiter
+  //                          ^^^ @type
+  //                             ^ @punctuation.bracket
 }
 
 fn cats() {
   Cat(name: "Nubi", cuteness: 2001)
-  // <- type
-  // ^ punctuation.bracket
-  //  ^ property
-  //      ^ property
-  //        ^ string
-  //              ^ punctuation.delimiter
-  //                ^ property
-  //                        ^ property
-  //                          ^ number
+  // <- @type
+  // ^ @punctuation.bracket
+  //  ^^^^ @variable.member
+  //      ^ @punctuation.delimiter
+  //        ^^^^^^ @string
+  //              ^ @punctuation.delimiter
+  //                ^^^^^^^^ @variable.member
+  //                        ^ @punctuation.delimiter
+  //                          ^^^^ @number
+  //                              ^ @punctuation.bracket
   Cat("Ginny", 1950)
-  // <- type
-  // ^ punctuation.bracket
-  //  ^ string
-  //         ^ punctuation.delimiter
-  //           ^ number
-  //               ^ punctuation.bracket
+  // <- @constructor
+  // ^ @punctuation.bracket
+  //  ^^^^^^^ @string
+  //         ^ @punctuation.delimiter
+  //           ^^^^ @number
+  //               ^ @punctuation.bracket
 }
 
 type Box(inner_type) {
-// <- keyword.function
-//   ^ type
-//      ^ punctuation.bracket
-//       ^ parameter
-//                 ^ punctuation.bracket
-//                   ^ punctuation.bracket
+// <- @keyword
+//   ^^^ @type
+//      ^ @punctuation.bracket
+//       ^^^^^^^^^^ @type
+//                 ^ @punctuation.bracket
+//                   ^ @punctuation.bracket
   Box(inner: inner_type)
-  // <- type
-  // ^ punctuation.bracket
-  //  ^ property
-  //       ^ property
-  //         ^ type
-  //                   ^ punctuation.bracket
+  // <- @constructor
+  // ^ @punctuation.bracket
+  //  ^^^^^ @variable.member
+  //       ^ @punctuation.delimiter
+  //         ^^^^^^^^^^ @type
+  //                   ^ @punctuation.bracket
 }
 
 pub opaque type Counter {
-// <- keyword
-//  ^ keyword
-//         ^ keyword.function
-//              ^ type
-//                      ^ punctuation.bracket
+// <- @keyword.modifier
+//  ^^^^^^ @keyword.modifier
+//         ^^^^ @keyword
+//              ^^^^^^^ @type
+//                      ^ @punctuation.bracket
   Counter(value: Int)
 }
 
 pub fn have_birthday(person) {
   Person(..person, age: person.age + 1, is_happy: True)
-  // <- type
-  //    ^ punctuation.bracket
-  //     ^ operator
-  //       ^ variable
-  //             ^ punctuation.delimiter
-  //               ^ property
-  //                  ^ property
-  //                    ^ variable
-  //                          ^ punctuation.delimiter
-  //                           ^ property
-  //                               ^ operator
-  //                                 ^ number
-  //                                  ^ punctuation.delimiter
-  //                                    ^ property
-  //                                            ^ property
-  //                                              ^ boolean
-  //                                                  ^ punctuation.bracket
+  // <- @constructor
+  //    ^ @punctuation.bracket
+  //     ^^ @operator
+  //       ^^^^^^ @variable
+  //             ^ @punctuation.delimiter
+  //               ^^^ @variable.member
+  //                  ^ @punctuation.delimiter
+  //                    ^^^^^^ @variable
+  //                          ^ @punctuation.delimiter
+  //                           ^^^ @variable.member
+  //                               ^ @operator
+  //                                 ^ @number
+  //                                  ^ @punctuation.delimiter
+  //                                    ^^^^^^^^ @variable.member
+  //                                            ^ @punctuation.delimiter
+  //                                              ^^^^ @boolean
+  //                                                  ^ @punctuation.bracket
 }

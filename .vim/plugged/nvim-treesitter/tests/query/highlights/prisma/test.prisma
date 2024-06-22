@@ -47,10 +47,17 @@ model Reaction {
 }
 
 enum ReactionType {
-// ^ keyword
+// ^ keyword.type
   LIKE
   HAHA
   SAD
   ANGRY
   // ^ constant
+}
+
+view ReactionView {
+// ^ keyword
+  id     Int @unique
+  postId Int
+  userId String
 }

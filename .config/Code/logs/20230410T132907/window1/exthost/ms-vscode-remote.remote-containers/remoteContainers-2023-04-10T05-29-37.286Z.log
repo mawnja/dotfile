@@ -1,6 +1,0 @@
-[2023-04-10T05:30:10.923Z] Start: Run: docker version --format {{.Server.APIVersion}}
-[2023-04-10T05:30:10.924Z] Dev Containers 0.282.0 in VS Code 1.75.1 (441438abd1ac652551dbe4d408dfcec8a499b8bf).
-[2023-04-10T05:30:10.961Z] Stop (38 ms): Run: docker version --format {{.Server.APIVersion}}
-[2023-04-10T05:30:10.962Z] 
-[2023-04-10T05:30:10.963Z] Got permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get http://%2Fvar%2Frun%2Fdocker.sock/v1.24/version: dial unix /var/run/docker.sock: connect: permission denied
-

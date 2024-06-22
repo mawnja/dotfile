@@ -4,7 +4,7 @@
 " Author:      Jan Larres <jan@majutsushi.net>
 " Licence:     Vim licence
 " Website:     https://preservim.github.io/tagbar
-" Version:     3.0.0
+" Version:     3.1.1
 " Note:        This plugin was heavily inspired by the 'Taglist' plugin by
 "              Yegappan Lakshmanan and uses a small amount of code from it.
 "
@@ -266,6 +266,7 @@ function! s:InitTypes() abort
             \ {'short' : 'd', 'long' : 'extends',            'fold' : 0, 'stl' : 0},
             \ {'short' : 'w', 'long' : 'with',               'fold' : 0, 'stl' : 0},
             \ {'short' : 'z', 'long' : 'implements',         'fold' : 0, 'stl' : 0},
+            \ {'short' : 'n', 'long' : 'on',                 'fold' : 0, 'stl' : 0},
             \ {'short' : 'r', 'long' : 'constructors',       'fold' : 0, 'stl' : 0},
             \ {'short' : 'a', 'long' : 'abstract functions', 'fold' : 0, 'stl' : 0},
             \ {'short' : 'f', 'long' : 'fields',             'fold' : 0, 'stl' : 0},
@@ -679,16 +680,16 @@ function! s:CheckForExCtags(silent) abort
     let ctags_output = s:ExecuteCtags(ctags_cmd)
 
     call tagbar#debug#log("Command output:\n" . ctags_output)
-    call tagbar#debug#log('Exit code: ' . v:shell_error)
+    call tagbar#debug#log('Exit code: ' . s:shell_error)
 
-    if v:shell_error || ctags_output !~# '\(Exuberant\|Universal\) Ctags'
+    if s:shell_error || ctags_output !~# '\(Exuberant\|Universal\) Ctags'
         let l:errmsg = 'Tagbar: Ctags doesn''t seem to be Exuberant Ctags!'
         let l:infomsg = 'BSD ctags will NOT WORK.' .
             \ ' Please download Exuberant Ctags from ctags.sourceforge.net' .
             \ ' and install it in a directory in your $PATH' .
             \ ' or set g:tagbar_ctags_bin.'
         call s:CtagsErrMsg(l:errmsg, l:infomsg, a:silent,
-                         \ ctags_cmd, ctags_output, v:shell_error)
+                         \ ctags_cmd, ctags_output, s:shell_error)
         let s:checked_ctags = 2
         return 0
     elseif !s:CheckExCtagsVersion(ctags_output)
@@ -770,19 +771,18 @@ endfunction
 
 " s:CheckFTCtags() {{{2
 function! s:CheckFTCtags(bin, ftype) abort
-    if executable(a:bin)
-        return a:bin
-    endif
-
     if exists('g:tagbar_type_' . a:ftype)
         let userdef = g:tagbar_type_{a:ftype}
-        if has_key(userdef, 'ctagsbin')
-            return userdef.ctagsbin
-        else
+        if has_key(userdef, 'kinds')
             return ''
+        elseif has_key(userdef, 'ctagsbin')
+            return userdef.ctagsbin
         endif
     endif
 
+    if executable(a:bin)
+        return a:bin
+    endif
     return ''
 endfunction
 
@@ -797,7 +797,7 @@ function! s:GetSupportedFiletypes() abort
 
     let ctags_output = s:ExecuteCtags(ctags_cmd)
 
-    if v:shell_error
+    if s:shell_error
         " this shouldn't happen as potential problems would have already been
         " caught by the previous ctags checking
         return
@@ -882,7 +882,7 @@ function! s:OpenWindow(flags) abort
     if tagbarwinnr != -1
         if winnr() != tagbarwinnr && jump
             call s:goto_win(tagbarwinnr)
-            call s:HighlightTag(g:tagbar_autoshowtag != 2, 1, curline)
+            call s:HighlightTag(g:tagbar_autoshowtag != 2, 1, 1, curline)
         endif
         call tagbar#debug#log('OpenWindow finished, Tagbar already open')
         return
@@ -948,7 +948,7 @@ function! s:OpenWindow(flags) abort
     endif
 
     call s:AutoUpdate(curfile, 0)
-    call s:HighlightTag(g:tagbar_autoshowtag != 2, 1, curline)
+    call s:HighlightTag(g:tagbar_autoshowtag != 2, 1, 1, curline)
 
     if !(g:tagbar_autoclose || autofocus || g:tagbar_autofocus)
         if exists('*win_getid')
@@ -1452,10 +1452,10 @@ function! s:ExecuteCtagsOnFile(fname, realfname, typeinfo) abort
 
     let ctags_output = s:ExecuteCtags(ctags_cmd)
 
-    if v:shell_error || ctags_output =~? 'Warning: cannot open \(source\|input\) file'
+    if s:shell_error || ctags_output =~? 'Warning: cannot open \(source\|input\) file'
         call tagbar#debug#log('Command output:')
         call tagbar#debug#log(ctags_output)
-        call tagbar#debug#log('Exit code: ' . v:shell_error)
+        call tagbar#debug#log('Exit code: ' . s:shell_error)
         " Only display an error message if the Tagbar window is open and we
         " haven't seen the error before.
         if bufwinnr(s:TagbarBufName()) != -1 &&
@@ -1469,7 +1469,7 @@ function! s:ExecuteCtagsOnFile(fname, realfname, typeinfo) abort
                     echomsg line
                 endfor
             endif
-            echomsg 'Exit code: ' . v:shell_error
+            echomsg 'Exit code: ' . s:shell_error
         endif
         return -1
     endif
@@ -2251,12 +2251,14 @@ function! s:HighlightTag(openfolds, ...) abort
         return
     endif
 
+    let noauto = a:0 > 0 ? a:1 : 0
+
     let tagline = 0
 
-    let force = a:0 > 0 ? a:1 : 0
+    let force = a:0 > 1 ? a:2 : 0
 
-    if a:0 > 1
-        let tag = s:GetNearbyTag(g:tagbar_highlight_method, 0, a:2)
+    if a:0 > 2
+        let tag = s:GetNearbyTag(g:tagbar_highlight_method, 0, a:3)
     else
         let tag = s:GetNearbyTag(g:tagbar_highlight_method, 0)
     endif
@@ -2334,7 +2336,7 @@ function! s:HighlightTag(openfolds, ...) abort
     finally
         if !in_tagbar
             call s:goto_win(pprevwinnr, 1)
-            call s:goto_win(prevwinnr, 1)
+            call s:goto_win(prevwinnr, noauto)
         endif
         redraw
     endtry
@@ -2460,7 +2462,7 @@ function! s:JumpToTag(stay_in_tagbar, ...) abort
     normal! zv
 
     if a:stay_in_tagbar
-        call s:HighlightTag(0)
+        call s:HighlightTag(0, 1)
         call s:goto_win(tagbarwinnr)
         redraw
     elseif g:tagbar_autoclose || autoclose
@@ -2932,7 +2934,7 @@ function! s:AutoUpdate(fname, force, ...) abort
         let s:nearby_disabled = 0
     endif
 
-    call s:HighlightTag(0)
+    call s:HighlightTag(0, 1)
     call s:SetStatusLine()
     call tagbar#debug#log('AutoUpdate finished successfully')
 endfunction
@@ -3155,8 +3157,9 @@ function! s:ExecuteCtags(ctags_cmd) abort
 
     if tagbar#debug#enabled()
         silent 5verbose let ctags_output = system(a:ctags_cmd)
+        let s:shell_error = v:shell_error
         call tagbar#debug#log(v:statusmsg)
-        call tagbar#debug#log('Exit code: ' . v:shell_error)
+        call tagbar#debug#log('Exit code: ' . s:shell_error)
         redraw!
     else
         let py_version = get(g:, 'tagbar_python', 1)
@@ -3515,7 +3518,15 @@ function! s:HandleOnlyWindow() abort
     let vim_quitting = s:vim_quitting
     let s:vim_quitting = 0
 
-    if vim_quitting && !s:HasOpenFileWindows()
+    let file_open = s:HasOpenFileWindows()
+
+    if vim_quitting && file_open == 2 && !g:tagbar_autoclose_netrw
+        call tagbar#debug#log('Closing Tagbar due to QuitPre - netrw only remaining window')
+        call s:CloseWindow()
+        return
+    endif
+
+    if vim_quitting && file_open != 1
         call tagbar#debug#log('Closing Tagbar window due to QuitPre event')
         if winnr('$') >= 1
             call s:goto_win(tagbarwinnr, 1)
@@ -3633,11 +3644,22 @@ endfunction
 
 " s:HasOpenFileWindows() {{{2
 function! s:HasOpenFileWindows() abort
+    let netrw = 0
+
     for i in range(1, winnr('$'))
         let buf = winbufnr(i)
 
-        " skip unlisted buffers, except for netrw
-        if !buflisted(buf) && getbufvar(buf, '&filetype') !=# 'netrw'
+        " If the buffer filetype is netrw (or nerdtree) then mark netrw
+        " for final return. If we don't find any other window, we want
+        " to leave the netrw window open and not close vim entirely when
+        " called from the HandleOnlyWindow() code path.
+        let buf_ft = getbufvar(buf, '&filetype')
+        if buf_ft ==# 'netrw' || buf_ft ==# 'nerdtree'
+            let netrw = 1
+        endif
+
+        " skip unlisted buffers
+        if !buflisted(buf)
             continue
         endif
 
@@ -3654,6 +3676,10 @@ function! s:HasOpenFileWindows() abort
         return 1
     endfor
 
+    if netrw
+        call tagbar#debug#log('netrw only window remaining')
+        return 2
+    endif
     return 0
 endfunction
 
@@ -3791,7 +3817,7 @@ function! tagbar#highlighttag(openfolds, force) abort
         echohl None
         return
     endif
-    call s:HighlightTag(a:openfolds, a:force)
+    call s:HighlightTag(a:openfolds, 1, a:force)
 endfunction
 
 function! tagbar#RestoreSession() abort

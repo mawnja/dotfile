@@ -1,48 +1,47 @@
-;; Comments
-(comment) @comment
+; Comments
+(comment) @comment @spell
 
-;; Generic Key-value pairs and dictionary keywords
+; Generic Key-value pairs and dictionary keywords
 (key_value
-    keyword: (identifier) @function
-)
+  keyword: (identifier) @function)
+
 (dict
-    key: (identifier) @type
-)
+  key: (identifier) @type)
 
-;; Macros
+; Macros
 (macro
-    "$" @conditional
-    (prev_scope)* @conditional
-    (identifier)* @namespace
-)
+  "$" @keyword.conditional
+  (prev_scope)* @keyword.conditional
+  (identifier)* @module)
 
+; Directives
+"#" @keyword.conditional
 
-;; Directives
-"#" @conditional
 (preproc_call
-    directive: (identifier)* @conditional
-    argument: (identifier)* @namespace
-)
-(
-    (preproc_call
-        argument: (identifier)* @namespace
-    ) @conditional
-    (#match? @conditional "ifeq")
-)
-(
-    (preproc_call) @conditional
-    (#match? @conditional "(else|endif)")
-)
+  directive: (identifier)* @keyword.conditional
+  argument: (identifier)* @module)
 
-;; Literal numbers and strings
-(number_literal) @float
+((preproc_call
+  argument: (identifier)* @module) @keyword.conditional
+  (#eq? @keyword.conditional "ifeq"))
+
+((preproc_call) @keyword.conditional
+  (#any-of? @keyword.conditional "else" "endif"))
+
+; Literals
+(number_literal) @number.float
+
 (string_literal) @string
+
 (escape_sequence) @string.escape
 
-;; Treat [m^2 s^-2] the same as if it was put in numbers format
-(dimensions dimension: (identifier) @float)
+(boolean) @boolean
 
-;; Punctuation
+; Treat [m^2 s^-2] the same as if it was put in numbers format
+(dimensions
+  dimension: (identifier) @number.float)
+
+; Punctuation
 [
   "("
   ")"
@@ -59,11 +58,7 @@
   "$$"
 ] @punctuation.bracket
 
-[
-  ";"
-] @punctuation.delimiter
+";" @punctuation.delimiter
 
-;; Special identifiers
-([(identifier) "on" "off" "true" "false" "yes" "no"] @constant.builtin
-(#match? @constant.builtin "^(uniform|non-uniform|and|or|on|off|true|false|yes|no)$")
-)
+((identifier) @constant.builtin
+  (#any-of? @constant.builtin "uniform" "non-uniform" "and" "or"))

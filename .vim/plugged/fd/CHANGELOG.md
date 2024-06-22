@@ -1,4 +1,148 @@
-# Upcoming release
+# 10.1.0
+
+## Features
+
+- Allow passing an optional argument to `--strip-cwd-prefix` of "always", "never", or "auto". to force whether the cwd prefix is stripped or not.
+- Add a `--format` option which allows using a format template for direct ouput similar to the template used for `--exec`. (#1043)
+
+## Bugfixes
+- Fix aarch64 page size again. This time it should actually work. (#1085, #1549) (@tavianator)
+
+
+## Other
+
+- aarch64-apple-darwin target added to builds on the release page. Note that this is a tier 2 rust target.
+
+# v10.0.0
+
+## Features
+
+- Add `dir` as an alias to `directory` when using `-t` \ `--type`, see #1460 and #1464 (@Ato2207).
+- Add support for @%s date format in time filters similar to GNU date (seconds since Unix epoch for --older/--newer), see #1493 (@nabellows)
+- Breaking: No longer automatically ignore `.git` when using `--hidden` with vcs ignore enabled. This reverts the change in v9.0.0. While this feature
+  was often useful, it also broke some existing workflows, and there wasn't a good way to opt out of it. And there isn't really a good way for us to add
+  a way to opt out of it. And you can easily get similar behavior by adding `.git/` to your global fdignore file.
+    See #1457.
+
+## Bugfixes
+
+- Respect NO_COLOR environment variable with `--list-details` option. (#1455)
+- Fix bug that would cause hidden files to be included despite gitignore rules
+  if search path is "." (#1461, BurntSushi/ripgrep#2711).
+- aarch64 builds now use 64k page sizes with jemalloc. This fixes issues on some systems, such as ARM Macs that
+  have a larger system page size than the system that the binary was built on. (#1547)
+- Address [CVE-2024-24576](https://blog.rust-lang.org/2024/04/09/cve-2024-24576.html), by increasing minimum rust version.
+
+
+## Changes
+- Minimum supported rust version is now 1.77.2
+
+
+# v9.0.0
+
+## Performance
+
+- Performance has been *significantly improved*, both due to optimizations in the underlying `ignore`
+  crate (#1429), and in `fd` itself (#1422, #1408, #1362) - @tavianator.
+  [Benchmarks results](https://gist.github.com/tavianator/32edbe052f33ef60570cf5456b59de81) show gains
+  of 6-8x for full traversals of smaller directories (100k files) and up to 13x for larger directories (1M files).
+
+- The default number of threads is now constrained to be at most 64. This should improve startup time on
+  systems with many CPU cores. (#1203, #1410, #1412, #1431) - @tmccombs and @tavianator
+
+- New flushing behavior when writing output to stdout, providing better performance for TTY and non-TTY
+  use cases, see #1452 and #1313 (@tavianator).
+
+## Features
+
+- Support character and block device file types, see #1213 and #1336 (@cgzones)
+- Breaking: `.git/` is now ignored by default when using `--hidden` / `-H`, use `--no-ignore` / `-I` or
+  `--no-ignore-vcs` to override, see #1387 and #1396 (@skoriop)
+
+## Bugfixes
+
+- Fix `NO_COLOR` support, see #1421 (@acuteenvy)
+
+## Other
+
+- Fixed documentation typos, see #1409 (@marcospb19)
+
+## Thanks
+
+Special thanks to @tavianator for his incredible work on performance in the `ignore` crate and `fd` itself.
+
+
+
+# v8.7.1
+
+## Bugfixes
+
+- `-1` properly conflicts with the exec family of options.
+- `--max-results` overrides `-1`
+- `--quiet` properly conflicts with the exec family of options. This used to be the case, but broke during the switch to clap-derive
+- `--changed-within` now accepts a space as well as a "T" as the separator between date and time (due to update of chrono dependency)
+
+## Other
+- Many dependencies were updated
+- Some documentation was updated and fixed
+
+# v8.7.0
+
+## Features
+
+- Add flag --no-require-git to always respect gitignore files, see #1216 (@vegerot)
+
+## Bugfixes
+
+- Fix logic for when to use global ignore file. There was a bug where the only case where the
+  global ignore file wasn't processed was if `--no-ignore` was passed, but neither `--unrestricted`
+  nor `--no-global-ignore-file` is passed. See #1209
+
+# v8.6.0
+
+## Features
+
+- New `--and <pattern>` option to add additional patterns that must also be matched. See #315
+  and #1139 (@Uthar)
+- Added `--changed-after` as alias for `--changed-within`, to have a name consistent with `--changed-before`.
+
+
+## Changes
+
+- Breaking: On Unix-like systems, `--type executable` now additionally checks if
+  the file is executable by the current user, see #1106 and #1169 (@ptipiak)
+
+
+## Bugfixes
+
+- Use fd instead of fd.exe for Powershell completions (when completions are generated on windows)
+
+
+## Other
+
+
+# v8.5.3
+
+## Bugfixes
+
+- Fix completion generation to not include full path of fd command
+- Fix build error if completions feature is disabled
+
+# v8.5.2
+
+## Bugfixes
+
+- Fix --owner option value parsing, see #1163 and #1164 (@tmccombs)
+
+
+# v8.5.1
+
+## Bugfixes
+
+- Fix --threads/-j option value parsing, see #1160 and #1162 (@sharkdp)
+
+
+# v8.5.0
 
 ## Features
 
@@ -10,18 +154,28 @@
   had before 8.3.0, i.e. there will be no leading `./` prefixes, unless `--exec`/`-x`,
   `--exec-batch`/`-X`, or `--print0`/`-0` are used. `--strip-cwd-prefix` can be used to strip that
   prefix in those cases. See #1046, #1115, and #1121 (@tavianator)
+- `fd` could previously crash with a panic due to a race condition in Rusts standard library
+  (see https://github.com/rust-lang/rust/issues/39364). This has been fixed by switching to a different
+  message passing implementation, see #1060 and #1146 (@tavianator)
+- `fd`s memory usage will not grow unboundedly on huge directory trees, see #1146 (@tavianator)
 - fd returns an error when current working directory does not exist while a search path is
   specified, see #1072 (@vijfhoek)
 - Improved "command not found" error message, see #1083 and #1109 (@themkat)
+- Preserve command exit codes when using `--exec-batch`, see #1136 and #1137 (@amesgen)
 
 ## Changes
 
 - No leading `./` prefix for non-interactive results, see above.
+- fd now colorizes paths in parallel, significantly improving performance, see #1148 (@tavianator)
+- fd can now avoid `stat` syscalls even when colorizing paths, as long as the color scheme doesn't
+  require metadata, see #1148 (@tavianator)
+- The statically linked `musl` versions of `fd` now use `jmalloc`, leading to a significant performance
+  improvement, see #1062 (@tavianator)
 
 ## Other
 
 - Added link back to GitHub in man page and `--help` text, see #1086 (@scottchiefbaker)
-
+- Major update in how `fd` handles command line options internally, see #1067 (@tmccombs)
 
 # v8.4.0
 

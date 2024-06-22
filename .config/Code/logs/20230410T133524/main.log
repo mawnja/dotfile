@@ -1,7 +1,0 @@
-2023-04-10 13:35:24.726 [info] update#setState idle
-2023-04-10 13:35:45.892 [info] [UtilityProcess id: 1, type: extensionHost, pid: <none>]: creating new...
-2023-04-10 13:35:45.905 [info] [UtilityProcess id: 1, type: extensionHost, pid: 1577]: successfully created
-2023-04-10 13:35:54.729 [info] update#setState checking for updates
-2023-04-10 13:35:54.734 [info] update#setState available for download
-2023-04-11 19:35:28.471 [info] [UtilityProcess id: 1, type: extensionHost, pid: 1577]: received exit event with code 0
-2023-04-11 19:35:28.472 [info] Extension host with pid 1577 exited with code: 0, signal: unknown.

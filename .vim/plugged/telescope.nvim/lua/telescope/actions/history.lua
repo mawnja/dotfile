@@ -11,7 +11,7 @@ local uv = vim.loop
 --- A base implementation of a prompt history that provides a simple history
 --- and can be replaced with a custom implementation.
 ---
---- For example: We provide a extension for a smart history that uses sql.nvim
+--- For example: We provide an extension for a smart history that uses sql.nvim
 --- to map histories to metadata, like the calling picker or cwd.
 ---
 --- So you have a history for:
@@ -23,7 +23,7 @@ local uv = vim.loop
 --- - live_grep   project_2
 --- - etc
 ---
---- See github.com/nvim-telescope/telescope-smart-history.nvim
+--- See https://github.com/nvim-telescope/telescope-smart-history.nvim
 ---@brief ]]
 
 -- TODO(conni2461): currently not present in plenary path only sync.

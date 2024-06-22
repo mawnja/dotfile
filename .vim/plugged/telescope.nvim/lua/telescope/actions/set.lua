@@ -1,5 +1,5 @@
 ---@tag telescope.actions.set
----@config { ["module"] = "telescope.actions.set" }
+---@config { ["module"] = "telescope.actions.set", ["name"] = "ACTIONS_SET" }
 
 ---@brief [[
 --- Telescope action sets are used to provide an interface for managing
@@ -131,10 +131,22 @@ action_set.edit = function(prompt_bufnr, command)
   local entry_bufnr = entry.bufnr
 
   local picker = action_state.get_current_picker(prompt_bufnr)
-  require("telescope.actions").close(prompt_bufnr)
+  require("telescope.pickers").on_close_prompt(prompt_bufnr)
+  pcall(vim.api.nvim_set_current_win, picker.original_win_id)
+  local win_id = picker.get_selection_window(picker, entry)
 
   if picker.push_cursor_on_edit then
     vim.cmd "normal! m'"
+  end
+
+  if picker.push_tagstack_on_edit then
+    local from = { vim.fn.bufnr "%", vim.fn.line ".", vim.fn.col ".", 0 }
+    local items = { { tagname = vim.fn.expand "<cword>", from = from } }
+    vim.fn.settagstack(vim.fn.win_getid(), { items = items }, "t")
+  end
+
+  if win_id ~= 0 and a.nvim_get_current_win() ~= win_id then
+    vim.api.nvim_set_current_win(win_id)
   end
 
   if entry_bufnr then
@@ -146,8 +158,26 @@ action_set.edit = function(prompt_bufnr, command)
     -- check if we didn't pick a different buffer
     -- prevents restarting lsp server
     if vim.api.nvim_buf_get_name(0) ~= filename or command ~= "edit" then
-      filename = Path:new(vim.fn.fnameescape(filename)):normalize(vim.loop.cwd())
-      pcall(vim.cmd, string.format("%s %s", command, filename))
+      filename = Path:new(filename):normalize(vim.loop.cwd())
+      pcall(vim.cmd, string.format("%s %s", command, vim.fn.fnameescape(filename)))
+    end
+  end
+
+  -- HACK: fixes folding: https://github.com/nvim-telescope/telescope.nvim/issues/699
+  if vim.wo.foldmethod == "expr" then
+    vim.schedule(function()
+      vim.opt.foldmethod = "expr"
+    end)
+  end
+
+  local pos = vim.api.nvim_win_get_cursor(0)
+  if col == nil then
+    if row == pos[1] then
+      col = pos[2] + 1
+    elseif row == nil then
+      row, col = pos[1], pos[2] + 1
+    else
+      col = 1
     end
   end
 
@@ -167,13 +197,13 @@ end
 --      Valid directions include: "1", "-1"
 action_set.scroll_previewer = function(prompt_bufnr, direction)
   local previewer = action_state.get_current_picker(prompt_bufnr).previewer
+  local status = state.get_status(prompt_bufnr)
 
-  -- Check if we actually have a previewer
-  if type(previewer) ~= "table" or previewer.scroll_fn == nil then
+  -- Check if we actually have a previewer and a preview window
+  if type(previewer) ~= "table" or previewer.scroll_fn == nil or status.preview_win == nil then
     return
   end
 
-  local status = state.get_status(prompt_bufnr)
   local default_speed = vim.api.nvim_win_get_height(status.preview_win) / 2
   local speed = status.picker.layout_config.scroll_speed or default_speed
 

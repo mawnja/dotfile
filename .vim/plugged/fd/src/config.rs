@@ -8,6 +8,7 @@ use crate::filetypes::FileTypes;
 #[cfg(unix)]
 use crate::filter::OwnerFilter;
 use crate::filter::{SizeFilter, TimeFilter};
+use crate::fmt::FormatTemplate;
 
 /// Configuration options for *fd*.
 pub struct Config {
@@ -29,6 +30,9 @@ pub struct Config {
 
     /// Whether to respect VCS ignore files (`.gitignore`, ..) or not.
     pub read_vcsignore: bool,
+
+    /// Whether to require a `.git` directory to respect gitignore files.
+    pub require_git_to_read_vcsignore: bool,
 
     /// Whether to respect the global ignore file or not.
     pub read_global_ignore: bool,
@@ -82,6 +86,9 @@ pub struct Config {
     /// The value (if present) will be a lowercase string without leading dots.
     pub extensions: Option<RegexSet>,
 
+    /// A format string to use to format results, similarly to exec
+    pub format: Option<FormatTemplate>,
+
     /// If a value is supplied, each item found will be used to generate and execute commands.
     pub command: Option<Arc<CommandSet>>,
 
@@ -119,4 +126,11 @@ pub struct Config {
 
     /// Whether or not to strip the './' prefix for search results
     pub strip_cwd_prefix: bool,
+}
+
+impl Config {
+    /// Check whether results are being printed.
+    pub fn is_printing(&self) -> bool {
+        self.command.is_none()
+    }
 }

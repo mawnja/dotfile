@@ -1,7 +1,0 @@
---- 
-match:
-  distribution: '^CJM/Pod-Weaver-Section-Template-\d'
-depends:
-  requires:
-    Dist::Zilla: 0
-    Dist::Zilla::Plugin::PodWeaver: 0

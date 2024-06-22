@@ -1,11 +1,12 @@
-Release Checklist
------------------
+# Release Checklist
+
 * Ensure local `master` is up to date with respect to `origin/master`.
 * Run `cargo update` and review dependency updates. Commit updated
   `Cargo.lock`.
 * Run `cargo outdated` and review semver incompatible updates. Unless there is
   a strong motivation otherwise, review and update every dependency. Also
   run `--aggressive`, but don't update to crates that are still in beta.
+* Update date in `crates/core/flags/doc/template.rg.1`.
 * Review changes for every crate in `crates` since the last ripgrep release.
   If the set of changes is non-empty, issue a new release for that crate. Check
   crates in the following order. After updating a crate, ensure minimal
@@ -26,7 +27,8 @@ Release Checklist
   `cargo update -p ripgrep` so that the `Cargo.lock` is updated. Commit the
   changes and create a new signed tag. Alternatively, use
   `cargo-up --no-push --no-release Cargo.toml {VERSION}` to automate this.
-* Push changes to GitHub, NOT including the tag. (But do not publish new
+* Run `cargo package` and ensure it succeeds.
+* Push changes to GitHub, NOT including the tag. (But do not publish a new
   version of ripgrep to crates.io yet.)
 * Once CI for `master` finishes successfully, push the version tag. (Trying to
   do this in one step seems to result in GitHub Actions not seeing the tag
@@ -39,8 +41,8 @@ Release Checklist
   > tool that recursively searches the current directory for a regex pattern.
   > By default, ripgrep will respect gitignore rules and automatically skip
   > hidden files/directories and binary files.
-* Run `ci/build-deb` locally and manually upload the deb package to the
-  release.
+* Run `git checkout {VERSION} && ci/build-and-publish-m2 {VERSION}` on a macOS
+  system with Apple silicon.
 * Run `cargo publish`.
 * Run `ci/sha256-releases {VERSION} >> pkg/brew/ripgrep-bin.rb`. Then edit
   `pkg/brew/ripgrep-bin.rb` to update the version number and sha256 hashes.
@@ -52,5 +54,6 @@ Release Checklist
   Unreleased changes. Release notes have not yet been written.
   ```
 
-Note that
-[`cargo-up` can be found in BurntSushi's dotfiles](https://github.com/BurntSushi/dotfiles/blob/master/bin/cargo-up).
+Note that [`cargo-up` can be found in BurntSushi's dotfiles][dotfiles].
+
+[dotfiles]: https://github.com/BurntSushi/dotfiles/blob/master/bin/cargo-up

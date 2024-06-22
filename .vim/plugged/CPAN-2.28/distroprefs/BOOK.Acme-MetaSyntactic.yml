@@ -1,4 +1,0 @@
----
-match:
-  distribution: 'BOOK/Acme-MetaSyntactic-0.99.tar.gz'
-goto: 'BOOK/Acme-MetaSyntactic-0.99_02.tar.gz'

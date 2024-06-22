@@ -1,7 +1,0 @@
----
-match:
-  distribution: 'THOSPEL/Heap-Simple-Perl-0.14'
-pl:
-  expect:
-    - "Run Heap::Simple benchmarks"
-    - "n\n"

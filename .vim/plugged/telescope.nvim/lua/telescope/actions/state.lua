@@ -1,5 +1,5 @@
 ---@tag telescope.actions.state
----@config { ["module"] = "telescope.actions.state" }
+---@config { ["module"] = "telescope.actions.state", ["name"] = "ACTIONS_STATE" }
 
 ---@brief [[
 --- Functions to be used to determine the current state of telescope.
@@ -17,7 +17,7 @@ function action_state.get_selected_entry()
   return global_state.get_global_key "selected_entry"
 end
 
---- Gets the current line
+--- Gets the current line in the search prompt
 function action_state.get_current_line()
   return global_state.get_global_key "current_line" or ""
 end

@@ -4,6 +4,7 @@ call plug#begin('~/.vim/plugged')
 Plug 'Yggdroot/indentLine'
 "Plug 'ervandew/supertab'
 Plug 'crusoexia/vim-monokai'            "配色
+Plug 'maxmx03/solarized.nvim'
 Plug 'vim-airline/vim-airline'          "强大的状态栏和标签栏，当打开多个文本时，可以用它进行快速的切换，是一个很强大的工具
 Plug 'vim-airline/vim-airline-themes'   "airline的主题
 "Plug 'luochen1990/rainbow'
@@ -12,7 +13,7 @@ Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'majutsushi/tagbar'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'nvim-lua/plenary.nvim'
-Plug 'nvim-telescope/telescope.nvim', {'tag': '0.1.0'}
+Plug 'nvim-telescope/telescope.nvim', {'tag': '0.1.6'}
 Plug 'nvim-telescope/telescope-github.nvim'
 Plug 'nvim-treesitter/nvim-treesitter'
 Plug 'jacquesg/p5-Neovim-Ext'
@@ -241,50 +242,11 @@ command! -nargs=0 OR :call CocAction('runCommand', 'editor.action.organizeImport
 " telescope config
 " Find files using Telescope command-line sugar.
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-"nnoremap <leader>ff <cmd>Telescope find_files<cr>
-"nnoremap <leader>fg <cmd>Telescope live_grep<cr>
-"nnoremap <leader>fb <cmd>Telescope buffers<cr>
-"nnoremap <leader>fh <cmd>Telescope help_tags<cr>
-
 " Using Lua functions
 nnoremap <c-p> <cmd>lua require('telescope.builtin').find_files()<cr>
 nnoremap <c-g> <cmd>lua require('telescope.builtin').live_grep()<cr>
 nnoremap <c-b> <cmd>lua require('telescope.builtin').buffers()<cr>
 nnoremap <c-h> <cmd>lua require('telescope.builtin').help_tags()<cr>
-
-lua << EOF
-require('telescope').setup{
-    defaults = {
-        -- Default configuration for telescope goes here:
-        -- config_key = value,
-        mappings = {
-            i = {
-                -- map actions.which_key to <C-h> (default: <C-/>)
-                -- actions.which_key shows the mappings for your picker,
-                -- e.g. git_{create, delete, ...}_branch for the git_branches picker
-                ["<C-h>"] = "which_key"
-            }
-        }
-    },
-    pickers = {
-        -- Default configuration for builtin pickers goes here:
-        -- picker_name = {
-            --   picker_config_key = value,
-            --   ...
-        -- }
-        -- Now the picker_config_key will be applied every time you call this
-        -- builtin picker
-    },
-    extensions = {
-        -- Your extension configuration goes here:
-        -- extension_name = {
-        --   extension_config_key = value,
-        -- }
-        -- please take a look at the readme of the extension you want to configure
-    }
-}
-EOF
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " nvim的基本配置
@@ -322,10 +284,12 @@ set tabstop=4           "设置TAB宽度
 set history=1000        "设置历史记录条数   
 " 配色方案
 "let g:seoul256_background = 234
+set background=light
 "set background=dark
 set shortmess=atl
+colorscheme solarized
 "colorscheme monokai
-colorscheme desert
+"colorscheme desert
 "colorscheme morning
 set guifont=Consolas:h17
 "共享剪切板

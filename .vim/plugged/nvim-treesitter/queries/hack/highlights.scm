@@ -1,42 +1,54 @@
 (variable) @variable
+
 (identifier) @variable
+
 ((variable) @variable.builtin
- (#eq? @variable.builtin "$this"))
+  (#eq? @variable.builtin "$this"))
 
 (braced_expression) @none
 
 (scoped_identifier
- (qualified_identifier 
-   (identifier) @type))
-
-(comment) @comment
-(heredoc) @comment
+  (qualified_identifier
+    (identifier) @type))
 
 [
- "function"
-] @keyword.function
+  (comment)
+  (heredoc)
+] @comment @spell
+
+((comment) @comment.documentation
+  (#lua-match? @comment.documentation "^/[*][*][^*].*[*]/$"))
+
+"function" @keyword.function
 
 [
- "async"
- "await"
- "type"
- "interface"
- "implements"
- "class"
- "protected"
- "private"
- "public"
- "using"
- "namespace"
- "attribute"
- "const"
- (xhp_modifier)
- (final_modifier)
- "extends"
- "insteadof"
+  "implements"
+  "using"
+  "attribute"
+  "const"
+  "extends"
+  "insteadof"
 ] @keyword
 
-"use" @include
+[
+  "class"
+  "type"
+  "interface"
+  "namespace"
+] @keyword.type
+
+[
+  "async"
+  "await"
+] @keyword.coroutine
+
+[
+  "use"
+  "include"
+  "include_once"
+  "require"
+  "require_once"
+] @keyword.import
 
 [
   "new"
@@ -47,9 +59,15 @@
   "as"
 ] @keyword.operator
 
+"return" @keyword.return
+
 [
- "return"
-] @keyword.return
+  (abstract_modifier)
+  (final_modifier)
+  (static_modifier)
+  (visibility_modifier)
+  (xhp_modifier)
+] @keyword.modifier
 
 [
   "shape"
@@ -67,9 +85,7 @@
   "noreturn"
 ] @type.builtin
 
-[
-  (null)
-] @constant.builtin
+(null) @constant.builtin
 
 [
   (true)
@@ -77,14 +93,23 @@
 ] @boolean
 
 (type_specifier) @type
+
 (new_expression
   (_) @type)
 
-(alias_declaration "newtype" . (_) @type)
-(alias_declaration "type" . (_) @type)
+(alias_declaration
+  "newtype"
+  .
+  (_) @type)
+
+(alias_declaration
+  "type"
+  .
+  (_) @type)
 
 (class_declaration
   name: (identifier) @type)
+
 (type_parameter
   name: (identifier) @type)
 
@@ -92,10 +117,10 @@
   (qualified_identifier
     (identifier) @type .))
 
-(attribute_modifier) @attribute
 [
- "@required"
- "@lateinit"
+  "@required"
+  "@lateinit"
+  (attribute_modifier)
 ] @attribute
 
 [
@@ -113,7 +138,6 @@
   "/="
   "%="
   "**="
-
   "==>"
   "|>"
   "??"
@@ -141,13 +165,10 @@
   "/"
   "%"
   "**"
-
   "++"
   "--"
   "!"
-
   "?:"
-
   "="
   "??="
   ".="
@@ -163,108 +184,153 @@
   "%="
   "**="
   "=>"
-
-  ;; type modifiers
+  ; type modifiers
   "@"
   "?"
   "~"
 ] @operator
 
 (integer) @number
-(float) @float
+
+(float) @number.float
 
 (parameter
-  (variable) @parameter)
+  (variable) @variable.parameter)
 
 (call_expression
-  function: (qualified_identifier (identifier) @function .))
+  function: (qualified_identifier
+    (identifier) @function.call .))
 
 (call_expression
-  function: (scoped_identifier (identifier)  @function .))
+  function: (scoped_identifier
+    (identifier) @function.call .))
 
 (call_expression
   function: (selection_expression
-              (qualified_identifier (identifier) @method .)))
+    (qualified_identifier
+      (identifier) @function.method.call .)))
 
 (qualified_identifier
-  (_) @namespace .
+  (_) @module
+  .
   (_))
 
 (use_statement
   (qualified_identifier
-  (_) @namespace .)
+    (_) @module .)
   (use_clause))
 
 (use_statement
-  (use_type "namespace")
+  (use_type
+    "namespace")
   (use_clause
     (qualified_identifier
-         (identifier) @namespace .)
-    alias: (identifier)? @namespace))
+      (identifier) @module .)
+    alias: (identifier)? @module))
 
 (use_statement
-  (use_type "const")
+  (use_type
+    "const")
   (use_clause
     (qualified_identifier
-         (identifier) @constant .)
+      (identifier) @constant .)
     alias: (identifier)? @constant))
 
 (use_statement
-  (use_type "function")
+  (use_type
+    "function")
   (use_clause
     (qualified_identifier
-         (identifier) @function .)
+      (identifier) @function .)
     alias: (identifier)? @function))
 
 (use_statement
-  (use_type "type")
+  (use_type
+    "type")
   (use_clause
     (qualified_identifier
-         (identifier) @type .)
+      (identifier) @type .)
     alias: (identifier)? @type))
 
 (use_clause
-  (use_type "namespace")
+  (use_type
+    "namespace")
   (qualified_identifier
-  (_) @namespace .)
-  alias: (identifier)? @namespace)
+    (_) @module .)
+  alias: (identifier)? @module)
 
 (use_clause
-  (use_type "function")
+  (use_type
+    "function")
   (qualified_identifier
-  (_) @function .)
+    (_) @function .)
   alias: (identifier)? @function)
 
 (use_clause
-  (use_type "const")
+  (use_type
+    "const")
   (qualified_identifier
-  (_) @constant .)
+    (_) @constant .)
   alias: (identifier)? @constant)
 
 (use_clause
-  (use_type "type")
+  (use_type
+    "type")
   (qualified_identifier
-  (_) @type .)
+    (_) @type .)
   alias: (identifier)? @type)
 
 (function_declaration
   name: (identifier) @function)
+
 (method_declaration
-  name: (identifier) @method)
+  name: (identifier) @function.method)
 
 (type_arguments
-  [ "<" ">" ] @punctuation.bracket)
-[ "(" ")" "[" "]" "{" "}" "<<" ">>"] @punctuation.bracket
+  [
+    "<"
+    ">"
+  ] @punctuation.bracket)
+
+[
+  "("
+  ")"
+  "["
+  "]"
+  "{"
+  "}"
+  "<<"
+  ">>"
+] @punctuation.bracket
 
 (xhp_open
-  [ "<" ">" ] @tag.delimiter)
-(xhp_close
-  [ "</" ">" ] @tag.delimiter)
+  [
+    "<"
+    ">"
+  ] @tag.delimiter)
 
-[ "." ";" "::" ":" "," ] @punctuation.delimiter
+(xhp_close
+  [
+    "</"
+    ">"
+  ] @tag.delimiter)
+
+[
+  "."
+  ";"
+  "::"
+  ":"
+  ","
+] @punctuation.delimiter
+
+(qualified_identifier
+  "\\" @punctuation.delimiter)
 
 (ternary_expression
-  ["?" ":"] @conditional)
+  [
+    "?"
+    ":"
+  ] @keyword.conditional.ternary)
 
 [
   "if"
@@ -272,13 +338,13 @@
   "elseif"
   "switch"
   "case"
-] @conditional
+] @keyword.conditional
 
 [
   "try"
   "catch"
   "finally"
-] @exception
+] @keyword.exception
 
 [
   "for"
@@ -287,16 +353,14 @@
   "do"
   "continue"
   "break"
-] @repeat
+] @keyword.repeat
 
 [
- (string)
- (xhp_string)
+  (string)
+  (xhp_string)
 ] @string
 
 [
- (xhp_open)
- (xhp_close)
+  (xhp_open)
+  (xhp_close)
 ] @tag
-
-(ERROR) @error

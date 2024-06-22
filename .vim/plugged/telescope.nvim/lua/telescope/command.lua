@@ -194,6 +194,12 @@ local function run_command(args)
     return
   end
 
+  local ok = pcall(require("telescope").load_extension, cmd)
+  if ok then
+    extensions[cmd][cmd](opts)
+    return
+  end
+
   utils.notify("run_command", {
     msg = "Unknown command",
     level = "ERROR",
@@ -223,19 +229,16 @@ function command.register_keyword(keyword)
   split_keywords[keyword] = true
 end
 
-function command.load_command(start_line, end_line, count, cmd, ...)
+function command.load_command(cmd, ...)
   local args = { ... }
   if cmd == nil then
     run_command { cmd = "builtin" }
     return
   end
 
-  local user_opts = {}
-  user_opts["cmd"] = cmd
-  user_opts.opts = {
-    start_line = start_line,
-    end_line = end_line,
-    count = count,
+  local user_opts = {
+    cmd = cmd,
+    opts = {},
   }
 
   for _, arg in ipairs(args) do

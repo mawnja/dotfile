@@ -1,105 +1,75 @@
+(line_comment) @comment @spell
+
 [
   (container_doc_comment)
   (doc_comment)
-  (line_comment)
-] @comment
-
-((line_comment) @text.note
-  (#match? @text.note "^// *zig fmt: (on|off) *$")
-)
+] @comment.documentation @spell
 
 [
   variable: (IDENTIFIER)
   variable_type_function: (IDENTIFIER)
 ] @variable
 
-parameter: (IDENTIFIER) @parameter
+parameter: (IDENTIFIER) @variable.parameter
 
 [
   field_member: (IDENTIFIER)
   field_access: (IDENTIFIER)
-] @field
+] @variable.member
 
-;; assume TitleCase is a type
-(
-  [
-    variable_type_function: (IDENTIFIER)
-    field_access: (IDENTIFIER)
-    parameter: (IDENTIFIER)
-  ] @type
-  (#match? @type "^[A-Z]")
-)
-;; assume camelCase is a function
-(
-  [
-    variable_type_function: (IDENTIFIER)
-    field_access: (IDENTIFIER)
-    parameter: (IDENTIFIER)
-  ] @function
-  (#match? @function "^[a-z]+[A-Z]+")
-)
+; assume TitleCase is a type
+([
+  variable_type_function: (IDENTIFIER)
+  field_access: (IDENTIFIER)
+  parameter: (IDENTIFIER)
+] @type
+  (#lua-match? @type "^%u([%l]+[%u%l%d]*)*$"))
 
-;; assume all CAPS_1 is a constant
-(
-  [
-    variable_type_function: (IDENTIFIER)
-    field_access: (IDENTIFIER)
-  ] @constant
-  (#match? @constant "^[A-Z][A-Z_0-9]+$")
-)
-
-[
-  function_call: (IDENTIFIER)
-  function: (IDENTIFIER)
+; assume camelCase is a function
+([
+  variable_type_function: (IDENTIFIER)
+  field_access: (IDENTIFIER)
+  parameter: (IDENTIFIER)
 ] @function
+  (#lua-match? @function "^%l+([%u][%l%d]*)+$"))
 
-exception: "!" @exception
+; assume all CAPS_1 is a constant
+([
+  variable_type_function: (IDENTIFIER)
+  field_access: (IDENTIFIER)
+] @constant
+  (#lua-match? @constant "^%u[%u%d_]+$"))
 
-(
-  (IDENTIFIER) @variable.builtin
-  (#eq? @variable.builtin "_")
-)
+function: (IDENTIFIER) @function
 
-; (PtrTypeStart "c" @variable.builtin)
+function_call: (IDENTIFIER) @function.call
 
-; (
-;   (ContainerDeclType
-;       (ErrorUnionExpr)
-;       ; "enum"
-;   )
-;   (ContainerField (IDENTIFIER) @constant)
-; )
+exception: "!" @keyword.exception
+
+((IDENTIFIER) @variable.builtin
+  (#eq? @variable.builtin "_"))
+
+(PtrTypeStart
+  "c" @variable.builtin)
+
+((ContainerDeclType
+  [
+    (ErrorUnionExpr)
+    "enum"
+  ])
+  (ContainerField
+    (IDENTIFIER) @constant))
 
 field_constant: (IDENTIFIER) @constant
 
 (BUILTINIDENTIFIER) @function.builtin
 
-((BUILTINIDENTIFIER) @include
-  (#any-of? @include "@import" "@cImport"))
+((BUILTINIDENTIFIER) @keyword.import
+  (#any-of? @keyword.import "@import" "@cImport"))
 
 (INTEGER) @number
 
-(FLOAT) @float
-
-[
-  (LINESTRING)
-  (STRINGLITERALSINGLE)
-] @string
-
-(CHAR_LITERAL) @character
-(EscapeSequence) @string.escape
-(FormatSequence) @string.special
-
-[
-  "allowzero"
-  "volatile"
-  "anytype"
-  "anyframe"
-  (BuildinTypeExpr)
-] @type.builtin
-
-(BreakLabel (IDENTIFIER) @label)
-(BlockLabel (IDENTIFIER) @label)
+(FLOAT) @number.float
 
 [
   "true"
@@ -107,90 +77,110 @@ field_constant: (IDENTIFIER) @constant
 ] @boolean
 
 [
-  "undefined"
-  "unreachable"
-  "null"
-] @constant.builtin
+  (LINESTRING)
+  (STRINGLITERALSINGLE)
+] @string @spell
+
+(CHAR_LITERAL) @character
+
+(EscapeSequence) @string.escape
+
+(FormatSequence) @string.special
+
+(BreakLabel
+  (IDENTIFIER) @label)
+
+(BlockLabel
+  (IDENTIFIER) @label)
 
 [
-  "else"
+  "asm"
+  "defer"
+  "errdefer"
+  "test"
+  "opaque"
+  "error"
+  "const"
+  "var"
+] @keyword
+
+[
+  "struct"
+  "union"
+  "enum"
+] @keyword.type
+
+[
+  "async"
+  "await"
+  "suspend"
+  "nosuspend"
+  "resume"
+] @keyword.coroutine
+
+"fn" @keyword.function
+
+[
+  "and"
+  "or"
+  "orelse"
+] @keyword.operator
+
+"return" @keyword.return
+
+[
   "if"
+  "else"
   "switch"
-] @conditional
+] @keyword.conditional
 
 [
   "for"
   "while"
-] @repeat
+  "break"
+  "continue"
+] @keyword.repeat
 
 [
-  "or"
-  "and"
-  "orelse"
-] @keyword.operator
-
-[
-  "struct"
-  "enum"
-  "union"
-  "error"
-  "packed"
-  "opaque"
-] @keyword
+  "usingnamespace"
+  "export"
+] @keyword.import
 
 [
   "try"
-  "error"
   "catch"
-] @exception
-
-; VarDecl
-[
-  "const"
-  "var"
-  "comptime"
-  "threadlocal"
-  "fn"
-] @keyword.function
+] @keyword.exception
 
 [
-  "test"
+  "anytype"
+  (BuildinTypeExpr)
+] @type.builtin
+
+[
+  "volatile"
+  "allowzero"
+  "noalias"
+  "addrspace"
+  "align"
+  "callconv"
+  "linksection"
   "pub"
-  "usingnamespace"
-] @keyword
-
-[
-  "return"
-  "break"
-  "continue"
-] @keyword.return
-
-; Macro
-[
-  "defer"
-  "errdefer"
-  "async"
-  "nosuspend"
-  "await"
-  "suspend"
-  "resume"
-  "export"
-  "extern"
-] @function.macro
-
-; PrecProc
-[
   "inline"
   "noinline"
-  "asm"
-  "callconv"
-  "noalias"
+  "extern"
+] @keyword.modifier
+
+[
+  "comptime"
+  "packed"
+  "threadlocal"
 ] @attribute
 
 [
-  "linksection"
-  "align" 
-] @function.builtin
+  "null"
+  "unreachable"
+  "undefined"
+] @constant.builtin
 
 [
   (CompareOp)
@@ -203,7 +193,6 @@ field_constant: (IDENTIFIER) @constant
   "*"
   "**"
   "->"
-  "=>"
   ".?"
   ".*"
   "?"
@@ -214,6 +203,7 @@ field_constant: (IDENTIFIER) @constant
   "."
   ","
   ":"
+  "=>"
 ] @punctuation.delimiter
 
 [
@@ -228,10 +218,18 @@ field_constant: (IDENTIFIER) @constant
   ")"
   "{"
   "}"
-  (Payload "|")
-  (PtrPayload "|")
-  (PtrIndexPayload "|")
 ] @punctuation.bracket
 
-; Error
-(ERROR) @error
+(Payload
+  "|" @punctuation.bracket)
+
+(PtrPayload
+  "|" @punctuation.bracket)
+
+(PtrIndexPayload
+  "|" @punctuation.bracket)
+
+(ParamType
+  (ErrorUnionExpr
+    (SuffixExpr
+      variable_type_function: (IDENTIFIER) @type)))

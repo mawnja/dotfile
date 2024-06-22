@@ -1,6 +1,0 @@
-2023-04-13 21:40:56.971 [info] Extension host started
-2023-04-13 21:40:56.974 [info] ExtensionService#_doActivateExtension btwiuse.vscode-remote-server, startup: true, activationEvent: '*'
-2023-04-13 21:40:57.008 [info] Eager extensions activated
-2023-04-14 13:36:05.473 [info] Extension host started
-2023-04-14 13:36:05.475 [info] ExtensionService#_doActivateExtension btwiuse.vscode-remote-server, startup: true, activationEvent: '*'
-2023-04-14 13:36:05.484 [info] Eager extensions activated

@@ -1,4 +1,4 @@
-use chrono::{offset::TimeZone, DateTime, Local, NaiveDate};
+use chrono::{DateTime, Local, NaiveDate, NaiveDateTime};
 
 use std::time::SystemTime;
 
@@ -20,11 +20,21 @@ impl TimeFilter {
                     .ok()
                     .or_else(|| {
                         NaiveDate::parse_from_str(s, "%F")
-                            .map(|nd| nd.and_hms(0, 0, 0))
-                            .ok()
-                            .and_then(|ndt| Local.from_local_datetime(&ndt).single())
+                            .ok()?
+                            .and_hms_opt(0, 0, 0)?
+                            .and_local_timezone(Local)
+                            .latest()
                     })
-                    .or_else(|| Local.datetime_from_str(s, "%F %T").ok())
+                    .or_else(|| {
+                        NaiveDateTime::parse_from_str(s, "%F %T")
+                            .ok()?
+                            .and_local_timezone(Local)
+                            .latest()
+                    })
+                    .or_else(|| {
+                        let timestamp_secs = s.strip_prefix('@')?.parse().ok()?;
+                        DateTime::from_timestamp(timestamp_secs, 0).map(Into::into)
+                    })
                     .map(|dt| dt.into())
             })
     }
@@ -52,8 +62,10 @@ mod tests {
 
     #[test]
     fn is_time_filter_applicable() {
-        let ref_time = Local
-            .datetime_from_str("2010-10-10 10:10:10", "%F %T")
+        let ref_time = NaiveDateTime::parse_from_str("2010-10-10 10:10:10", "%F %T")
+            .unwrap()
+            .and_local_timezone(Local)
+            .latest()
             .unwrap()
             .into();
 
@@ -127,5 +139,32 @@ mod tests {
         assert!(!TimeFilter::after(&ref_time, t10s_before)
             .unwrap()
             .applies_to(&t1m_ago));
+
+        let ref_timestamp = 1707723412u64; // Mon Feb 12 07:36:52 UTC 2024
+        let ref_time = DateTime::parse_from_rfc3339("2024-02-12T07:36:52+00:00")
+            .unwrap()
+            .into();
+        let t1m_ago = ref_time - Duration::from_secs(60);
+        let t1s_later = ref_time + Duration::from_secs(1);
+        // Timestamp only supported via '@' prefix
+        assert!(TimeFilter::before(&ref_time, &ref_timestamp.to_string()).is_none());
+        assert!(
+            TimeFilter::before(&ref_time, &format!("@{}", ref_timestamp))
+                .unwrap()
+                .applies_to(&t1m_ago)
+        );
+        assert!(
+            !TimeFilter::before(&ref_time, &format!("@{}", ref_timestamp))
+                .unwrap()
+                .applies_to(&t1s_later)
+        );
+        assert!(
+            !TimeFilter::after(&ref_time, &format!("@{}", ref_timestamp))
+                .unwrap()
+                .applies_to(&t1m_ago)
+        );
+        assert!(TimeFilter::after(&ref_time, &format!("@{}", ref_timestamp))
+            .unwrap()
+            .applies_to(&t1s_later));
     }
 }

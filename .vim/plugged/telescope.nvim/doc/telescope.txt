@@ -1,20 +1,65 @@
 ================================================================================
-                                                                *telescope.nvim*
+INTRODUCTION                                                    *telescope.nvim*
 
 Telescope.nvim is a plugin for fuzzy finding and neovim. It helps you search,
 filter, find and pick things in Lua.
 
 Getting started with telescope:
   1. Run `:checkhealth telescope` to make sure everything is installed.
-  2. Evalulate it working with `:Telescope find_files` or `:lua
+  2. Evaluate it is working with `:Telescope find_files` or `:lua
      require("telescope.builtin").find_files()`
-  3. Put a `require("telescope").setup() call somewhere in your neovim config.
+  3. Put a `require("telescope").setup()` call somewhere in your neovim config.
   4. Read |telescope.setup| to check what config keys are available and what
      you can put inside the setup call
   5. Read |telescope.builtin| to check which builtin pickers are offered and
      what options these implement
   6. Profit
 
+The below flow chart illustrates a simplified telescope architecture:
+┌───────────────────────────────────────────────────────────┐
+│      ┌────────┐                                           │
+│      │ Multi  │                                ┌───────+  │
+│      │ Select │    ┌───────┐                   │ Entry │  │
+│      └─────┬──*    │ Entry │    ┌────────+     │ Maker │  │
+│            │   ┌───│Manager│────│ Sorter │┐    └───┬───*  │
+│            ▼   ▼   └───────*    └────────┘│        │      │
+│            1────────┐                 2───┴──┐     │      │
+│      ┌─────│ Picker │                 │Finder│◀────┘      │
+│      ▼     └───┬────┘                 └──────*            │
+│ ┌────────┐     │       3────────+         ▲               │
+│ │Selected│     └───────│ Prompt │─────────┘               │
+│ │ Entry  │             └───┬────┘                         │
+│ └────────*             ┌───┴────┐  ┌────────┐  ┌────────┐ │
+│     │  ▲    4─────────┐│ Prompt │  │(Attach)│  │Actions │ │
+│     ▼  └──▶ │ Results ││ Buffer │◀─┤Mappings│◀─┤User Fn │ │
+│5─────────┐  └─────────┘└────────┘  └────────┘  └────────┘ │
+││Previewer│                                                │
+│└─────────┘                   telescope.nvim architecture  │
+└───────────────────────────────────────────────────────────┘
+
+  + The `Entry Maker` at least defines
+    - value: "raw" result of the finder
+    - ordinal: string to be sorted derived from value
+    - display: line representation of entry in results buffer
+
+  * The finder, entry manager, selected entry, and multi selections
+    comprises `entries` constructed by the `Entry Maker` from
+    raw results of the finder (`value`s)
+
+ Primary components:
+  1 Picker: central UI dedicated to varying use cases
+            (finding files, grepping, diagnostics, etc.)
+            see :h telescope.builtin
+  2 Finder: pipe or interactively generates results to pick over
+  3 Prompt: user input that triggers the finder which sorts results
+            in order into the entry manager
+  4 Results: listed entries scored by sorter from finder results
+  5 Previewer: preview of context of selected entry
+               see :h telescope.previewers
+
+A practical introduction into telescope customization is our `developers.md`
+(top-level of repo) and `:h telescope.actions` that showcase how to access
+information about the state of the picker (current selection, etc.).
 To find out more:
 https://github.com/nvim-telescope/telescope.nvim
 
@@ -29,8 +74,8 @@ https://github.com/nvim-telescope/telescope.nvim
   :h telescope.actions.set
   :h telescope.actions.utils
   :h telescope.actions.generate
-  :h telescope.previewers
   :h telescope.actions.history
+  :h telescope.previewers
 
 telescope.setup({opts})                                    *telescope.setup()*
     Setup function to be run by user. Configures the defaults, pickers and
@@ -74,20 +119,6 @@ telescope.setup({opts})                                    *telescope.setup()*
         - "descending" (default)
         - "ascending"
 
-                                              *telescope.defaults.tiebreak*
-    tiebreak: ~
-        A function that determines how to break a tie when two entries have
-        the same score.
-        Having a function that always returns false would keep the entries in
-        the order they are found, so existing_entry before current_entry.
-        Vice versa always returning true would place the current_entry
-        before the existing_entry.
-
-        Signature: function(current_entry, existing_entry, prompt) -> boolean
-
-        Default: function that breaks the tie based on the length of the
-                 entry's ordinal
-
                                     *telescope.defaults.selection_strategy*
     selection_strategy: ~
         Determines how the cursor acts after each sort iteration.
@@ -97,6 +128,7 @@ telescope.setup({opts})                                    *telescope.setup()*
         - "follow"
         - "row"
         - "closest"
+        - "none"
 
                                        *telescope.defaults.scroll_strategy*
     scroll_strategy: ~
@@ -160,13 +192,13 @@ telescope.setup({opts})                                    *telescope.setup()*
 
                                      *telescope.defaults.cycle_layout_list*
     cycle_layout_list: ~
-        Determines the layouts to cycle through when using `actions.cycle_layout_next`
-        and `actions.cycle_layout_prev`.
+        Determines the layouts to cycle through when using `actions.layout.cycle_layout_next`
+        and `actions.layout.cycle_layout_prev`.
         Should be a list of "layout setups".
         Each "layout setup" can take one of two forms:
-        1. string <br>
+        1. string
             This is interpreted as the name of a `layout_strategy`
-        2. table <br>
+        2. table
             A table with possible keys `layout_strategy`, `layout_config` and `previewer`
 
         Default: { "horizontal", "vertical" }
@@ -194,7 +226,6 @@ telescope.setup({opts})                                    *telescope.setup()*
                                        *telescope.defaults.selection_caret*
     selection_caret: ~
         The character(s) that will be shown in front of the current selection.
-
 
         Default: '> '
 
@@ -228,18 +259,20 @@ telescope.setup({opts})                                    *telescope.setup()*
 
                                           *telescope.defaults.path_display*
     path_display: ~
-        Determines how file paths are displayed
+        Determines how file paths are displayed.
 
         path_display can be set to an array with a combination of:
         - "hidden"    hide file names
         - "tail"      only display the file name, and not the path
         - "absolute"  display absolute paths
         - "smart"     remove as much from the path as possible to only show
-                      the difference between the displayed paths
+                      the difference between the displayed paths.
+                      Warning: The nature of the algorithm might have a negative
+                      performance impact!
         - "shorten"   only display the first character of each directory in
                       the path
         - "truncate"  truncates the start of the path when the whole path will
-                      not fit. To increase the the gap between the path and the edge.
+                      not fit. To increase the gap between the path and the edge,
                       set truncate to number `truncate = 3`
 
         You can also specify the number of characters of each directory name
@@ -318,9 +351,27 @@ telescope.setup({opts})                                    *telescope.setup()*
     prompt_title: ~
         Defines the default title of the prompt window. A false value
         can be used to hide the title altogether. Most of the times builtins
-        define a prompt_title which will be prefered over this default.
+        define a prompt_title which will be preferred over this default.
 
         Default: "Prompt"
+
+                                              *telescope.defaults.mappings*
+    mappings: ~
+        Your mappings to override telescope's default mappings.
+
+        See: ~
+            |telescope.mappings|
+
+
+                                      *telescope.defaults.default_mappings*
+    default_mappings: ~
+        Not recommended to use except for advanced users.
+
+        Will allow you to completely remove all of telescope's default maps
+        and use your own.
+
+        Default: nil
+
 
                                                *telescope.defaults.history*
     history: ~
@@ -338,11 +389,11 @@ telescope.setup({opts})                                    *telescope.setup()*
 
         Fields:
           - path:    The path to the telescope history as string.
-                     default: stdpath("data")/telescope_history
+                     Default: stdpath("data")/telescope_history
           - limit:   The amount of entries that will be written in the
                      history.
                      Warning: If limit is set to nil it will grow unbound.
-                     default: 100
+                     Default: 100
           - handler: A lua function that implements the history.
                      This is meant as a developer setting for extensions to
                      override the history handling, e.g.,
@@ -370,7 +421,8 @@ telescope.setup({opts})                                    *telescope.setup()*
                               indices larger than `cache_picker.num_pickers` will
                               be cleared.
                               Default: 1
-          - limit_entries:    The amount of entries that will be written in the
+          - limit_entries:    The amount of entries that will be saved for each
+                              picker.
                               Default: 1000
 
 
@@ -449,13 +501,22 @@ telescope.setup({opts})                                    *telescope.setup()*
                               highlighting, which falls back to regex-based highlighting.
                               `true`: treesitter highlighting for all available filetypes
                               `false`: regex-based highlighting for all filetypes
-                              `table`: table of filetypes for which to attach treesitter
-                              highlighting
+                              `table`: following nvim-treesitters highlighting options:
+                                It contains two keys:
+                                  - enable boolean|table: if boolean, enable all ts
+                                                          highlighing with that flag,
+                                                          disable still considered.
+                                                          Containing a list of filetypes,
+                                                          that are enabled, disabled
+                                                          ignored because it doesnt make
+                                                          any sense in this case.
+                                  - disable table: containing a list of filetypes
+                                                   that are disabled
                               Default: true
           - msg_bg_fillchar:  Character to fill background of unpreviewable buffers with
                               Default: "╱"
           - hide_on_startup:  Hide previewer when picker starts. Previewer can be toggled
-                              with actions.toggle_preview.
+                              with actions.layout.toggle_preview.
                               Default: false
 
 
@@ -497,89 +558,16 @@ telescope.setup({opts})                                    *telescope.setup()*
                                         *telescope.defaults.color_devicons*
     color_devicons: ~
         Boolean if devicons should be enabled or not. If set to false, the
-        "TelescopeResultsFileIcon" highlight group is used.
+        text highlight group is used.
         Hint: Coloring only works if |termguicolors| is enabled.
 
         Default: true
-
-                                              *telescope.defaults.mappings*
-    mappings: ~
-        Your mappings to override telescope's default mappings.
-
-        Format is:
-        {
-          mode = { ..keys }
-        }
-
-        where {mode} is the one character letter for a mode
-        ('i' for insert, 'n' for normal).
-
-        For example:
-
-        mappings = {
-          i = {
-            ["<esc>"] = require('telescope.actions').close,
-          },
-        }
-
-
-        To disable a keymap, put [map] = false
-          So, to not map "<C-n>", just put
-
-            ...,
-            ["<C-n>"] = false,
-            ...,
-
-          Into your config.
-
-
-        otherwise, just set the mapping to the function that you want it to
-        be.
-
-            ...,
-            ["<C-i>"] = require('telescope.actions').select_default,
-            ...,
-
-        If the function you want is part of `telescope.actions`, then you can
-        simply give a string.
-          For example, the previous option is equivalent to:
-
-            ...,
-            ["<C-i>"] = "select_default",
-            ...,
-
-        You can also add other mappings using tables with `type = "command"`.
-          For example:
-
-            ...,
-            ["jj"] = { "<esc>", type = "command" },
-            ["kk"] = { "<cmd>echo \"Hello, World!\"<cr>", type = "command" },)
-            ...,
-
-        You can also add additional options for mappings of any type
-        ("action" and "command"). For example:
-
-            ...,
-            ["<C-j>"] = {
-              action = actions.move_selection_next,
-              opts = { nowait = true, silent = true }
-            },
-            ...,
-
-
-                                      *telescope.defaults.default_mappings*
-    default_mappings: ~
-        Not recommended to use except for advanced users.
-
-        Will allow you to completely remove all of telescope's default maps
-        and use your own.
-
 
                                            *telescope.defaults.file_sorter*
     file_sorter: ~
         A function pointer that specifies the file_sorter. This sorter will
         be used for find_files, git_files and similar.
-        Hint: If you load a native sorter, you dont need to change this value,
+        Hint: If you load a native sorter, you don't need to change this value,
         the native sorter will override it anyway.
 
         Default: require("telescope.sorters").get_fzy_sorter
@@ -588,7 +576,7 @@ telescope.setup({opts})                                    *telescope.setup()*
     generic_sorter: ~
         A function pointer to the generic sorter. The sorter that should be
         used for everything that is not a file.
-        Hint: If you load a native sorter, you dont need to change this value,
+        Hint: If you load a native sorter, you don't need to change this value,
         the native sorter will override it anyway.
 
         Default: require("telescope.sorters").get_fzy_sorter
@@ -597,9 +585,23 @@ telescope.setup({opts})                                    *telescope.setup()*
     prefilter_sorter: ~
         This points to a wrapper sorter around the generic_sorter that is able
         to do prefiltering.
-        Its usually used for lsp_*_symbols and lsp_*_diagnostics
+        It's usually used for lsp_*_symbols and lsp_*_diagnostics
 
         Default: require("telescope.sorters").prefilter
+
+                                              *telescope.defaults.tiebreak*
+    tiebreak: ~
+        A function that determines how to break a tie when two entries have
+        the same score.
+        Having a function that always returns false would keep the entries in
+        the order they are found, so existing_entry before current_entry.
+        Vice versa always returning true would place the current_entry
+        before the existing_entry.
+
+        Signature: function(current_entry, existing_entry, prompt) -> boolean
+
+        Default: function that breaks the tie based on the length of the
+                 entry's ordinal
 
                                   *telescope.defaults.file_ignore_patterns*
     file_ignore_patterns: ~
@@ -608,8 +610,28 @@ telescope.setup({opts})                                    *telescope.setup()*
         Example: { "%.npz" } -- ignore all npz files
         See: https://www.lua.org/manual/5.1/manual.html#5.4.1 for more
         information about lua regex
+        Note: `file_ignore_patterns` will be used in all pickers that have a
+        file associated. This might lead to the problem that lsp_ pickers
+        aren't displaying results because they might be ignored by
+        `file_ignore_patterns`. For example, setting up node_modules as ignored
+        will never show node_modules in any results, even if you are
+        interested in lsp_ results.
+
+        If you only want `file_ignore_patterns` for `find_files` and
+        `grep_string`/`live_grep` it is suggested that you setup `gitignore`
+        and have fd and or ripgrep installed because both tools will not show
+        `gitignore`d files on default.
 
         Default: nil
+
+                                  *telescope.defaults.get_selection_window*
+    get_selection_window: ~
+          Function that takes function(picker, entry) and returns a window id.
+          The window ID will be used to decide what window the chosen file will
+          be opened in and the cursor placed in upon leaving the picker.
+
+          Default: `function() return 0 end`
+
 
                                         *telescope.defaults.file_previewer*
     file_previewer: ~
@@ -655,14 +677,6 @@ telescope.setup({opts})                                    *telescope.setup()*
                         extensions
 
 
-telescope.register_extension({mod})           *telescope.register_extension()*
-    Register an extension. To be used by plugin authors.
-
-
-    Parameters: ~
-        {mod} (table)  Module
-
-
 telescope.load_extension({name})                  *telescope.load_extension()*
     Load an extension.
     - Notes:
@@ -671,6 +685,14 @@ telescope.load_extension({name})                  *telescope.load_extension()*
 
     Parameters: ~
         {name} (string)  Name of the extension
+
+
+telescope.register_extension({mod})           *telescope.register_extension()*
+    Register an extension. To be used by plugin authors.
+
+
+    Parameters: ~
+        {mod} (table)  Module
 
 
 telescope.extensions()                                *telescope.extensions()*
@@ -683,7 +705,7 @@ telescope.extensions()                                *telescope.extensions()*
 
 
 ================================================================================
-                                                             *telescope.command*
+COMMAND                                                      *telescope.command*
 
 Telescope commands can be called through two apis, the lua api and the viml
 api.
@@ -718,7 +740,7 @@ as there are spaces in the option.
 
 
 ================================================================================
-                                                             *telescope.builtin*
+BUILTIN                                                      *telescope.builtin*
 
 Telescope Builtins is a collection of community maintained pickers to support
 common workflows. It can be used as reference when writing PRs, Telescope
@@ -745,29 +767,37 @@ options you want to use. Here's an example with the live_grep picker:
 <
 
 builtin.live_grep({opts})                      *telescope.builtin.live_grep()*
-    Search for a string and get results live as you type (respecting
-    .gitignore)
+    Search for a string and get results live as you type, respects .gitignore
 
 
     Parameters: ~
         {opts} (table)  options to pass to the picker
 
     Options: ~
-        {cwd}                 (string)    root dir to search from (default:
-                                          cwd, use utils.buffer_dir() to
-                                          search relative to open buffer)
-        {grep_open_files}     (boolean)   if true, restrict search to open
-                                          files only, mutually exclusive with
-                                          `search_dirs`
-        {search_dirs}         (table)     directory/directories to search in,
-                                          mutually exclusive with
-                                          `grep_open_files`
-        {additional_args}     (function)  function(opts) which returns a table
-                                          of additional arguments to be passed
-                                          on
-        {max_results}         (number)    define a upper result value
-        {disable_coordinates} (boolean)   don't show the line & row numbers
-                                          (default: false)
+        {cwd}                 (string)          root dir to search from
+                                                (default: cwd, use
+                                                utils.buffer_dir() to search
+                                                relative to open buffer)
+        {grep_open_files}     (boolean)         if true, restrict search to
+                                                open files only, mutually
+                                                exclusive with `search_dirs`
+        {search_dirs}         (table)           directory/directories/files to
+                                                search, mutually exclusive
+                                                with `grep_open_files`
+        {glob_pattern}        (string|table)    argument to be used with
+                                                `--glob`, e.g. "*.toml", can
+                                                use the opposite "!*.toml"
+        {type_filter}         (string)          argument to be used with
+                                                `--type`, e.g. "rust", see `rg
+                                                --type-list`
+        {additional_args}     (function|table)  additional arguments to be
+                                                passed on. Can be fn(opts) ->
+                                                tbl
+        {max_results}         (number)          define a upper result value
+        {disable_coordinates} (boolean)         don't show the line & row
+                                                numbers (default: false)
+        {file_encoding}       (string)          file encoding for the entry &
+                                                previewer
 
 
 builtin.grep_string({opts})                  *telescope.builtin.grep_string()*
@@ -778,23 +808,32 @@ builtin.grep_string({opts})                  *telescope.builtin.grep_string()*
         {opts} (table)  options to pass to the picker
 
     Options: ~
-        {cwd}                 (string)    root dir to search from (default:
-                                          cwd, use utils.buffer_dir() to
-                                          search relative to open buffer)
-        {search}              (string)    the query to search
-        {search_dirs}         (table)     directory/directories to search in
-        {use_regex}           (boolean)   if true, special characters won't be
-                                          escaped, allows for using regex
-                                          (default: false)
-        {word_match}          (string)    can be set to `-w` to enable exact
-                                          word matches
-        {additional_args}     (function)  function(opts) which returns a table
-                                          of additional arguments to be passed
-                                          on
-        {disable_coordinates} (boolean)   don't show the line and row numbers
-                                          (default: false)
-        {sort_only_text}      (boolean)   only sort the text, not the file,
-                                          line or row (default: false)
+        {cwd}                 (string)          root dir to search from
+                                                (default: cwd, use
+                                                utils.buffer_dir() to search
+                                                relative to open buffer)
+        {search}              (string)          the query to search
+        {grep_open_files}     (boolean)         if true, restrict search to
+                                                open files only, mutually
+                                                exclusive with `search_dirs`
+        {search_dirs}         (table)           directory/directories/files to
+                                                search, mutually exclusive
+                                                with `grep_open_files`
+        {use_regex}           (boolean)         if true, special characters
+                                                won't be escaped, allows for
+                                                using regex (default: false)
+        {word_match}          (string)          can be set to `-w` to enable
+                                                exact word matches
+        {additional_args}     (function|table)  additional arguments to be
+                                                passed on. Can be fn(opts) ->
+                                                tbl
+        {disable_coordinates} (boolean)         don't show the line and row
+                                                numbers (default: false)
+        {only_sort_text}      (boolean)         only sort the text, not the
+                                                file, line or row (default:
+                                                false)
+        {file_encoding}       (string)          file encoding for the entry &
+                                                previewer
 
 
 builtin.find_files({opts})                    *telescope.builtin.find_files()*
@@ -805,19 +844,26 @@ builtin.find_files({opts})                    *telescope.builtin.find_files()*
         {opts} (table)  options to pass to the picker
 
     Options: ~
-        {cwd}          (string)   root dir to search from (default: cwd, use
-                                  utils.buffer_dir() to search relative to
-                                  open buffer)
-        {find_command} (table)    command line arguments for `find_files` to
-                                  use for the search, overrides default:
-                                  config
-        {follow}       (boolean)  if true, follows symlinks (i.e. uses `-L`
-                                  flag for the `find` command)
-        {hidden}       (boolean)  determines whether to show hidden files or
-                                  not (default: false)
-        {no_ignore}    (boolean)  show files ignored by .gitignore, .ignore,
-                                  etc. (default: false)
-        {search_dirs}  (table)    directory/directories to search in
+        {cwd}              (string)          root dir to search from (default:
+                                             cwd, use utils.buffer_dir() to
+                                             search relative to open buffer)
+        {find_command}     (function|table)  cmd to use for the search. Can be
+                                             a fn(opts) -> tbl (default:
+                                             autodetect)
+        {follow}           (boolean)         if true, follows symlinks (i.e.
+                                             uses `-L` flag for the `find`
+                                             command)
+        {hidden}           (boolean)         determines whether to show hidden
+                                             files or not (default: false)
+        {no_ignore}        (boolean)         show files ignored by .gitignore,
+                                             .ignore, etc. (default: false)
+        {no_ignore_parent} (boolean)         show files ignored by .gitignore,
+                                             .ignore, etc. in parent dirs.
+                                             (default: false)
+        {search_dirs}      (table)           directory/directories/files to
+                                             search
+        {search_file}      (string)          specify a filename to search for
+        {file_encoding}    (string)          file encoding for the previewer
 
 
 builtin.fd()                                          *telescope.builtin.fd()*
@@ -840,6 +886,7 @@ builtin.treesitter()                          *telescope.builtin.treesitter()*
                                        current buffer)
         {symbol_highlights} (table)    string -> string. Matches symbol with
                                        hl_group
+        {file_encoding}     (string)   file encoding for the previewer
 
 
 builtin.current_buffer_fuzzy_find({opts}) *telescope.builtin.current_buffer_fuzzy_find()*
@@ -850,8 +897,9 @@ builtin.current_buffer_fuzzy_find({opts}) *telescope.builtin.current_buffer_fuzz
         {opts} (table)  options to pass to the picker
 
     Options: ~
-        {skip_empty_lines} (boolean)  if true we dont display empty lines
+        {skip_empty_lines} (boolean)  if true we don't display empty lines
                                       (default: false)
+        {file_encoding}    (string)   file encoding for the previewer
 
 
 builtin.tags({opts})                                *telescope.builtin.tags()*
@@ -873,6 +921,8 @@ builtin.tags({opts})                                *telescope.builtin.tags()*
                                     true)
         {only_sort_tags} (boolean)  if true we will only sort tags (default:
                                     false)
+        {fname_width}    (number)   defines the width of the filename section
+                                    (default: 30)
 
 
 builtin.current_buffer_tags({opts})  *telescope.builtin.current_buffer_tags()*
@@ -892,12 +942,13 @@ builtin.current_buffer_tags({opts})  *telescope.builtin.current_buffer_tags()*
                                     true)
         {only_sort_tags} (boolean)  if true we will only sort tags (default:
                                     false)
+        {fname_width}    (number)   defines the width of the filename section
+                                    (default: 30)
 
 
 builtin.git_files({opts})                      *telescope.builtin.git_files()*
     Fuzzy search for files tracked by Git. This command lists the output of the
-    `git ls-files` command, respects .gitignore, and optionally ignores
-    untracked files
+    `git ls-files` command, respects .gitignore
     - Default keymaps:
       - `<cr>`: opens the currently selected file
 
@@ -912,12 +963,13 @@ builtin.git_files({opts})                      *telescope.builtin.git_files()*
                                         (default: true)
         {show_untracked}     (boolean)  if true, adds `--others` flag to
                                         command and shows untracked files
-                                        (default: true)
+                                        (default: false)
         {recurse_submodules} (boolean)  if true, adds the
                                         `--recurse-submodules` flag to command
                                         (default: false)
-        {git_command}        (table)    command that will be exectued.
+        {git_command}        (table)    command that will be executed.
                                         {"git","ls-files","--exclude-standard","--cached"}
+        {file_encoding}      (string)   file encoding for the previewer
 
 
 builtin.git_commits({opts})                  *telescope.builtin.git_commits()*
@@ -936,13 +988,13 @@ builtin.git_commits({opts})                  *telescope.builtin.git_commits()*
         {cwd}          (string)   specify the path of the repo
         {use_git_root} (boolean)  if we should use git root as cwd or the cwd
                                   (important for submodule) (default: true)
-        {git_command}  (table)    command that will be exectued.
+        {git_command}  (table)    command that will be executed.
                                   {"git","log","--pretty=oneline","--abbrev-commit","--","."}
 
 
 builtin.git_bcommits({opts})                *telescope.builtin.git_bcommits()*
     Lists commits for current buffer with diff preview
-    - Default keymaps or your overriden `select_` keys:
+    - Default keymaps or your overridden `select_` keys:
       - `<cr>`: checks out the currently selected commit
       - `<c-v>`: opens a diff in a vertical split
       - `<c-x>`: opens a diff in a horizontal split
@@ -958,7 +1010,7 @@ builtin.git_bcommits({opts})                *telescope.builtin.git_bcommits()*
                                   (important for submodule) (default: true)
         {current_file} (string)   specify the current file that should be used
                                   for bcommits (default: current buffer)
-        {git_command}  (table)    command that will be exectued.
+        {git_command}  (table)    command that will be executed.
                                   {"git","log","--pretty=oneline","--abbrev-commit"}
 
 
@@ -1003,6 +1055,8 @@ builtin.git_status({opts})                    *telescope.builtin.git_status()*
         {git_icons}    (table)    string -> string. Matches name with icon
                                   (see source code, make_entry.lua
                                   git_icon_defaults)
+        {expand_dir}   (boolean)  pass flag `-uall` to show files in untracked
+                                  directories (default: true)
 
 
 builtin.git_stash({opts})                      *telescope.builtin.git_stash()*
@@ -1032,6 +1086,8 @@ builtin.builtin({opts})                          *telescope.builtin.builtin()*
     Options: ~
         {include_extensions} (boolean)  if true will show the pickers of the
                                         installed extensions (default: false)
+        {use_default_opts}   (boolean)  if the selected picker should use its
+                                        default options (default: false)
 
 
 builtin.resume({opts})                            *telescope.builtin.resume()*
@@ -1071,8 +1127,10 @@ builtin.planets({opts})                          *telescope.builtin.planets()*
         {opts} (table)  options to pass to the picker
 
     Options: ~
-        {show_pluto} (boolean)  we love pluto (default: false, because its a
+        {show_pluto} (boolean)  we love Pluto (default: false, because its a
                                 hidden feature)
+        {show_moon}  (boolean)  we love the Moon (default: false, because its
+                                a hidden feature)
 
 
 builtin.symbols({opts})                          *telescope.builtin.symbols()*
@@ -1101,6 +1159,9 @@ builtin.commands({opts})                        *telescope.builtin.commands()*
     Parameters: ~
         {opts} (table)  options to pass to the picker
 
+    Options: ~
+        {show_buf_command} (boolean)  show buf local command (Default: true)
+
 
 builtin.quickfix({opts})                        *telescope.builtin.quickfix()*
     Lists items in the quickfix list, jumps to location on `<cr>`
@@ -1110,8 +1171,21 @@ builtin.quickfix({opts})                        *telescope.builtin.quickfix()*
         {opts} (table)  options to pass to the picker
 
     Options: ~
-        {ignore_filename} (boolean)  dont show filenames (default: true)
-        {trim_text}       (boolean)  trim results text (default: false)
+        {show_line}   (boolean)  show results text (default: true)
+        {trim_text}   (boolean)  trim results text (default: false)
+        {fname_width} (number)   defines the width of the filename section
+                                 (default: 30)
+        {nr}          (number)   specify the quickfix list number
+
+
+builtin.quickfixhistory({opts})          *telescope.builtin.quickfixhistory()*
+    Lists all quickfix lists in your history and open them with
+    `builtin.quickfix`. It seems that neovim only keeps the full history for 10
+    lists
+
+
+    Parameters: ~
+        {opts} (table)  options to pass to the picker
 
 
 builtin.loclist({opts})                          *telescope.builtin.loclist()*
@@ -1123,8 +1197,10 @@ builtin.loclist({opts})                          *telescope.builtin.loclist()*
         {opts} (table)  options to pass to the picker
 
     Options: ~
-        {ignore_filename} (boolean)  dont show filenames (default: true)
-        {trim_text}       (boolean)  trim results text (default: false)
+        {show_line}   (boolean)  show results text (default: true)
+        {trim_text}   (boolean)  trim results text (default: false)
+        {fname_width} (number)   defines the width of the filename section
+                                 (default: 30)
 
 
 builtin.oldfiles({opts})                        *telescope.builtin.oldfiles()*
@@ -1135,8 +1211,9 @@ builtin.oldfiles({opts})                        *telescope.builtin.oldfiles()*
         {opts} (table)  options to pass to the picker
 
     Options: ~
-        {only_cwd} (boolean)  show only files in the cwd (default: false)
-        {cwd_only} (boolean)  alias for only_cwd
+        {only_cwd}      (boolean)  show only files in the cwd (default: false)
+        {cwd_only}      (boolean)  alias for only_cwd
+        {file_encoding} (string)   file encoding for the previewer
 
 
 builtin.command_history({opts})          *telescope.builtin.command_history()*
@@ -1236,6 +1313,7 @@ builtin.buffers({opts})                          *telescope.builtin.buffers()*
         {bufnr_width}           (number)   Defines the width of the buffer
                                            numbers in front of the filenames 
                                            (default: dynamic)
+        {file_encoding}         (string)   file encoding for the previewer
 
 
 builtin.colorscheme({opts})                  *telescope.builtin.colorscheme()*
@@ -1255,6 +1333,9 @@ builtin.marks({opts})                              *telescope.builtin.marks()*
 
     Parameters: ~
         {opts} (table)  options to pass to the picker
+
+    Options: ~
+        {file_encoding} (string)  file encoding for the previewer
 
 
 builtin.registers({opts})                      *telescope.builtin.registers()*
@@ -1323,8 +1404,10 @@ builtin.tagstack({opts})                        *telescope.builtin.tagstack()*
         {opts} (table)  options to pass to the picker
 
     Options: ~
-        {ignore_filename} (boolean)  dont show filenames (default: true)
-        {trim_text}       (boolean)  trim results text (default: false)
+        {show_line}   (boolean)  show results text (default: true)
+        {trim_text}   (boolean)  trim results text (default: false)
+        {fname_width} (number)   defines the width of the filename section
+                                 (default: 30)
 
 
 builtin.jumplist({opts})                        *telescope.builtin.jumplist()*
@@ -1335,8 +1418,10 @@ builtin.jumplist({opts})                        *telescope.builtin.jumplist()*
         {opts} (table)  options to pass to the picker
 
     Options: ~
-        {ignore_filename} (boolean)  dont show filenames (default: true)
-        {trim_text}       (boolean)  trim results text (default: false)
+        {show_line}   (boolean)  show results text (default: true)
+        {trim_text}   (boolean)  trim results text (default: false)
+        {fname_width} (number)   defines the width of the filename section
+                                 (default: 30)
 
 
 builtin.lsp_references({opts})            *telescope.builtin.lsp_references()*
@@ -1352,7 +1437,43 @@ builtin.lsp_references({opts})            *telescope.builtin.lsp_references()*
                                           lsp references (default: true)
         {include_current_line} (boolean)  include current line (default:
                                           false)
+        {fname_width}          (number)   defines the width of the filename
+                                          section (default: 30)
+        {show_line}            (boolean)  show results text (default: true)
         {trim_text}            (boolean)  trim results text (default: false)
+        {file_encoding}        (string)   file encoding for the previewer
+
+
+builtin.lsp_incoming_calls({opts})    *telescope.builtin.lsp_incoming_calls()*
+    Lists LSP incoming calls for word under the cursor, jumps to reference on
+    `<cr>`
+
+
+    Parameters: ~
+        {opts} (table)  options to pass to the picker
+
+    Options: ~
+        {fname_width}   (number)   defines the width of the filename section
+                                   (default: 30)
+        {show_line}     (boolean)  show results text (default: true)
+        {trim_text}     (boolean)  trim results text (default: false)
+        {file_encoding} (string)   file encoding for the previewer
+
+
+builtin.lsp_outgoing_calls({opts})    *telescope.builtin.lsp_outgoing_calls()*
+    Lists LSP outgoing calls for word under the cursor, jumps to reference on
+    `<cr>`
+
+
+    Parameters: ~
+        {opts} (table)  options to pass to the picker
+
+    Options: ~
+        {fname_width}   (number)   defines the width of the filename section
+                                   (default: 30)
+        {show_line}     (boolean)  show results text (default: true)
+        {trim_text}     (boolean)  trim results text (default: false)
+        {file_encoding} (string)   file encoding for the previewer
 
 
 builtin.lsp_definitions({opts})          *telescope.builtin.lsp_definitions()*
@@ -1364,11 +1485,15 @@ builtin.lsp_definitions({opts})          *telescope.builtin.lsp_definitions()*
         {opts} (table)  options to pass to the picker
 
     Options: ~
-        {jump_type}       (string)   how to goto definition if there is only
-                                     one, values: "tab", "split", "vsplit",
-                                     "never"
-        {ignore_filename} (boolean)  dont show filenames (default: true)
-        {trim_text}       (boolean)  trim results text (default: false)
+        {jump_type}     (string)   how to goto definition if there is only one
+                                   and the definition file is different from
+                                   the current file, values: "tab", "split",
+                                   "vsplit", "never"
+        {fname_width}   (number)   defines the width of the filename section
+                                   (default: 30)
+        {show_line}     (boolean)  show results text (default: true)
+        {trim_text}     (boolean)  trim results text (default: false)
+        {file_encoding} (string)   file encoding for the previewer
 
 
 builtin.lsp_type_definitions({opts}) *telescope.builtin.lsp_type_definitions()*
@@ -1380,11 +1505,15 @@ builtin.lsp_type_definitions({opts}) *telescope.builtin.lsp_type_definitions()*
         {opts} (table)  options to pass to the picker
 
     Options: ~
-        {jump_type}       (string)   how to goto definition if there is only
-                                     one, values: "tab", "split", "vsplit",
-                                     "never"
-        {ignore_filename} (boolean)  dont show filenames (default: true)
-        {trim_text}       (boolean)  trim results text (default: false)
+        {jump_type}     (string)   how to goto definition if there is only one
+                                   and the definition file is different from
+                                   the current file, values: "tab", "split",
+                                   "vsplit", "never"
+        {fname_width}   (number)   defines the width of the filename section
+                                   (default: 30)
+        {show_line}     (boolean)  show results text (default: true)
+        {trim_text}     (boolean)  trim results text (default: false)
+        {file_encoding} (string)   file encoding for the previewer
 
 
 builtin.lsp_implementations({opts})  *telescope.builtin.lsp_implementations()*
@@ -1396,38 +1525,15 @@ builtin.lsp_implementations({opts})  *telescope.builtin.lsp_implementations()*
         {opts} (table)  options to pass to the picker
 
     Options: ~
-        {jump_type}       (string)   how to goto implementation if there is
-                                     only one, values: "tab", "split",
-                                     "vsplit", "never"
-        {ignore_filename} (boolean)  dont show filenames (default: true)
-        {trim_text}       (boolean)  trim results text (default: false)
-
-
-builtin.lsp_code_actions({opts})        *telescope.builtin.lsp_code_actions()*
-    Lists any LSP actions for the word under the cursor which can be triggered
-    with `<cr>`
-
-
-    Parameters: ~
-        {opts} (table)  options to pass to the picker
-
-    Options: ~
-        {timeout} (number)  timeout for the sync call (default: 10000)
-
-
-builtin.lsp_range_code_actions({opts}) *telescope.builtin.lsp_range_code_actions()*
-    Lists any LSP actions for a given range, that can be triggered with `<cr>`
-
-
-    Parameters: ~
-        {opts} (table)  options to pass to the picker
-
-    Options: ~
-        {timeout}    (number)  timeout for the sync call (default: 10000)
-        {start_line} (number)  where the code action starts (default: handled
-                               by :'<,'>Telescope lsp_range_code_actions)
-        {end_line}   (number)  where the code action ends (default: handled by
-                               :'<,'>Telescope lsp_range_code_actions)
+        {jump_type}     (string)   how to goto implementation if there is only
+                                   one and the definition file is different
+                                   from the current file, values: "tab",
+                                   "split", "vsplit", "never"
+        {fname_width}   (number)   defines the width of the filename section
+                                   (default: 30)
+        {show_line}     (boolean)  show results text (default: true)
+        {trim_text}     (boolean)  trim results text (default: false)
+        {file_encoding} (string)   file encoding for the previewer
 
 
 builtin.lsp_document_symbols({opts}) *telescope.builtin.lsp_document_symbols()*
@@ -1441,8 +1547,12 @@ builtin.lsp_document_symbols({opts}) *telescope.builtin.lsp_document_symbols()*
         {opts} (table)  options to pass to the picker
 
     Options: ~
-        {ignore_filename}   (boolean)       dont show filenames (default:
-                                            true)
+        {fname_width}       (number)        defines the width of the filename
+                                            section (default: 30)
+        {symbol_width}      (number)        defines the width of the symbol
+                                            section (default: 25)
+        {symbol_type_width} (number)        defines the width of the symbol
+                                            type section (default: 8)
         {show_line}         (boolean)       if true, shows the content of the
                                             line the tag is found on (default:
                                             false)
@@ -1450,6 +1560,7 @@ builtin.lsp_document_symbols({opts}) *telescope.builtin.lsp_document_symbols()*
         {ignore_symbols}    (string|table)  list of symbols to ignore
         {symbol_highlights} (table)         string -> string. Matches symbol
                                             with hl_group
+        {file_encoding}     (string)        file encoding for the previewer
 
 
 builtin.lsp_workspace_symbols({opts}) *telescope.builtin.lsp_workspace_symbols()*
@@ -1465,8 +1576,12 @@ builtin.lsp_workspace_symbols({opts}) *telescope.builtin.lsp_workspace_symbols()
     Options: ~
         {query}             (string)        for what to query the workspace
                                             (default: "")
-        {ignore_filename}   (boolean)       dont show filenames (default:
-                                            false)
+        {fname_width}       (number)        defines the width of the filename
+                                            section (default: 30)
+        {symbol_width}      (number)        defines the width of the symbol
+                                            section (default: 25)
+        {symbol_type_width} (number)        defines the width of the symbol
+                                            type section (default: 8)
         {show_line}         (boolean)       if true, shows the content of the
                                             line the tag is found on (default:
                                             false)
@@ -1474,21 +1589,23 @@ builtin.lsp_workspace_symbols({opts}) *telescope.builtin.lsp_workspace_symbols()
         {ignore_symbols}    (string|table)  list of symbols to ignore
         {symbol_highlights} (table)         string -> string. Matches symbol
                                             with hl_group
+        {file_encoding}     (string)        file encoding for the previewer
 
 
 builtin.lsp_dynamic_workspace_symbols({opts}) *telescope.builtin.lsp_dynamic_workspace_symbols()*
     Dynamically lists LSP for all workspace symbols
     - Default keymaps:
       - `<C-l>`: show autocompletion menu to prefilter your query by type of
-        symbol you want to see (i.e. `:variable:`)
+        symbol you want to see (i.e. `:variable:`), only works after refining
+        to fuzzy search using <C-space>
 
 
     Parameters: ~
         {opts} (table)  options to pass to the picker
 
     Options: ~
-        {ignore_filename}   (boolean)       dont show filenames (default:
-                                            false)
+        {fname_width}       (number)        defines the width of the filename
+                                            section (default: 30)
         {show_line}         (boolean)       if true, shows the content of the
                                             line the symbol is found on
                                             (default: false)
@@ -1496,6 +1613,7 @@ builtin.lsp_dynamic_workspace_symbols({opts}) *telescope.builtin.lsp_dynamic_wor
         {ignore_symbols}    (string|table)  list of symbols to ignore
         {symbol_highlights} (table)         string -> string. Matches symbol
                                             with hl_group
+        {file_encoding}     (string)        file encoding for the previewer
 
 
 builtin.diagnostics({opts})                  *telescope.builtin.diagnostics()*
@@ -1512,8 +1630,9 @@ builtin.diagnostics({opts})                  *telescope.builtin.diagnostics()*
         {opts} (table)  options to pass to the picker
 
     Options: ~
-        {bufnr}          (string|number)   if nil get diagnostics for all open
-                                           buffers. Use 0 for current buffer
+        {bufnr}          (number|nil)      Buffer number to get diagnostics
+                                           from. Use 0 for current buffer or
+                                           nil for all buffers
         {severity}       (string|number)   filter diagnostics by severity name
                                            (string) or id (number)
         {severity_limit} (string|number)   keep diagnostics equal or more
@@ -1537,7 +1656,7 @@ builtin.diagnostics({opts})                  *telescope.builtin.diagnostics()*
 
 
 ================================================================================
-                                                              *telescope.themes*
+THEMES                                                        *telescope.themes*
 
 Themes are ways to combine several elements of styling together.
 
@@ -1549,9 +1668,10 @@ themes.get_dropdown()                        *telescope.themes.get_dropdown()*
 
     Usage:
     >
-        `local builtin = require('telescope.builtin')`
-        `local themes = require('telescope.themes')`
-        `builtin.find_files(themes.get_dropdown())`
+        local opts = {...} -- picker options
+        local builtin = require('telescope.builtin')
+        local themes = require('telescope.themes')
+        builtin.find_files(themes.get_dropdown(opts))
 <
 
 
@@ -1561,10 +1681,10 @@ themes.get_cursor()                            *telescope.themes.get_cursor()*
 
     Usage:
     >
-
-        `local builtin = require('telescope.builtin')`
-        `local themes = require('telescope.themes')`
-        `builtin.lsp_code_actions(themes.get_cursor())`
+        local opts = {...} -- picker options
+        local builtin = require('telescope.builtin')
+        local themes = require('telescope.themes')
+        builtin.find_files(themes.get_cursor(opts))
 <
 
 
@@ -1574,16 +1694,143 @@ themes.get_ivy()                                  *telescope.themes.get_ivy()*
 
     Usage:
     >
-        `local builtin = require('telescope.builtin')`
-        `local themes = require('telescope.themes')`
-        `builtin.find_files(themes.get_ivy())`
+        local opts = {...} -- picker options
+        local builtin = require('telescope.builtin')
+        local themes = require('telescope.themes')
+        builtin.find_files(themes.get_ivy(opts))
 <
 
 
 
 
 ================================================================================
-                                                              *telescope.layout*
+MAPPINGS                                                    *telescope.mappings*
+
+|telescope.mappings| is used to configure the keybindings within a telescope
+picker. These key binds are only local to the picker window and will be cleared
+once you exit the picker.
+
+We provide multiple configuration options to make it easy for you to adjust
+telescope's default key bindings and create your own custom key binds.
+
+To see many of the builtin actions that you can use as values for this table,
+see |telescope.actions|
+
+Format is:
+>
+  {
+    mode = { ..keys }
+  }
+<
+
+where {mode} is the one character letter for a mode ('i' for insert, 'n' for
+normal).
+
+For example:
+>
+  mappings = {
+    i = {
+      ["<esc>"] = require('telescope.actions').close,
+    },
+  }
+<
+
+To disable a keymap, put `[map] = false`
+For example:
+>
+  {
+    ...,
+    ["<C-n>"] = false,
+    ...,
+  }
+<
+
+To override behavior of a key, simply set the value to be a function (either by
+requiring an action or by writing your own function)
+>
+  {
+    ...,
+    ["<C-i>"] = require('telescope.actions').select_default,
+    ...,
+  }
+<
+
+If the function you want is part of `telescope.actions`, then you can simply
+supply the function name as a string. For example, the previous option is
+equivalent to:
+>
+  {
+    ...,
+    ["<C-i>"] = "select_default",
+    ...,
+  }
+<
+
+You can also add other mappings using tables with `type = "command"`. For
+example:
+>
+  {
+    ...,
+    ["jj"] = { "<esc>", type = "command" },
+    ["kk"] = { "<cmd>echo \"Hello, World!\"<cr>", type = "command" },)
+    ...,
+  }
+<
+
+You can also add additional options for mappings of any type ("action" and
+"command"). For example:
+>
+  {
+    ...,
+    ["<C-j>"] = {
+      actions.move_selection_next, type = "action",
+      opts = { nowait = true, silent = true }
+    },
+    ...,
+  }
+<
+
+There are three main places you can configure |telescope.mappings|. These are
+ordered from the lowest priority to the highest priority.
+
+1. |telescope.defaults.mappings|
+2. In the |telescope.setup()| table, inside a picker with a given name, use the
+   `mappings` key
+>
+  require("telescope").setup {
+    pickers = {
+      find_files = {
+        mappings = {
+          n = {
+            ["kj"] = "close",
+          },
+        },
+      },
+    },
+  }
+<
+3. `attach_mappings` function for a particular picker.
+>
+  require("telescope.builtin").find_files {
+    attach_mappings = function(_, map)
+      map("i", "asdf", function(_prompt_bufnr)
+        print "You typed asdf"
+      end)
+
+      map({"i", "n"}, "<C-r>", function(_prompt_bufnr)
+        print "You typed <C-r>"
+      end)
+
+      -- needs to return true if you want to map default_mappings and
+      -- false if not
+      return true
+    end,
+  }
+<
+
+
+================================================================================
+LAYOUT                                                        *telescope.layout*
 
 The layout of telescope pickers can be adjusted using the
 |telescope.defaults.layout_strategy| and |telescope.defaults.layout_config|
@@ -1621,7 +1868,6 @@ All layout strategies are functions with the following signature:
     - columns       : (number) Columns in the vim window
     - lines         : (number) Lines in the vim window
     - layout_config : (table) The configuration values specific to the picker.
-
 
 This means you can create your own layout strategy if you want! Just be aware
 for now that we may change some APIs or interfaces, so they may break if you
@@ -1691,14 +1937,14 @@ layout_strategies.center()                         *telescope.layout.center()*
 
     ┌──────────────────────────────────────────────────┐
     │    ┌────────────────────────────────────────┐    │
-    │    |                 Preview                |    │
-    │    |                 Preview                |    │
+    │    │                 Preview                │    │
+    │    │                 Preview                │    │
     │    └────────────────────────────────────────┘    │
     │    ┌────────────────────────────────────────┐    │
-    │    |                 Prompt                 |    │
+    │    │                 Prompt                 │    │
     │    ├────────────────────────────────────────┤    │
-    │    |                 Result                 |    │
-    │    |                 Result                 |    │
+    │    │                 Result                 │    │
+    │    │                 Result                 │    │
     │    └────────────────────────────────────────┘    │
     │                                                  │
     │                                                  │
@@ -1747,6 +1993,20 @@ layout_strategies.cursor()                         *telescope.layout.cursor()*
     │                                                  │
     └──────────────────────────────────────────────────┘
 
+    `picker.layout_config` shared options:
+      - height:
+        - How tall to make Telescope's entire layout
+        - See |resolver.resolve_height()|
+      - scroll_speed: The number of lines to scroll through the previewer
+      - width:
+        - How wide to make Telescope's entire layout
+        - See |resolver.resolve_width()|
+
+    `picker.layout_config` unique options:
+      - preview_cutoff: When columns are less than this value, the preview will be disabled
+      - preview_width:
+        - Change the width of Telescope's preview window
+        - See |resolver.resolve_width()|
 
 
 layout_strategies.vertical()                     *telescope.layout.vertical()*
@@ -1756,16 +2016,16 @@ layout_strategies.vertical()                     *telescope.layout.vertical()*
     ┌──────────────────────────────────────────────────┐
     │                                                  │
     │    ┌────────────────────────────────────────┐    │
-    │    |                 Preview                |    │
-    │    |                 Preview                |    │
-    │    |                 Preview                |    │
+    │    │                 Preview                │    │
+    │    │                 Preview                │    │
+    │    │                 Preview                │    │
     │    └────────────────────────────────────────┘    │
     │    ┌────────────────────────────────────────┐    │
-    │    |                 Result                 |    │
-    │    |                 Result                 |    │
+    │    │                 Result                 │    │
+    │    │                 Result                 │    │
     │    └────────────────────────────────────────┘    │
     │    ┌────────────────────────────────────────┐    │
-    │    |                 Prompt                 |    │
+    │    │                 Prompt                 │    │
     │    └────────────────────────────────────────┘    │
     │                                                  │
     └──────────────────────────────────────────────────┘
@@ -1832,20 +2092,23 @@ layout_strategies.bottom_pane()               *telescope.layout.bottom_pane()*
 
 
 ================================================================================
-                                                             *telescope.resolve*
+RESOLVE                                                      *telescope.resolve*
 
 Provides "resolver functions" to allow more customisable inputs for options.
 
 resolver.resolve_height()                 *telescope.resolve.resolve_height()*
     Converts input to a function that returns the height. The input must take
-    one of four forms:
+    one of five forms:
     1. 0 <= number < 1
        This means total height as a percentage.
     2. 1 <= number
        This means total height as a fixed number.
     3. function
        Must have signature: function(self, max_columns, max_lines): number
-    4. table of the form: {padding = `foo`}
+    4. table of the form: { val, max = ..., min = ... }
+       val has to be in the first form 0 <= val < 1 and only one is given, 
+       `min` or `max` as fixed number
+    5. table of the form: {padding = `foo`}
        where `foo` has one of the previous three forms.
        The height is then set to be the remaining space after padding. For
        example, if the window has height 50, and the input is {padding = 5}, 
@@ -1858,14 +2121,17 @@ resolver.resolve_height()                 *telescope.resolve.resolve_height()*
 
 resolver.resolve_width()                   *telescope.resolve.resolve_width()*
     Converts input to a function that returns the width. The input must take
-    one of four forms:
+    one of five forms:
     1. 0 <= number < 1
        This means total width as a percentage.
     2. 1 <= number
        This means total width as a fixed number.
     3. function
        Must have signature: function(self, max_columns, max_lines): number
-    4. table of the form: {padding = `foo`}
+    4. table of the form: { val, max = ..., min = ... }
+       val has to be in the first form 0 <= val < 1 and only one is given, 
+       `min` or `max` as fixed number
+    5. table of the form: {padding = `foo`}
        where `foo` has one of the previous three forms.
        The width is then set to be the remaining space after padding. For
        example, if the window has width 100, and the input is {padding = 5}, 
@@ -1892,11 +2158,140 @@ resolver.resolve_anchor_pos()         *telescope.resolve.resolve_anchor_pos()*
 
 
 ================================================================================
-                                                             *telescope.actions*
+MAKE_ENTRY                                                *telescope.make_entry*
 
-Actions functions that are useful for people creating their own mappings.
+Each picker has a finder made up of two parts, the results which are the data
+to be displayed, and the entry_maker. These entry_makers are functions returned
+from make_entry functions. These will be referred to as entry_makers in the
+following documentation.
 
-Actions can be either normal functions that expect the prompt_bufnr as first
+Every entry maker returns a function that accepts the data to be used for an
+entry. This function will return an entry table (or nil, meaning skip this
+entry) which contains the following important keys:
+- value any: value key can be anything but still required
+- valid bool (optional): is an optional key because it defaults to true but if
+  the key is set to false it will not be displayed by the picker
+- ordinal string: is the text that is used for filtering
+- display string|function: is either a string of the text that is being 
+  displayed or a function receiving the entry at a later stage, when the entry 
+  is actually being displayed. A function can be useful here if a complex 
+  calculation has to be done. `make_entry` can also return a second value - a
+  highlight array which will then apply to the line. Highlight entry in this
+  array has the following signature `{ { start_col, end_col }, hl_group }`
+- filename string (optional): will be interpreted by the default `<cr>` action
+  as open this file
+- bufnr number (optional): will be interpreted by the default `<cr>` action as
+  open this buffer
+- lnum number (optional): lnum value which will be interpreted by the default
+  `<cr>` action as a jump to this line
+- col number (optional): col value which will be interpreted by the default
+  `<cr>` action as a jump to this column
+
+For more information on easier displaying, see
+|telescope.pickers.entry_display|
+
+TODO: Document something we call `entry_index`
+
+
+================================================================================
+ENTRY_DISPLAY                                  *telescope.pickers.entry_display*
+
+Entry Display is used to format each entry shown in the result panel.
+
+Entry Display create() will give us a function based on the configuration of
+column widths we pass into it. We then can use this function n times to return
+a string based on structured input.
+
+Note that if you call `create()` inside `make_display` it will be called for
+every single entry. So it is suggested to do this outside of `make_display` for
+the best performance.
+
+The create function will use the column widths passed to it in
+configuration.items. Each item in that table is the number of characters in the
+column. It's also possible for the final column to not have a fixed width, this
+will be shown in the configuration as 'remaining = true'.
+
+An example of this configuration is shown for the buffers picker:
+>
+local displayer = entry_display.create {
+  separator = " ",
+  items = {
+    { width = opts.bufnr_width },
+    { width = 4 },
+    { width = icon_width },
+    { remaining = true },
+  },
+}
+<
+
+This shows 4 columns, the first is defined in the opts as the width we'll use
+when display_string is the number of the buffer. The second has a fixed width
+of 4 and the third column's width will be decided by the width of the icons we
+use. The fourth column will use the remaining space. Finally, we have also
+defined the separator between each column will be the space " ".
+
+An example of how the display reference will be used is shown, again for the
+buffers picker:
+>
+return displayer {
+  { entry.bufnr, "TelescopeResultsNumber" },
+  { entry.indicator, "TelescopeResultsComment" },
+  { icon, hl_group },
+  display_bufname .. ":" .. entry.lnum,
+}
+<
+
+There are two types of values each column can have. Either a simple String or a
+table containing the String as well as the hl_group.
+
+The displayer can return values, string and an optional highlights. The string
+is all the text to be displayed for this entry as a single string. If parts of
+the string are to be highlighted they will be described in the highlights
+table.
+
+For a better understanding of how create() and displayer are used it's best to
+look at the code in make_entry.lua.
+
+
+================================================================================
+UTILS                                                          *telescope.utils*
+
+Utilities for writing telescope pickers
+
+utils.transform_path({opts}, {path})        *telescope.utils.transform_path()*
+    Transform path is a util function that formats a path based on path_display
+    found in `opts` or the default value from config. It is meant to be used in
+    make_entry to have a uniform interface for builtins as well as extensions
+    utilizing the same user configuration Note: It is only supported inside
+    `make_entry`/`make_display` the use of this function outside of telescope
+    might yield to undefined behavior and will not be addressed by us
+
+
+    Parameters: ~
+        {opts} (table)   The opts the users passed into the picker. Might
+                         contains a path_display key
+        {path} (string)  The path that should be formatted
+
+    Return: ~
+        string: The transformed path ready to be displayed
+
+
+utils.notify({funname}, {opts})                     *telescope.utils.notify()*
+    Telescope Wrapper around vim.notify
+
+
+    Parameters: ~
+        {funname} (string)  name of the function that will be
+        {opts}    (table)   opts.level string, opts.msg string, opts.once bool
+
+
+
+================================================================================
+ACTIONS                                                      *telescope.actions*
+
+These functions are useful for people creating their own mappings.
+
+Actions can be either normal functions that expect the `prompt_bufnr` as first
 argument (1) or they can be a custom telescope type called "action" (2).
 
 (1) The `prompt_bufnr` of a normal function denotes the identifier of your
@@ -1937,8 +2332,8 @@ do the following:
   action(bufnr)
 <
 
-Another interesing thing to do is that these actions now have functions you can
-call. These functions include `:replace(f)`, `:replace_if(f, c)`,
+Another interesting thing to do is that these actions now have functions you
+can call. These functions include `:replace(f)`, `:replace_if(f, c)`,
 `replace_map(tbl)` and `enhance(tbl)`. More information on these functions can
 be found in the `developers.md` and `lua/tests/automated/action_spec.lua` file.
 
@@ -2024,8 +2419,8 @@ actions.toggle_selection({prompt_bufnr}) *telescope.actions.toggle_selection()*
 
 actions.select_all({prompt_bufnr})            *telescope.actions.select_all()*
     Multi select all entries.
-    - Note: selected entries may include results not visible in the results
-      popup.
+    - Note: selected entries may include results not visible in the results pop
+      up.
 
 
     Parameters: ~
@@ -2042,8 +2437,8 @@ actions.drop_all({prompt_bufnr})                *telescope.actions.drop_all()*
 
 actions.toggle_all({prompt_bufnr})            *telescope.actions.toggle_all()*
     Toggle multi selection for all entries.
-    - Note: toggled entries may include results not visible in the results
-      popup.
+    - Note: toggled entries may include results not visible in the results pop
+      up.
 
 
     Parameters: ~
@@ -2179,18 +2574,18 @@ actions.close({prompt_bufnr})                      *telescope.actions.close()*
         {prompt_bufnr} (number)  The prompt bufnr
 
 
-actions._close({prompt_bufnr}, {keepinsert})      *telescope.actions._close()*
-    Close the Telescope window and specify if you want to keep insert mode or
-    not
+actions._close({prompt_bufnr})                    *telescope.actions._close()*
+    Close the Telescope window, usually used within an action
+    Deprecated and no longer needed, does the same as
+    |telescope.actions.close|. Might be removed in the future
 
 
     Parameters: ~
-        {prompt_bufnr} (number)   The prompt bufnr
-        {keepinsert}   (boolean)  Remain in INSERT mode if true
+        {prompt_bufnr} (number)  The prompt bufnr
 
 
 actions.edit_command_line({prompt_bufnr}) *telescope.actions.edit_command_line()*
-    Set a value in the command line and dont run it, making it editable.
+    Set a value in the command line and don't run it, making it editable.
 
 
     Parameters: ~
@@ -2206,7 +2601,7 @@ actions.set_command_line({prompt_bufnr}) *telescope.actions.set_command_line()*
 
 
 actions.edit_search_line({prompt_bufnr}) *telescope.actions.edit_search_line()*
-    Set a value in the search line and dont search for it, making it editable.
+    Set a value in the search line and don't search for it, making it editable.
 
 
     Parameters: ~
@@ -2231,6 +2626,8 @@ actions.edit_register({prompt_bufnr})      *telescope.actions.edit_register()*
 
 actions.paste_register({prompt_bufnr})    *telescope.actions.paste_register()*
     Paste the selected register into the buffer
+
+    Note: only meant to be used inside builtin.registers
 
 
     Parameters: ~
@@ -2556,9 +2953,19 @@ actions.which_key({prompt_bufnr})              *telescope.actions.which_key()*
         {prompt_bufnr} (number)  The prompt bufnr
 
 
+actions.to_fuzzy_refine({prompt_bufnr})  *telescope.actions.to_fuzzy_refine()*
+    Move from a none fuzzy search to a fuzzy one
+    This action is meant to be used in live_grep and
+    lsp_dynamic_workspace_symbols
+
+
+    Parameters: ~
+        {prompt_bufnr} (number)  The prompt bufnr
+
+
 
 ================================================================================
-                                                       *telescope.actions.state*
+ACTIONS_STATE                                          *telescope.actions.state*
 
 Functions to be used to determine the current state of telescope.
 
@@ -2570,7 +2977,7 @@ action_state.get_selected_entry() *telescope.actions.state.get_selected_entry()*
 
 
 action_state.get_current_line()   *telescope.actions.state.get_current_line()*
-    Gets the current line
+    Gets the current line in the search prompt
 
 
 
@@ -2584,7 +2991,7 @@ action_state.get_current_picker({prompt_bufnr}) *telescope.actions.state.get_cur
 
 
 ================================================================================
-                                                         *telescope.actions.set*
+ACTIONS_SET                                              *telescope.actions.set*
 
 Telescope action sets are used to provide an interface for managing actions
 that all primarily do the same thing, but with slight tweaks.
@@ -2649,7 +3056,7 @@ action_set.scroll_results({prompt_bufnr}, {direction}) *telescope.actions.set.sc
 
 
 ================================================================================
-                                                      *telescope.actions.layout*
+ACTIONS_LAYOUT                                        *telescope.actions.layout*
 
 The layout actions are actions to be used to change the layout of a picker.
 
@@ -2708,7 +3115,7 @@ action_layout.cycle_layout_prev({prompt_bufnr}) *telescope.actions.layout.cycle_
 
 
 ================================================================================
-                                                       *telescope.actions.utils*
+ACTIONS_UTILS                                          *telescope.actions.utils*
 
 Utilities to wrap functions around picker selections and entries.
 
@@ -2717,7 +3124,8 @@ Generally used from within other |telescope.actions|
 utils.map_entries({prompt_bufnr}, {f}) *telescope.actions.utils.map_entries()*
     Apply `f` to the entries of the current picker.
     - Notes:
-      - Mapped entries may include results not visible in the results popup.
+      - Mapped entries include all currently filtered results, not just the
+        visible ones.
       - Indices are 1-indexed, whereas rows are 0-indexed.
     - Warning: `map_entries` has no return value.
       - The below example showcases how to collect results
@@ -2730,7 +3138,7 @@ utils.map_entries({prompt_bufnr}, {f}) *telescope.actions.utils.map_entries()*
         local prompt_bufnr = vim.api.nvim_get_current_buf()
         local current_picker = action_state.get_current_picker(prompt_bufnr)
         local results = {}
-          action_utils.map_entries(prompt_bufnr, function(entry, index, row)
+        action_utils.map_entries(prompt_bufnr, function(entry, index, row)
           results[row] = entry.value
         end)
         return results
@@ -2749,7 +3157,8 @@ utils.map_selections({prompt_bufnr}, {f}) *telescope.actions.utils.map_selection
     Apply `f` to the multi selections of the current picker and return a table
     of mapped selections.
     - Notes:
-      - Mapped selections may include results not visible in the results popup.
+      - Mapped selections may include results not visible in the results pop
+        up.
       - Selected entries are returned in order of their selection.
     - Warning: `map_selections` has no return value.
       - The below example showcases how to collect results
@@ -2762,7 +3171,7 @@ utils.map_selections({prompt_bufnr}, {f}) *telescope.actions.utils.map_selection
         local prompt_bufnr = vim.api.nvim_get_current_buf()
         local current_picker = action_state.get_current_picker(prompt_bufnr)
         local results = {}
-          action_utils.map_selections(prompt_bufnr, function(entry, index)
+        action_utils.map_selections(prompt_bufnr, function(entry, index)
           results[index] = entry.value
         end)
         return results
@@ -2787,7 +3196,7 @@ utils.get_registered_mappings({prompt_bufnr}) *telescope.actions.utils.get_regis
 
 
 ================================================================================
-                                                    *telescope.actions.generate*
+ACTIONS_GENERATE                                    *telescope.actions.generate*
 
 Module for convenience to override defaults of corresponding
 |telescope.actions| at |telescope.setup()|.
@@ -2865,11 +3274,11 @@ action_generate.which_key({opts})     *telescope.actions.generate.which_key()*
 
 
 ================================================================================
-                                                          *telescope.previewers*
+PREVIEWERS                                                *telescope.previewers*
 
 Provides a Previewer table that has to be implemented by each previewer. To
 achieve this, this module also provides two wrappers that abstract most of the
-work and make it really easy create new previewers.
+work and make it really easy to create new previewers.
   - `previewers.new_termopen_previewer`
   - `previewers.new_buffer_previewer`
 
@@ -2898,7 +3307,7 @@ previewers.Previewer()                      *telescope.previewers.Previewer()*
 
     What `:new` expects is listed below
 
-    The interface provides following set of functions. All of them, besides
+    The interface provides the following set of functions. All of them, besides
     `new`, will be handled by telescope pickers.
     - `:new(opts)`
     - `:preview(entry, status)`
@@ -2909,7 +3318,7 @@ previewers.Previewer()                      *telescope.previewers.Previewer()*
     `Previewer:new()` expects a table as input with following keys:
       - `setup` function(self): Will be called the first time preview will be 
         called.
-      - `teardown` function(self): Will be called on cleanup.
+      - `teardown` function(self): Will be called on clean up.
       - `preview_fn` function(self, entry, status): Will be called each time a
         new entry was selected.
       - `title` function(self): Will return the static title of the previewer.
@@ -2953,9 +3362,6 @@ previewers.new_termopen_previewer() *telescope.previewers.new_termopen_previewer
 
     Furthermore, it will forward all `config.set_env` environment variables to
     that terminal process.
-
-    While this interface is a good start, it was replaced with the way more
-    flexible `buffer_previewer` and is now deprecated.
 
 
 
@@ -3022,9 +3428,9 @@ previewers.new_buffer_previewer() *telescope.previewers.new_buffer_previewer()*
         table of vars that will be available in `self.state` in each
         `define_preview` call.
       - `teardown = function(self)` (optional) Will be called at the end, when
-        the picker is being closed and is meant to cleanup everything that was
+        the picker is being closed and is meant to clean up everything that was
         allocated by the previewer. The `buffer_previewer` will automatically
-        cleanup all created buffers. So you only need to handle things that
+        clean up all created buffers. So you only need to handle things that
         were introduced by you.
       - `keep_last_buf = true` (optional) Will not delete the last selected
         buffer. This would allow you to reuse that buffer in the select action.
@@ -3032,7 +3438,7 @@ previewers.new_buffer_previewer() *telescope.previewers.new_buffer_previewer()*
         recreating that buffer in an action. To access the last buffer number: 
         `require('telescope.state').get_global_key("last_preview_bufnr")`
       - `get_buffer_by_name = function(self, entry)` Allows you to set a unique
-        name for each buffer. This is used for caching purpose.
+        name for each buffer. This is used for caching purposes.
         `self.state.bufname` will be nil if the entry was never loaded or the
         unique name when it was loaded once. For example, useful if you have
         one file but multiple entries. This happens for grep and lsp builtins.
@@ -3083,8 +3489,8 @@ previewers.new_buffer_previewer() *telescope.previewers.new_buffer_previewer()*
           vim.api.nvim_buf_call(bufnr, function()
             -- for example `search` and `matchadd`
           end)
-        to achieve that.
 <
+    to achieve that.
       - If you want to read a file into the buffer it's best to use 
         `buffer_previewer_maker`. But access this function with 
         `require('telescope.config').values.buffer_previewer_maker` because it
@@ -3128,7 +3534,7 @@ previewers.vim_buffer_vimgrep()    *telescope.previewers.vim_buffer_vimgrep()*
 
 
 previewers.vim_buffer_qflist()      *telescope.previewers.vim_buffer_qflist()*
-    Is the same as `vim_buffer_vimgrep` and only exist for consistency with
+    Is the same as `vim_buffer_vimgrep` and only exists for consistency with
     `term_previewers`.
 
     The preferred way of using this previewer is like this
@@ -3194,12 +3600,12 @@ previewers.display_content()          *telescope.previewers.display_content()*
 
 
 ================================================================================
-                                                     *telescope.actions.history*
+HISTORY                                              *telescope.actions.history*
 
 A base implementation of a prompt history that provides a simple history and
 can be replaced with a custom implementation.
 
-For example: We provide a extension for a smart history that uses sql.nvim to
+For example: We provide an extension for a smart history that uses sql.nvim to
 map histories to metadata, like the calling picker or cwd.
 
 So you have a history for:
@@ -3211,7 +3617,7 @@ So you have a history for:
 - live_grep project_2
 - etc
 
-See github.com/nvim-telescope/telescope-smart-history.nvim
+See https://github.com/nvim-telescope/telescope-smart-history.nvim
 
 histories.History()                      *telescope.actions.history.History()*
     Manages prompt history

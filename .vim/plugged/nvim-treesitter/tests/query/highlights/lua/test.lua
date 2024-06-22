@@ -1,13 +1,18 @@
+-- luacheck: ignore
 local a = { 1, 2, 3, 4, 5 }
---          ^ TSNumber    ^ TSPunctBracket
---    ^ TSVariable
+--          ^ @number     ^ @punctuation.bracket
+--    ^ @variable
 
 local _ = next(a)
---          ^ TSFuncBuiltin
--- ^ TSKeyword
+--          ^ @function.builtin
+-- ^ @keyword
 
 _ = next(a)
---   ^ TSFuncBuiltin
+--   ^ @function.builtin
 
 next(a)
--- ^ TSFuncBuiltin
+-- ^ @function.builtin
+
+-- Checking for incorrect hlgroup of injected luap
+string.match(s, "\0%d[^\n]+")
+--                       ^ @!constant

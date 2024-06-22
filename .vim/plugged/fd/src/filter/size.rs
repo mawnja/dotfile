@@ -1,8 +1,9 @@
-use once_cell::sync::Lazy;
+use std::sync::OnceLock;
+
+use anyhow::anyhow;
 use regex::Regex;
 
-static SIZE_CAPTURES: Lazy<Regex> =
-    Lazy::new(|| Regex::new(r"(?i)^([+-]?)(\d+)(b|[kmgt]i?b?)$").unwrap());
+static SIZE_CAPTURES: OnceLock<Regex> = OnceLock::new();
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum SizeFilter {
@@ -24,12 +25,19 @@ const GIBI: u64 = MEBI * 1024;
 const TEBI: u64 = GIBI * 1024;
 
 impl SizeFilter {
-    pub fn from_string(s: &str) -> Option<Self> {
-        if !SIZE_CAPTURES.is_match(s) {
+    pub fn from_string(s: &str) -> anyhow::Result<Self> {
+        SizeFilter::parse_opt(s)
+            .ok_or_else(|| anyhow!("'{}' is not a valid size constraint. See 'fd --help'.", s))
+    }
+
+    fn parse_opt(s: &str) -> Option<Self> {
+        let pattern =
+            SIZE_CAPTURES.get_or_init(|| Regex::new(r"(?i)^([+-]?)(\d+)(b|[kmgt]i?b?)$").unwrap());
+        if !pattern.is_match(s) {
             return None;
         }
 
-        let captures = SIZE_CAPTURES.captures(s)?;
+        let captures = pattern.captures(s)?;
         let limit_kind = captures.get(1).map_or("+", |m| m.as_str());
         let quantity = captures
             .get(2)
@@ -165,7 +173,7 @@ mod tests {
                 #[test]
                 fn $name() {
                     let i = SizeFilter::from_string($value);
-                    assert!(i.is_none());
+                    assert!(i.is_err());
                 }
             )*
         };

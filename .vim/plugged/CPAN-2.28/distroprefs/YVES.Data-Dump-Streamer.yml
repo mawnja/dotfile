@@ -1,6 +1,0 @@
----
-match:
-  distribution: 'YVES/Data-Dump-Streamer-\d'
-pl:
-  args:
-    - "NODDS"

@@ -27,14 +27,9 @@ function! coc#snippet#_select_mappings()
   snoremap <c-r> <c-g>"_c<c-r>
 endfunction
 
-function! coc#snippet#show_choices(lnum, col, len, values) abort
-  let m = mode()
-  call cursor(a:lnum, a:col + a:len)
-  if m !=# 'i'
-    call feedkeys("\<Esc>i")
-  endif
-  let changedtick = b:changedtick
-  call timer_start(20, { -> coc#_do_complete(a:col - 1, a:values, 0, changedtick)})
+function! coc#snippet#show_choices(lnum, col, position, input) abort
+  call coc#snippet#move(a:position)
+  call CocActionAsync('startCompletion', { 'source': '$words' })
   redraw
 endfunction
 
@@ -78,10 +73,17 @@ function! coc#snippet#next() abort
 endfunction
 
 function! coc#snippet#jump(direction, complete) abort
-  if a:direction == 1 && a:complete && pumvisible()
-    let pre = exists('*complete_info') && complete_info()['selected'] == -1 ? "\<C-n>" : ''
-    call feedkeys(pre."\<C-y>", 'in')
-    return ''
+  if a:direction == 1 && a:complete
+    if pumvisible()
+      let pre = exists('*complete_info') && complete_info()['selected'] == -1 ? "\<C-n>" : ''
+      call feedkeys(pre."\<C-y>", 'in')
+      return ''
+    endif
+    if coc#pum#visible()
+      " Discard the return value, otherwise weird characters will be inserted
+      call coc#pum#confirm()
+      return ''
+    endif
   endif
   call coc#rpc#request(a:direction == 1 ? 'snippetNext' : 'snippetPrev', [])
   return ''
@@ -104,22 +106,35 @@ function! coc#snippet#disable()
   silent! execute 'sunmap <buffer> <silent> '.nextkey
 endfunction
 
-function! coc#snippet#select(position, text) abort
+function! coc#snippet#select(start, end, text) abort
+  if coc#pum#visible()
+    call coc#pum#close()
+  endif
   if mode() == 's'
     call feedkeys("\<Esc>", 'in')
   endif
-  let cursor = coc#snippet#to_cursor(a:position)
-  call cursor([cursor[0], cursor[1] - (&selection !~# 'exclusive')])
-  let len = strchars(a:text) - (&selection !~# 'exclusive')
-  let cmd = ''
-  let cmd .= mode()[0] ==# 'i' ? "\<Esc>l" : ''
-  let cmd .= printf('v%s', len > 0 ? len . 'h' : '')
-  let cmd .= "o\<C-g>"
+  if &selection ==# 'exclusive'
+    let cursor = coc#snippet#to_cursor(a:start)
+    call cursor([cursor[0], cursor[1]])
+    let cmd = ''
+    let cmd .= mode()[0] ==# 'i' ? "\<Esc>".(col('.') == 1 ? '' : 'l') : ''
+    let cmd .= printf('v%s', strchars(a:text) . 'l')
+    let cmd .= "\<C-g>"
+  else
+    let cursor = coc#snippet#to_cursor(a:end)
+    call cursor([cursor[0], cursor[1] - 1])
+    let len = strchars(a:text) - 1
+    let cmd = ''
+    let cmd .= mode()[0] ==# 'i' ? "\<Esc>l" : ''
+    let cmd .= printf('v%s', len > 0 ? len . 'h' : '')
+    let cmd .= "o\<C-g>"
+  endif
   call feedkeys(cmd, 'n')
 endfunction
 
 function! coc#snippet#move(position) abort
-  if mode() == 's'
+  let m = mode()
+  if m == 's'
     call feedkeys("\<Esc>", 'in')
   endif
   let pos = coc#snippet#to_cursor(a:position)
@@ -136,5 +151,5 @@ function! coc#snippet#to_cursor(position) abort
   if line is v:null
     return [a:position.line + 1, a:position.character + 1]
   endif
-  return [a:position.line + 1, byteidx(line, a:position.character) + 1]
+  return [a:position.line + 1, coc#string#byte_index(line, a:position.character) + 1]
 endfunction

@@ -1,5 +1,6 @@
 local Path = require "plenary.path"
 local path = Path.path
+local compat = require "plenary.compat"
 
 describe("Path", function()
   it("should find valid files", function()
@@ -234,6 +235,12 @@ describe("Path", function()
       p.path.home = home
       p._cwd = "/tmp/lua"
       assert.are.same("~/test_file", p:normalize())
+    end)
+
+    it("handles filenames with the same prefix as the home directory", function()
+      local p = Path:new "/home/test.old/test_file"
+      p.path.home = "/home/test"
+      assert.are.same("/home/test.old/test_file", p:normalize())
     end)
   end)
 
@@ -586,7 +593,7 @@ describe("Path", function()
     it("should extract the ancestors of the path", function()
       local p = Path:new(vim.loop.cwd())
       local parents = p:parents()
-      assert(vim.tbl_islist(parents))
+      assert(compat.islist(parents))
       for _, parent in pairs(parents) do
         assert.are.same(type(parent), "string")
       end
