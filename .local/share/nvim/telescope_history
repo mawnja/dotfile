@@ -76,3 +76,4 @@ vm.py
 vm.c
 vm.cc
 vm.py
+expr_functor.py

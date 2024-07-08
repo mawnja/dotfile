@@ -17,6 +17,7 @@ export PATH=~/.vim/plugged/tree-sitter/bin:$PATH
 export PATH=~/.vim/plugged/perl-5.20.2/bin:$PATH
 export PATH=~/.local/bin:$PATH
 export PATH=~/.local/share/terminator:$PATH
+export PATH=~/.local/share/yarn/bin:$PATH
 export PATH=/usr/local/cuda/bin:$PATH
 export PATH=/LocalRun/wenjian.ma/tmp/cmake-3.25.0-linux-x86_64/bin:$PATH
 export PATH=/LocalRun/wenjian.ma/vscode/VSCode-linux-x64/bin:$PATH
