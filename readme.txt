@@ -78,6 +78,10 @@ MarkupKind.Markdown: 'markdown'>])
 解决：
 在 coc-settings.json中添加 "jedi.markupKindPreferred": "plaintext",
 
-9. other
+9. 按tab键时,报错unknown function: <SNR>103_check_back_space
+解决:
+在.config/nvim/init.vim中将pumvisible改为coc#pum#visible
+
+10. other
 pip install https://files.pythonhosted.org/packages/a6/a4/956ef96a52e1735ee1d494e30f274f6d3cd2b7fd18397731e6fd11035d8b/jedi_language_server-0.41.4-py3-none-any.whl
 https://github.com/neovim/neovim/releases/
