@@ -1,4 +1,5 @@
 {
   "clangd.path": "/LocalRun/wenjian.ma/dotfile/.config/coc/extensions/coc-clangd-data/install/18.1.3/clangd_18.1.3/bin/clangd",
-  "jedi.markupKindPreferred": "markdown"
+  "jedi.markupKindPreferred": "markdown",
+  "snippets.ultisnips.pythonPrompt": false
 }

@@ -1,0 +1,8 @@
+require("plugins")
+require("options")
+require("keybinding")
+require("plugins-config.nvim-tree")
+require("plugins-config.bufferline")
+require("plugins-config.lualine")
+require("plugins-config.telescope")
+require("plugins-config.treesitter")
