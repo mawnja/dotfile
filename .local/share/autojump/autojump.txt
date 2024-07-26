@@ -14,7 +14,7 @@
 10.0	/LocalRun/wenjian.ma/dotfile/.local/lib/site-packages/pygls
 14.142135623730951	/LocalRun/wenjian.ma/dotfile/.local/lib/python3.6
 10.0	/LocalRun/wenjian.ma/dotfile/.local/lib/python3.6/site-packages
-73.48469228349536	/LocalRun/wenjian.ma/dotfile
+75.49834435270752	/LocalRun/wenjian.ma/dotfile
 38.729833462074176	/LocalRun/wenjian.ma/dotfile/.vim
 10.0	/LocalRun/wenjian.ma/dotfile/.vim/plugged__
 10.0	/LocalRun/wenjian.ma/dotfile/.vim/sessions
@@ -27,15 +27,15 @@
 10.0	/home/wenjian.ma/.cargo/registry/cache
 10.0	/home/wenjian.ma/.cargo/registry/index
 10.0	/home/wenjian.ma/.cargo/registry/src
-74.83314773547885	/LocalRun/wenjian.ma
+78.10249675906655	/LocalRun/wenjian.ma
 17.320508075688775	/LocalRun/wenjian.ma/dotfile/.vim/plugged/solarized.nvim
-48.98979485566357	/LocalRun/wenjian.ma/tvm
+50.00000000000001	/LocalRun/wenjian.ma/tvm
 33.166247903554	/LocalRun/wenjian.ma/program_en
 10.0	/LocalRun/wenjian.ma/dotfile/zsh/.oh-my-zsh
 14.142135623730951	/LocalRun/wenjian.ma/dotfile/zsh/.oh-my-zsh/plugins
 10.0	/LocalRun/wenjian.ma/dotfile/zsh/.oh-my-zsh/plugins/zsh-system-clipboard
 10.0	/LocalRun/wenjian.ma/myenv/bin
-88.8819441731559	/LocalRun/wenjian.ma/dotfile/.config/nvim
+92.73618495495703	/LocalRun/wenjian.ma/dotfile/.config/nvim
 14.142135623730951	/LocalRun/wenjian.ma/program_en/glibc-2.31
 14.142135623730951	/lib
 10.0	/lib/x86_64-linux-gnu
@@ -65,7 +65,7 @@
 10.0	/LocalRun/wenjian.ma/dotfile/.vim/plugged/barbar.nvim/lua/barbar
 14.142135623730951	/LocalRun/wenjian.ma/dotfile/.vim/plugged/tagbar
 14.142135623730951	/LocalRun/wenjian.ma/tvm/python
-78.74007874011812	/LocalRun/wenjian.ma/dotfile/.config/nvim/lua
+87.17797887081348	/LocalRun/wenjian.ma/dotfile/.config/nvim/lua
 20.0	/LocalRun/wenjian.ma/dotfile/.vim/plugged/packer.nvim
 31.622776601683796	/LocalRun/wenjian.ma/program_en/my-nvim-config
 38.729833462074176	/LocalRun/wenjian.ma/program_en/my-nvim-config/lua
@@ -102,8 +102,8 @@
 14.142135623730951	/LocalRun/wenjian.ma/dotfiles/.config/nvim
 10.0	/LocalRun/wenjian.ma/dotfiles/.local
 10.0	/LocalRun/wenjian.ma/dotfile/.config/dconf
-22.360679774997898	/LocalRun/wenjian.ma/dotfile/.local/share/nvim/lazy
-42.42640687119286	/LocalRun/wenjian.ma/dotfile/.config/nvim/lua/plugins-config
+26.457513110645905	/LocalRun/wenjian.ma/dotfile/.local/share/nvim/lazy
+50.990195135927856	/LocalRun/wenjian.ma/dotfile/.config/nvim/lua/plugins-config
 10.0	/LocalRun/wenjian.ma/dotfile/.local/share/nvim/lazy/nvim-tree.lua
 22.360679774997898	/LocalRun/wenjian.ma/dotfile/.config/coc/extensions/node_modules
 10.0	/LocalRun/wenjian.ma/program_en/luarocks-3.5.0
@@ -124,4 +124,5 @@
 10.0	/LocalRun/wenjian.ma/dotfile/.config/coc/extensions/node_modules/coc-clangd
 10.0	/LocalRun/wenjian.ma/dotfile/.config/coc/extensions/node_modules/coc-clangd/lib
 10.0	/LocalRun/wenjian.ma/dotfile/.vim/plugged/p5-Neovim-Ext
-10.0	/LocalRun/wenjian.ma/dotfile/.local/share/nvim/lazy/bufferline.nvim
+14.142135623730951	/LocalRun/wenjian.ma/dotfile/.local/share/nvim/lazy/bufferline.nvim
+10.0	/LocalRun/wenjian.ma/dotfile/.local/share/nvim/lazy/solarized

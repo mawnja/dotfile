@@ -23,7 +23,7 @@ require("lazy").setup({
     { "nvim-tree/nvim-tree.lua", event = "VimEnter", dependencies = "nvim-tree/nvim-web-devicons" },
 
     -- bufferline
-    { "akinsho/bufferline.nvim", version = "*", dependencies = "nvim-tree/nvim-web-devicons" },
+    { "akinsho/bufferline.nvim", version = "v2.*", dependencies = "nvim-tree/nvim-web-devicons" },
 
     { "nvim-lualine/lualine.nvim", dependencies = { "nvim-tree/nvim-web-devicons" } },
 

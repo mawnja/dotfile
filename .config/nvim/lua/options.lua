@@ -1,3 +1,8 @@
+vim.g.python_version = 3.6
+vim.g.python3_host_prog = "~/.local/bin/python3.6"
+
+vim.g.loaded_perl_provider = 0
+
 -- 编码方式 utf8
 vim.g.encoding = "UTF-8"
 vim.o.fileencoding = "utf-8"
@@ -84,4 +89,8 @@ vim.o.clipboard = "unnamedplus"
 
 vim.o.showtabline = 2
 
+
+vim.g.bufferline_show_bufnr = 1
+
 vim.cmd.colorscheme("solarized")
+autocmd CursorHold * silent call CocActionAsync('highlight')
