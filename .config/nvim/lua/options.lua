@@ -93,4 +93,4 @@ vim.o.showtabline = 2
 vim.g.bufferline_show_bufnr = 1
 
 vim.cmd.colorscheme("solarized")
-autocmd CursorHold * silent call CocActionAsync('highlight')
+--##autocmd CursorHold * silent call CocActionAsync('highlight')
