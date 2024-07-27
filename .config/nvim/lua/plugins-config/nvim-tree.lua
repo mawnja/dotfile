@@ -7,9 +7,9 @@ end
 -- #FFFF00 黄色
 -- #90EE90 浅绿色
 -- #D2B48C 土黄色
-vim.cmd([[
-  hi NvimTreeNormal guibg=#90EE90
-]])
+--vim.cmd([[
+--  hi NvimTreeNormal guibg=#333333
+--]])
 
 nvim_tree.setup({
     sort_by = "case_sensitive",

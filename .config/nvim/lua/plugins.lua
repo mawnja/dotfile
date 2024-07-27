@@ -35,7 +35,13 @@ require("lazy").setup({
 
     { "neoclide/coc.nvim", branch = "release" },
 
-    { "chentoast/marks.nvim" }
+    -- bookmark
+    { "chentoast/marks.nvim" },
+
+    -- terminal
+    {"akinsho/toggleterm.nvim", version = '*', config = true},
+    -- symbols outline
+    { "simrat39/symbols-outline.nvim" }
 
 })
 
