@@ -41,3 +41,7 @@ vim.keymap.set("n", "gd", "<Plug>(coc-definition)", opt)
 vim.keymap.set("n", "gy", "<Plug>(coc-type-definition)", opt)
 vim.keymap.set("n", "gi", "<Plug>(coc-implementation)", opt)
 vim.keymap.set("n", "gr", "<Plug>(coc-references)", opt)
+
+-- ##vim-fold-cycle
+vim.keymap.set("n", "<C-Right>", "<Plug>(FoldCycleToggle)")
+vim.keymap.set("n", "<C-Left>", "<Plug>(FoldCycleToggle)")

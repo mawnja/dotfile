@@ -76,5 +76,10 @@ bufferline.setup({
         always_show_bufferline = true,
         sort_by = 'id',
 	},
+    highlights = {
+        background = {
+            guibg = "#90EE90",  -- 设置背景为绿色
+        },
+    },
 
 })

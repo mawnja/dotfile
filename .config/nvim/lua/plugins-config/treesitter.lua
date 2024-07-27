@@ -61,5 +61,6 @@ require'nvim-treesitter.configs'.setup {
   },
   fold = {
     enable = true,  --启用折叠
+    fold_level = 2,
   }
 }
