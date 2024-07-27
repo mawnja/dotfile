@@ -89,8 +89,14 @@ vim.o.clipboard = "unnamedplus"
 
 vim.o.showtabline = 2
 
+--#vim.wo.foldmethod = "expr" --"marker" --"expr"
+--vim.wo.foldmarker = "{{{,}}}"
+--#vim.wo.foldexpr = "nvim_treesitter#foldexpr()"
+--#vim.o.foldtext = [[getline(v:foldstart) . ' ' . (v:foldend - v:foldstart + 1) . ' lines ' . (v:folddashes ? '+' : '-')]]
+--vim.o.foldtext = [[substitute(getline(v:foldstart),'{{{','-','') . ' ' . (v:foldend - v:foldstart + 1) . ' lines ']]
 
 vim.g.bufferline_show_bufnr = 1
 
 vim.cmd.colorscheme("solarized")
+
 --##autocmd CursorHold * silent call CocActionAsync('highlight')

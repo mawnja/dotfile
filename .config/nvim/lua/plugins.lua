@@ -31,8 +31,12 @@ require("lazy").setup({
 
     { "nvim-treesitter/nvim-treesitter" },
 
-    { "neoclide/coc.nvim", branch = "release" }
-    
+    { "p00f/nvim-ts-rainbow" },
+
+    { "neoclide/coc.nvim", branch = "release" },
+
+    { "chentoast/marks.nvim" }
+
 
 })
 

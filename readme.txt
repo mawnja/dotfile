@@ -13,9 +13,6 @@
     coc.python 与 coc.jedi不能同时安装，如果安装coc.jedi,,则需要卸载掉(:CocUninstall coc.python)
     coc.jedi, 使用python3.6, 因为coc.jedi运行需要给创建虚拟环境.env，，故需要选安装sudo apt-get install python3.6-venv,
     还有需要安装jedi-language-server,
-    QS:
-    coc/extensions/node_modules/coc-jedi/.env安装的jedi-language-server==0.37.0与~/.local/lib/python3.6/site-packages中jedi_language_server==0.35.1
-    版本不一致，解决办法:coc/extensions/node_modules/coc-jedi/lib/index.js中修改版本号，package.js中修改版本号
    
     coc安装常用命令：
     :CocInstall coc.jedi
@@ -60,8 +57,11 @@ npm install -g neovim #npm支持neovim
 :TSUpdate vimdoc
 
 6.  jedi_language_server不匹配问题解决:
+
 coc-jedi 0.30.1 需要jedi_language_server 0.35.1，npm==0.36.1 python>=3.6 pypi==0.41.4  node > 8.10.0
+如果为python3.6,则只能安装coc-jedi@0.30.1
 :CocInstall coc-jedi@0.30.1
+
 pip install jedi-language-server==0.35.1 -i https://pypi.tuna.tsinghua.edu.cn/simple/ --trusted-host pypi.douban.com
 
 7. Server language.clangd failed to start: Launching server "languageserver.clangd" using command clangd
@@ -78,10 +78,12 @@ MarkupKind.Markdown: 'markdown'>])
 解决：
 在 coc-settings.json中添加 "jedi.markupKindPreferred": "plaintext",
 
-9. 按tab键时,报错unknown function: <SNR>103_check_back_space
+9. coc-jedi 与 coc-vimlsp会发生冲突
+
+10. 按tab键时,报错unknown function: <SNR>103_check_back_space
 解决:
 在.config/nvim/init.vim中将pumvisible改为coc#pum#visible
 
-10. other
+11. other
 pip install https://files.pythonhosted.org/packages/a6/a4/956ef96a52e1735ee1d494e30f274f6d3cd2b7fd18397731e6fd11035d8b/jedi_language_server-0.41.4-py3-none-any.whl
 https://github.com/neovim/neovim/releases/
